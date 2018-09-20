@@ -10,12 +10,7 @@ A widget that automatically resizes text to fit perfectly within its bounds.
 - [GitHub Repository](https://github.com/leisim/auto_size_text)
 
 
-## Getting Started
-
-For help getting started with Flutter, view our online [documentation](https://flutter.io/).
-
-For help on editing package code, view the [documentation](https://flutter.io/developing-packages/).
-
+![](https://raw.githubusercontent.com/leisim/auto_size_text/master/screenshots/maxlines.gif)
 
 ## Usage
 
@@ -39,17 +34,23 @@ With `minFontSize` you can specify the smallest possible font size. If the text 
 
 `maxFontSize` sets the largest passible font size. This is useful if the `TextStyle` inherits the font size and you want to constrain it.
 
+![](https://raw.githubusercontent.com/leisim/auto_size_text/master/screenshots/minfontsize.gif)
+
 
 ### stepGranularity
 
 The `AutoSizeText` will try each font size, starting with `TextStyle.fontSize` until the text fits within its bounds.  
 `stepGranularity` specifies how much the font size is decreased each step. Usually, this value should not be below 1.0 for best performance.
 
+![](https://raw.githubusercontent.com/leisim/auto_size_text/master/screenshots/stepgranularity.gif)
+
 
 ### presetFontSizes
 
 If you want to allow only specific font sizes, you can set them with `presetFontSizes`. Only font sizes which match `minFontSize` and `maxFontSize` will be used.  
 If `presetFontSizes` is set, `stepGranularity` will be ignored.
+
+![](https://raw.githubusercontent.com/leisim/auto_size_text/master/screenshots/presetfontsizes.gif)
 
 
 ## Troubleshooting
