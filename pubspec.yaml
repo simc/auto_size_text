@@ -1,0 +1,20 @@
+name: auto_size_text
+description: A widget that automatically resizes text to fit perfectly within its bounds.
+version: 0.0.1
+author: Simon Leier
+homepage: https://github.com/leisim/auto_size_text
+
+environment:
+  sdk: ">=2.0.0-dev.68.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  grinder: ^0.8.3
+
+flutter:
