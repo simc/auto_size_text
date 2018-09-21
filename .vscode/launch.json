@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Flutter",
+            "name": "Demo",
             "request": "launch",
             "type": "dart",
             "program": "./demo/lib/main.dart",
