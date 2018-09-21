@@ -1,5 +1,10 @@
 part of auto_size_text;
 
+/// A widget that automatically resizes text to fit perfectly within its bounds.
+///
+/// All size constraints as well as maxLines are taken into account. If the text
+/// overflows anyway, you should check if the parent widget actually constraints
+/// the size of this widget.
 class AutoSizeText extends StatelessWidget {
   const AutoSizeText(
     this.data, {
@@ -17,6 +22,8 @@ class AutoSizeText extends StatelessWidget {
     this.maxLines,
     this.semanticsLabel,
   })  : assert(data != null),
+        assert(minFontSize > 0),
+        assert(stepGranularity >= 0.1),
         super(key: key);
 
   /// The text to display.
@@ -52,10 +59,7 @@ class AutoSizeText extends StatelessWidget {
 
   /// Lets you specify all the possible font sizes.
   ///
-  /// If [minFontSize] or [maxFontSize] are set, only suitable presetFontSizes
-  /// are being used.
-  ///
-  /// **Important:** The presetFontSizes are tried in the order they are given.
+  /// **Important:** The presetFontSizes are used the order they are given in.
   /// If the first fontSize matches, all others are being ignored.
   final List<double> presetFontSizes;
 
@@ -112,14 +116,6 @@ class AutoSizeText extends StatelessWidget {
   ///
   /// If present, the semantics of this widget will contain this value instead
   /// of the actual text.
-  ///
-  /// This is useful for replacing abbreviations or shorthands will the full
-  /// text value:
-  ///
-  /// ```dart
-  /// new Text(r'$$', semanticsLabel: 'Double dollars')
-  ///
-  /// ```
   final String semanticsLabel;
 
   @override
@@ -150,7 +146,7 @@ class AutoSizeText extends StatelessWidget {
       }
       var currentStyle = effectiveStyle.copyWith(fontSize: startFontSize);
 
-      while (!_checkFontSize(
+      while (!_checkTextFits(
           currentStyle, effectiveMaxLines, size.maxWidth, size.maxHeight)) {
         double newFontSize;
         if (presetFontSizes == null) {
@@ -179,7 +175,7 @@ class AutoSizeText extends StatelessWidget {
     });
   }
 
-  bool _checkFontSize(
+  bool _checkTextFits(
       TextStyle style, int maxLines, double maxWidth, double maxHeight) {
     var tp = TextPainter(
       text: TextSpan(
