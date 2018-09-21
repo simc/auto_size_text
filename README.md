@@ -19,13 +19,13 @@ A widget that automatically resizes text to fit perfectly within its bounds.
 ```dart
 AutoSizeText("The text to display",
   style: TextStyle(fontSize:20.0),
-  maxlines: 2,
+  maxLines: 2,
 )
 ```
 
-### maxlines
+### maxLines
 
-The `maxlines` parameter works like you are used to with the `Text` widget. If there is no `maxlines` parameter specified, the `AutoSizeText` only fits the text according to the available width and height.
+The `maxLines` parameter works like you are used to with the `Text` widget. If there is no `maxLines` parameter specified, the `AutoSizeText` only fits the text according to the available width and height.
 
 ```dart
 AutoSizeText(
@@ -104,7 +104,7 @@ class MyPage extends StatelessWidget {
     return Row(
       children: <Widget>[
         AutoSizeText("Here is a very long text, which should be resized",
-          maxlines: 1,
+          maxLines: 1,
         ),
       ],
     );
@@ -123,7 +123,7 @@ class MyPage extends StatelessWidget {
         Expanded( // Constrains AutoSizeText to the width of the Row
           child: AutoSizeText(
             "Here is a very long text, which should be resized",
-            maxlines: 1,
+            maxLines: 1,
           )
         ),
       ],
