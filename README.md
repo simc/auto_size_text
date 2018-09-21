@@ -5,7 +5,7 @@
 A widget that automatically resizes text to fit perfectly within its bounds.
 
 ### Resources:
-- [Documentation](https://pub.dartlang.org/documentation/auto_size_text/latest/auto_size_text/auto_size_text-library.html)
+- [Documentation](https://pub.dartlang.org/documentation/auto_size_text/latest/auto_size_text/AutoSizeText-class.html)
 - [Pub Package](https://pub.dartlang.org/packages/auto_size_text)
 - [GitHub Repository](https://github.com/leisim/auto_size_text)
 
@@ -27,12 +27,32 @@ AutoSizeText("The text to display",
 
 The `maxlines` parameter works like you are used to with the `Text` widget. If there is no `maxlines` parameter specified, the `AutoSizeText` only fits the text according to the available width and height.
 
+```dart
+AutoSizeText(
+  "A really long String",
+  style: TextStyle(fontSize: 30.0),
+  maxLines: 2,
+)
+```
+
+*Sample above*
+
 
 ### minFontSize & maxFontSize
 
 With `minFontSize` you can specify the smallest possible font size. If the text still not fits, it will be handled according to `overflow`. The default `minFontSize` is 12.0.
 
 `maxFontSize` sets the largest passible font size. This is useful if the `TextStyle` inherits the font size and you want to constrain it.
+
+```dart
+AutoSizeText(
+  "A really long String",
+  style: TextStyle(fontSize: 30.0),
+  minFontSize: 18.0,
+  maxLines: 4,
+  overflow: TextOverflow.ellipsis,
+)
+```
 
 ![](https://raw.githubusercontent.com/leisim/auto_size_text/master/screenshots/minfontsize.gif)
 
@@ -42,13 +62,32 @@ With `minFontSize` you can specify the smallest possible font size. If the text 
 The `AutoSizeText` will try each font size, starting with `TextStyle.fontSize` until the text fits within its bounds.  
 `stepGranularity` specifies how much the font size is decreased each step. Usually, this value should not be below 1.0 for best performance.
 
+```dart
+AutoSizeText(
+  "A really long String",
+  style: TextStyle(fontSize: 40.0),
+  minFontSize: 10.0,
+  stepGranularity: 10.0,
+  maxLines: 4,
+  overflow: TextOverflow.ellipsis,
+)
+```
+
 ![](https://raw.githubusercontent.com/leisim/auto_size_text/master/screenshots/stepgranularity.gif)
 
 
 ### presetFontSizes
 
-If you want to allow only specific font sizes, you can set them with `presetFontSizes`. Only font sizes which match `minFontSize` and `maxFontSize` will be used.  
-If `presetFontSizes` is set, `stepGranularity` will be ignored.
+If you want to allow only specific font sizes, you can set them with `presetFontSizes`.
+If `presetFontSizes` is set, `minFontSize`, `maxFontSize` and `stepGranularity` will be ignored.
+
+```dart
+AutoSizeText(
+  "A really long String",
+  presetFontSizes: [40.0, 20.0, 14.0],
+  maxLines: 4,
+)
+```
 
 ![](https://raw.githubusercontent.com/leisim/auto_size_text/master/screenshots/presetfontsizes.gif)
 
