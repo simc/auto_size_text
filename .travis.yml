@@ -13,8 +13,10 @@ before_script:
   - git clone https://github.com/flutter/flutter.git -b beta
   - ./flutter/bin/flutter doctor
   - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin/:$PATH
+  - export FLUTTER_SDK=`pwd`/flutter
   - flutter packages get
 script:
+  - flutter test
   - dart tool/grind.dart
 cache:
   directories:
