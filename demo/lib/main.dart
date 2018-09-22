@@ -1,13 +1,22 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+
+// This is just for demo purposes. The code is a bit hacky and not good style.
 
 void main() {
   runApp(App());
 }
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {
+  _AppState createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  bool _richText = false;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,9 +25,24 @@ class App extends StatelessWidget {
         length: 4,
         child: Scaffold(
           appBar: AppBar(
+            actions: <Widget>[
+              Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                Text(_richText ? "Rich Text" : "Normal Text"),
+                Switch(
+                  value: _richText,
+                  onChanged: (richText) {
+                    setState(() {
+                      _richText = richText;
+                    });
+                  },
+                  activeColor: Colors.grey.shade50,
+                  inactiveTrackColor: Colors.grey.shade50.withAlpha(0x80),
+                )
+              ])
+            ],
             bottom: TabBar(
               tabs: [
-                Tab(text: "maxlines"),
+                Tab(text: "maxLines"),
                 Tab(text: "minFontSize"),
                 Tab(text: "stepGranularity"),
                 Tab(text: "presetFontSizes"),
@@ -28,10 +52,10 @@ class App extends StatelessWidget {
           ),
           body: TabBarView(
             children: [
-              DemoScreen(Demo.MaxLines),
-              DemoScreen(Demo.MinFontSize),
-              DemoScreen(Demo.StepGranularity),
-              DemoScreen(Demo.PresetFontSizes),
+              DemoScreen(Demo.MaxLines, _richText),
+              DemoScreen(Demo.MinFontSize, _richText),
+              DemoScreen(Demo.StepGranularity, _richText),
+              DemoScreen(Demo.PresetFontSizes, _richText),
             ],
           ),
         ),
@@ -57,8 +81,9 @@ class Demo {
 
 class DemoScreen extends StatefulWidget {
   final Demo demo;
+  final bool richText;
 
-  DemoScreen(this.demo);
+  DemoScreen(this.demo, this.richText);
 
   _DemoScreenState createState() => _DemoScreenState();
 }
@@ -66,12 +91,31 @@ class DemoScreen extends StatefulWidget {
 class _DemoScreenState extends State<DemoScreen>
     with SingleTickerProviderStateMixin {
   String _input = "";
+  TextSpan get _spanInput {
+    var index = 0;
+    var styles = [
+      TextStyle(fontSize: 30.0),
+      TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+      TextStyle(fontSize: 40.0, fontStyle: FontStyle.italic),
+    ];
+    var spans = _input.split(' ').map((word) {
+      if (index == 3) index = 0;
+      return TextSpan(
+        style: styles[index++],
+        text: word + " ",
+      );
+    }).toList();
+
+    return TextSpan(text: "", children: spans);
+  }
+
+  AnimationController _controller;
 
   @override
   void initState() {
     super.initState();
 
-    var controller = AnimationController(
+    _controller = AnimationController(
       duration: Duration(milliseconds: widget.demo.text.length * 80),
       vsync: this,
     );
@@ -79,7 +123,7 @@ class _DemoScreenState extends State<DemoScreen>
     Animation<int> number = IntTween(
       begin: 0,
       end: widget.demo.text.length,
-    ).animate(controller);
+    ).animate(_controller);
 
     number.addListener(() {
       setState(() {
@@ -90,12 +134,18 @@ class _DemoScreenState extends State<DemoScreen>
     number.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         Future.delayed(Duration(seconds: 3), () {
-          controller.forward(from: 0.0);
+          _controller.forward(from: 0.0);
         });
       }
     });
 
-    controller.forward();
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -133,9 +183,16 @@ class _DemoScreenState extends State<DemoScreen>
         Expanded(
           child: _buildTextContainer(
             "Text",
-            Text(
-              _input,
-              style: TextStyle(fontSize: 30.0),
+            Visibility(
+              visible: !widget.richText,
+              child: Text(
+                _input,
+                style: TextStyle(fontSize: 30.0),
+              ),
+              replacement: Text.rich(
+                _spanInput,
+                style: TextStyle(fontSize: 30.0),
+              ),
             ),
           ),
         ),
@@ -143,10 +200,18 @@ class _DemoScreenState extends State<DemoScreen>
         Expanded(
           child: _buildTextContainer(
             "AutoSizeText",
-            AutoSizeText(
-              _input,
-              style: TextStyle(fontSize: 30.0),
-              maxLines: 2,
+            Visibility(
+              visible: !widget.richText,
+              child: AutoSizeText(
+                _input,
+                style: TextStyle(fontSize: 30.0),
+                maxLines: 2,
+              ),
+              replacement: AutoSizeText.rich(
+                _spanInput,
+                style: TextStyle(fontSize: 30.0),
+                maxLines: 2,
+              ),
             ),
           ),
         ),
@@ -160,10 +225,18 @@ class _DemoScreenState extends State<DemoScreen>
         Expanded(
           child: _buildTextContainer(
             "Text",
-            Text(
-              _input,
-              style: TextStyle(fontSize: 30.0),
-              maxLines: 4,
+            Visibility(
+              visible: !widget.richText,
+              child: Text(
+                _input,
+                style: TextStyle(fontSize: 30.0),
+                maxLines: 4,
+              ),
+              replacement: Text.rich(
+                _spanInput,
+                style: TextStyle(fontSize: 30.0),
+                maxLines: 4,
+              ),
             ),
           ),
         ),
@@ -171,12 +244,22 @@ class _DemoScreenState extends State<DemoScreen>
         Expanded(
           child: _buildTextContainer(
             "AutoSizeText",
-            AutoSizeText(
-              _input,
-              style: TextStyle(fontSize: 30.0),
-              minFontSize: 18.0,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 4,
+            Visibility(
+              visible: !widget.richText,
+              child: AutoSizeText(
+                _input,
+                style: TextStyle(fontSize: 30.0),
+                minFontSize: 18.0,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 4,
+              ),
+              replacement: AutoSizeText.rich(
+                _spanInput,
+                style: TextStyle(fontSize: 30.0),
+                minFontSize: 18.0,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 4,
+              ),
             ),
           ),
         ),
@@ -190,10 +273,18 @@ class _DemoScreenState extends State<DemoScreen>
         Expanded(
           child: _buildTextContainer(
             "Text",
-            Text(
-              _input,
-              style: TextStyle(fontSize: 40.0),
-              maxLines: 4,
+            Visibility(
+              visible: !widget.richText,
+              child: Text(
+                _input,
+                style: TextStyle(fontSize: 40.0),
+                maxLines: 4,
+              ),
+              replacement: Text.rich(
+                _spanInput,
+                style: TextStyle(fontSize: 40.0),
+                maxLines: 4,
+              ),
             ),
           ),
         ),
@@ -201,13 +292,24 @@ class _DemoScreenState extends State<DemoScreen>
         Expanded(
           child: _buildTextContainer(
             "AutoSizeText",
-            AutoSizeText(
-              _input,
-              style: TextStyle(fontSize: 40.0),
-              stepGranularity: 10.0,
-              minFontSize: 10.0,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 4,
+            Visibility(
+              visible: !widget.richText,
+              child: AutoSizeText(
+                _input,
+                style: TextStyle(fontSize: 40.0),
+                stepGranularity: 10.0,
+                minFontSize: 10.0,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 4,
+              ),
+              replacement: AutoSizeText.rich(
+                _spanInput,
+                style: TextStyle(fontSize: 40.0),
+                stepGranularity: 10.0,
+                minFontSize: 10.0,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 4,
+              ),
             ),
           ),
         ),
@@ -221,10 +323,18 @@ class _DemoScreenState extends State<DemoScreen>
         Expanded(
           child: _buildTextContainer(
             "Text",
-            Text(
-              _input,
-              style: TextStyle(fontSize: 40.0),
-              maxLines: 4,
+            Visibility(
+              visible: !widget.richText,
+              child: Text(
+                _input,
+                style: TextStyle(fontSize: 40.0),
+                maxLines: 4,
+              ),
+              replacement: Text.rich(
+                _spanInput,
+                style: TextStyle(fontSize: 40.0),
+                maxLines: 4,
+              ),
             ),
           ),
         ),
@@ -232,10 +342,18 @@ class _DemoScreenState extends State<DemoScreen>
         Expanded(
           child: _buildTextContainer(
             "AutoSizeText",
-            AutoSizeText(
-              _input,
-              presetFontSizes: [40.0, 20.0, 14.0],
-              maxLines: 4,
+            Visibility(
+              visible: !widget.richText,
+              child: AutoSizeText(
+                _input,
+                presetFontSizes: [40.0, 20.0, 14.0],
+                maxLines: 4,
+              ),
+              replacement: AutoSizeText.rich(
+                _spanInput,
+                presetFontSizes: [40.0, 20.0, 14.0],
+                maxLines: 4,
+              ),
             ),
           ),
         ),

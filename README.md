@@ -2,12 +2,16 @@
 
 [![Travis](https://img.shields.io/travis/com/leisim/auto_size_text/master.svg)](https://travis-ci.com/leisim/auto_size_text) [![Version](https://img.shields.io/pub/v/auto_size_text.svg)](https://pub.dartlang.org/packages/auto_size_text) ![Runtime](https://img.shields.io/badge/dart-%3E%3D2.0-brightgreen.svg) ![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
 
-A widget that automatically resizes text to fit perfectly within its bounds.
+Flutter widget that automatically resizes text to fit perfectly within its bounds.
+
+**Show some ❤️ and star the repo to support the project**
 
 ### Resources:
 - [Documentation](https://pub.dartlang.org/documentation/auto_size_text/latest/auto_size_text/AutoSizeText-class.html)
 - [Pub Package](https://pub.dartlang.org/packages/auto_size_text)
 - [GitHub Repository](https://github.com/leisim/auto_size_text)
+
+Also check out the [superpower](https://github.com/leisim/superpower) plugin 🦄
 
 
 ![](https://raw.githubusercontent.com/leisim/auto_size_text/master/screenshots/maxlines.gif)
@@ -41,9 +45,9 @@ AutoSizeText(
 
 ### minFontSize & maxFontSize
 
-With `minFontSize` you can specify the smallest possible font size. If the text still not fits, it will be handled according to `overflow`. The default `minFontSize` is 12.0.
+With `minFontSize` you can specify the smallest possible font size. If the text still doesn't fit, it will be handled according to `overflow`. The default `minFontSize` is 12.0.
 
-`maxFontSize` sets the largest passible font size. This is useful if the `TextStyle` inherits the font size and you want to constrain it.
+`maxFontSize` sets the largest possible font size. This is useful if the `TextStyle` inherits the font size and you want to constrain it.
 
 ```dart
 AutoSizeText(
@@ -91,6 +95,28 @@ AutoSizeText(
 ```
 
 ![](https://raw.githubusercontent.com/leisim/auto_size_text/master/screenshots/presetfontsizes.gif)
+
+
+### Rich Text
+
+You can also use Rich Text (like different text styles or links) with `AutoSizeText`. Just use the `AutoSizeText.rich()` constructor
+(which works exactly like the `Text.rich` constructor).
+
+The only thing you have to be aware of is how the font size calculation works: The `fontSize` in the `style`
+parameter of `AutoSizeText` (or the inherited `fontSize` if none is set) is used as reference.  
+
+For example:
+```dart
+AutoSizeText.rich(
+  TextSpan(text: "A really long String"),
+  style: TextStyle(fontSize: 20.0),
+  minFontSize: 5.0,
+)
+```
+The text will be at least 1/4 of its original size (20 / 5 = 1/4).
+But it does not mean that all `TextSpan`s have at least font size 5.0.
+
+![](https://raw.githubusercontent.com/leisim/auto_size_text/master/screenshots/maxlines_rich.gif)
 
 
 ## Troubleshooting

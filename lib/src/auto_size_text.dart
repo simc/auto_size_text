@@ -1,11 +1,15 @@
 part of auto_size_text;
 
-/// A widget that automatically resizes text to fit perfectly within its bounds.
+/// Flutter widget that automatically resizes text to fit perfectly within its bounds.
 ///
 /// All size constraints as well as maxLines are taken into account. If the text
 /// overflows anyway, you should check if the parent widget actually constraints
 /// the size of this widget.
 class AutoSizeText extends StatelessWidget {
+  /// Creates a [AutoSizeText] widget.
+  ///
+  /// If the [style] argument is null, the text will use the style from the
+  /// closest enclosing [DefaultTextStyle].
   const AutoSizeText(
     this.data, {
     Key key,
@@ -24,10 +28,40 @@ class AutoSizeText extends StatelessWidget {
   })  : assert(data != null),
         assert(minFontSize > 0),
         assert(stepGranularity >= 0.1),
+        textSpan = null,
+        super(key: key);
+
+  /// Creates a [AutoSizeText] widget with a [TextSpan].
+  const AutoSizeText.rich(
+    this.textSpan, {
+    Key key,
+    this.style,
+    this.minFontSize = 12.0,
+    this.maxFontSize,
+    this.stepGranularity = 1.0,
+    this.presetFontSizes,
+    this.textAlign,
+    this.textDirection,
+    this.locale,
+    this.softWrap,
+    this.overflow,
+    this.maxLines,
+    this.semanticsLabel,
+  })  : assert(textSpan != null),
+        assert(minFontSize > 0),
+        assert(stepGranularity >= 0.1),
+        data = null,
         super(key: key);
 
   /// The text to display.
+  ///
+  /// This will be null if a [textSpan] is provided instead.
   final String data;
+
+  /// The text to display as a [TextSpan].
+  ///
+  /// This will be null if [data] is provided instead.
+  final TextSpan textSpan;
 
   /// If non-null, the style to use for this text.
   ///
@@ -137,54 +171,77 @@ class AutoSizeText extends StatelessWidget {
         assert(presetFontSizes.isNotEmpty, "PresetFontSizes is empty.");
       }
 
-      double startFontSize;
+      double defaultFontSize;
       if (presetFontSizes == null) {
         var current = effectiveStyle.fontSize;
-        startFontSize = current.clamp(minFontSize, effectiveMaxFontSize);
+        defaultFontSize = current.clamp(minFontSize, effectiveMaxFontSize);
       } else {
-        startFontSize = presetFontSizes[presetIndex++];
+        defaultFontSize = presetFontSizes[presetIndex++];
+        effectiveStyle = effectiveStyle.copyWith(fontSize: defaultFontSize);
       }
-      var currentStyle = effectiveStyle.copyWith(fontSize: startFontSize);
+      var unitScale = 1 / defaultFontSize;
+      var currentScale = 1.0;
 
-      while (!_checkTextFits(
-          currentStyle, effectiveMaxLines, size.maxWidth, size.maxHeight)) {
-        double newFontSize;
+      while (!_checkTextFits(currentScale, effectiveStyle, effectiveMaxLines,
+          size.maxWidth, size.maxHeight)) {
         if (presetFontSizes == null) {
-          newFontSize = currentStyle.fontSize - stepGranularity;
-          if (newFontSize < minFontSize) break;
+          var newScale = currentScale - stepGranularity * unitScale;
+          if (newScale / unitScale < minFontSize) break;
+          currentScale = newScale;
+        } else if (presetIndex < presetFontSizes.length) {
+          currentScale = presetFontSizes[presetIndex++] * unitScale;
         } else {
-          if (presetIndex < presetFontSizes.length)
-            newFontSize = presetFontSizes[presetIndex++];
-          else
-            break;
+          break;
         }
-        currentStyle = currentStyle.copyWith(fontSize: newFontSize);
       }
 
+      return _buildText(currentScale, effectiveStyle);
+    });
+  }
+
+  Widget _buildText(double scale, TextStyle style) {
+    if (data != null) {
       return Text(
         data,
-        style: currentStyle,
+        style: style,
         textAlign: textAlign,
         textDirection: textDirection,
         locale: locale,
         softWrap: softWrap,
         overflow: overflow,
+        textScaleFactor: scale,
         maxLines: maxLines,
         semanticsLabel: semanticsLabel,
       );
-    });
+    } else {
+      return Text.rich(
+        textSpan,
+        style: style,
+        textAlign: textAlign,
+        textDirection: textDirection,
+        locale: locale,
+        softWrap: softWrap,
+        overflow: overflow,
+        textScaleFactor: scale,
+        maxLines: maxLines,
+        semanticsLabel: semanticsLabel,
+      );
+    }
   }
 
-  bool _checkTextFits(
-      TextStyle style, int maxLines, double maxWidth, double maxHeight) {
+  bool _checkTextFits(double scale, TextStyle style, int maxLines,
+      double maxWidth, double maxHeight) {
+    var span = textSpan ??
+        TextSpan(
+          text: data,
+          style: style,
+        );
+
     var tp = TextPainter(
-      text: TextSpan(
-        text: data,
-        style: style,
-      ),
+      text: span,
       textAlign: textAlign ?? TextAlign.left,
       textDirection: textDirection ?? TextDirection.ltr,
-      textScaleFactor: 1.0,
+      textScaleFactor: scale,
       maxLines: maxLines,
       locale: locale,
     );
