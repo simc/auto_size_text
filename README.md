@@ -1,6 +1,6 @@
 # AutoSizeText
 
-[![Travis](https://img.shields.io/travis/com/leisim/AutoSizeText/master.svg)](https://travis-ci.com/leisim/superpower) [![Version](https://img.shields.io/pub/v/auto_size_text.svg)](https://pub.dartlang.org/packages/auto_size_text) ![Runtime](https://img.shields.io/badge/dart-%3E%3D2.0-brightgreen.svg) ![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
+[![Travis](https://img.shields.io/travis/com/leisim/auto_size_text/master.svg)](https://travis-ci.com/leisim/auto_size_text) [![Version](https://img.shields.io/pub/v/auto_size_text.svg)](https://pub.dartlang.org/packages/auto_size_text) ![Runtime](https://img.shields.io/badge/dart-%3E%3D2.0-brightgreen.svg) ![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
 
 A widget that automatically resizes text to fit perfectly within its bounds.
 
@@ -17,7 +17,8 @@ A widget that automatically resizes text to fit perfectly within its bounds.
 `AutoSizeText` behaves exactly like a `Text`. The only difference is that it resizes text to fit within its bounds.
 
 ```dart
-AutoSizeText("The text to display",
+AutoSizeText(
+  "The text to display",
   style: TextStyle(fontSize:20.0),
   maxLines: 2,
 )
@@ -103,7 +104,8 @@ class MyPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        AutoSizeText("Here is a very long text, which should be resized",
+        AutoSizeText(
+          "Here is a very long text, which should be resized",
           maxLines: 1,
         ),
       ],
