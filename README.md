@@ -23,7 +23,7 @@ Also check out the [superpower](https://github.com/leisim/superpower) plugin ðŸ¦
 ```dart
 AutoSizeText(
   "The text to display",
-  style: TextStyle(fontSize:20.0),
+  style: TextStyle(fontSize: 20.0),
   maxLines: 2,
 )
 ```
@@ -44,6 +44,8 @@ AutoSizeText(
 
 
 ### minFontSize & maxFontSize
+
+The `AutoSizeText` starts with `TextStyle.fontSize`. It measures the resulting text and rescales it to fit within its bonds. You can however set the allowed range of the resulting font size.
 
 With `minFontSize` you can specify the smallest possible font size. If the text still doesn't fit, it will be handled according to `overflow`. The default `minFontSize` is 12.0.
 
@@ -117,6 +119,11 @@ The text will be at least 1/4 of its original size (5 / 20 = 1/4).
 But it does not mean that all `TextSpan`s have at least font size 5.0.
 
 ![](https://raw.githubusercontent.com/leisim/auto_size_text/master/screenshots/maxlines_rich.gif)
+
+
+## Performance
+
+`AutoSizeText` is really fast. Nevertheless you should not use an unreasonable high `fontSize` in your `TextStyle`. E.g. don't set the `fontSize` to `1000.0` if you know, that the text will never be larger than `30.0`.
 
 
 ## Troubleshooting
