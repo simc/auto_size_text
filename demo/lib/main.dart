@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/services.dart';
 
 // This is just for demo purposes. The code is a bit hacky and not good style.
 
@@ -19,6 +19,11 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: DefaultTabController(
@@ -72,7 +77,7 @@ class Demo {
   static const Demo MaxLines =
       Demo._("This string will be automatically resized to fit on two lines.");
   static const Demo MinFontSize = Demo._(
-      "This string's size will not be smaller than 18. It will be automatically resized to fit on 4 lines. Otherwise, the string will be ellipsized.");
+      "This string's size will not be smaller than 20. It will be automatically resized to fit on 4 lines. Otherwise, the string will be ellipsized. Here is some random stuff, just to make sure it is long enough.");
   static const Demo StepGranularity = Demo._(
       "This string changes its size with a stepGranularity of 10. It will be automatically resized to fit on 4 lines. This text is so small, you can't even read it...");
   static const Demo PresetFontSizes = Demo._(
@@ -249,14 +254,14 @@ class _DemoScreenState extends State<DemoScreen>
               child: AutoSizeText(
                 _input,
                 style: TextStyle(fontSize: 30.0),
-                minFontSize: 18.0,
+                minFontSize: 20.0,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 4,
               ),
               replacement: AutoSizeText.rich(
                 _spanInput,
                 style: TextStyle(fontSize: 30.0),
-                minFontSize: 18.0,
+                minFontSize: 20.0,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 4,
               ),

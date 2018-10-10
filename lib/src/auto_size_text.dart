@@ -177,8 +177,9 @@ class AutoSizeText extends StatelessWidget {
         defaultFontSize = current.clamp(minFontSize, effectiveMaxFontSize);
       } else {
         defaultFontSize = presetFontSizes[presetIndex++];
-        effectiveStyle = effectiveStyle.copyWith(fontSize: defaultFontSize);
       }
+      effectiveStyle = effectiveStyle.copyWith(fontSize: defaultFontSize);
+
       var unitScale = 1 / defaultFontSize;
       var currentScale = 1.0;
 

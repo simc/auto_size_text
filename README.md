@@ -97,10 +97,10 @@ AutoSizeText(
 ![](https://raw.githubusercontent.com/leisim/auto_size_text/master/screenshots/presetfontsizes.gif)
 
 
-### Rich Text
+## Rich Text
 
 You can also use Rich Text (like different text styles or links) with `AutoSizeText`. Just use the `AutoSizeText.rich()` constructor
-(which works exactly like the `Text.rich` constructor).
+(which works exactly like the `Text.rich()` constructor).
 
 The only thing you have to be aware of is how the font size calculation works: The `fontSize` in the `style`
 parameter of `AutoSizeText` (or the inherited `fontSize` if none is set) is used as reference.  
@@ -113,7 +113,7 @@ AutoSizeText.rich(
   minFontSize: 5.0,
 )
 ```
-The text will be at least 1/4 of its original size (20 / 5 = 1/4).
+The text will be at least 1/4 of its original size (5 / 20 = 1/4).  
 But it does not mean that all `TextSpan`s have at least font size 5.0.
 
 ![](https://raw.githubusercontent.com/leisim/auto_size_text/master/screenshots/maxlines_rich.gif)
