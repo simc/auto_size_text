@@ -3,7 +3,7 @@ import 'package:grinder/grinder.dart';
 void main(List<String> args) => grind(args);
 
 @DefaultTask('Combine tasks for continous integration')
-@Depends('analyse', 'doc', 'checkformat')
+@Depends('analyse', 'checkformat')
 void make() {
   // Nothing to declare here
 }
