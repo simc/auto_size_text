@@ -2,6 +2,10 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+double effectiveFontSize(Text text) {
+  return text.textScaleFactor * text.style.fontSize;
+}
+
 void main() {
   testWidgets("Test use style fontSize", (WidgetTester tester) async {
     await tester.pumpWidget(
@@ -65,7 +69,7 @@ void main() {
     );
 
     Text text = tester.widget(find.byType(Text));
-    expect(text.style.fontSize, 15.0);
+    expect(effectiveFontSize(text) >= 15, true);
   });
 
   testWidgets("Test maxFontSize", (WidgetTester tester) async {
@@ -82,6 +86,6 @@ void main() {
     );
 
     Text text = tester.widget(find.byType(Text));
-    expect(text.style.fontSize, 20.0);
+    expect(effectiveFontSize(text) <= 20, true);
   });
 }

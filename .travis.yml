@@ -10,14 +10,13 @@ addons:
       - libstdc++6
       - fonts-droid
 before_script:
-  - git clone https://github.com/flutter/flutter.git -b beta
+  - git clone https://github.com/flutter/flutter.git -b master --depth 1
   - ./flutter/bin/flutter doctor
-  - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin/:$PATH
-  - export FLUTTER_SDK=`pwd`/flutter
-  - flutter packages get
 script:
-  - flutter test
   - dart tool/grind.dart
+  - flutter/bin/flutter test --coverage --coverage-path=coverage.lcov
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
 cache:
   directories:
     - $HOME/.pub-cache

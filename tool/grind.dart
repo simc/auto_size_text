@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:grinder/grinder.dart';
 
 void main(List<String> args) => grind(args);
@@ -19,9 +17,6 @@ void doc() {
   if (docPath.exists) docPath.delete();
   DartDoc.doc();
 }
-
-@Task('Run tests')
-void test() => run('flutter', arguments: ['test']);
 
 @Task('Check dartfmt for all Dart source files')
 void checkformat() {
