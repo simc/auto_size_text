@@ -1,3 +1,6 @@
+## 0.3.0
+- Added textScaleFactor property with fallback to `MediaQuery.textScaleFactorOf()` (thanks @jeroentrappers)
+
 ## 0.2.2
 - Fixed tests
 - Improved documentation

@@ -23,6 +23,7 @@ class AutoSizeText extends StatelessWidget {
     this.locale,
     this.softWrap,
     this.overflow,
+    this.textScaleFactor,
     this.maxLines,
     this.semanticsLabel,
   })  : assert(data != null),
@@ -45,6 +46,7 @@ class AutoSizeText extends StatelessWidget {
     this.locale,
     this.softWrap,
     this.overflow,
+    this.textScaleFactor,
     this.maxLines,
     this.semanticsLabel,
   })  : assert(textSpan != null),
@@ -133,6 +135,18 @@ class AutoSizeText extends StatelessWidget {
   /// How visual overflow should be handled.
   final TextOverflow overflow;
 
+  /// The number of font pixels for each logical pixel.
+  ///
+  /// For example, if the text scale factor is 1.5, text will be 50% larger than
+  /// the specified font size.
+  ///
+  /// This property also affects [minFontSize], [maxFontSize] and [presetFontSizes].
+  ///
+  /// The value given to the constructor as textScaleFactor. If null, will
+  /// use the [MediaQueryData.textScaleFactor] obtained from the ambient
+  /// [MediaQuery], or 1.0 if there is no [MediaQuery] in scope.
+  final double textScaleFactor;
+
   /// An optional maximum number of lines for the text to span, wrapping if necessary.
   /// If the text exceeds the given number of lines, it will be resized according
   /// to the specified bounds and if necessary truncated according to [overflow].
@@ -155,7 +169,9 @@ class AutoSizeText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, size) {
-      var effectiveMaxFontSize = maxFontSize ?? double.infinity;
+      var userScaleFactor =
+          textScaleFactor ?? MediaQuery.textScaleFactorOf(context);
+      var effectiveMaxFontSize = (maxFontSize ?? double.infinity);
       assert(minFontSize <= effectiveMaxFontSize,
           "MinFontSize has to be smaller or equal than maxFontSize.");
 
@@ -171,26 +187,28 @@ class AutoSizeText extends StatelessWidget {
         assert(presetFontSizes.isNotEmpty, "PresetFontSizes is empty.");
       }
 
-      double defaultFontSize;
+      double initialFontSize;
       if (presetFontSizes == null) {
         var current = effectiveStyle.fontSize;
-        defaultFontSize = current.clamp(minFontSize, effectiveMaxFontSize);
+        initialFontSize = current.clamp(minFontSize, effectiveMaxFontSize);
       } else {
-        defaultFontSize = presetFontSizes[presetIndex++];
+        initialFontSize = presetFontSizes[presetIndex++];
       }
-      effectiveStyle = effectiveStyle.copyWith(fontSize: defaultFontSize);
 
-      var unitScale = 1 / defaultFontSize;
-      var currentScale = 1.0;
+      var unitScale = 1 / effectiveStyle.fontSize;
+      var currentScale =
+          (initialFontSize * userScaleFactor) / effectiveStyle.fontSize;
 
       while (!_checkTextFits(currentScale, effectiveStyle, effectiveMaxLines,
           size.maxWidth, size.maxHeight)) {
         if (presetFontSizes == null) {
           var newScale = currentScale - stepGranularity * unitScale;
-          if (newScale / unitScale < minFontSize) break;
+          var newFontSize = newScale / unitScale;
+          if (newFontSize < (minFontSize * userScaleFactor)) break;
           currentScale = newScale;
         } else if (presetIndex < presetFontSizes.length) {
-          currentScale = presetFontSizes[presetIndex++] * unitScale;
+          currentScale =
+              presetFontSizes[presetIndex++] * userScaleFactor * unitScale;
         } else {
           break;
         }
