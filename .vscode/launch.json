@@ -2,6 +2,12 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Flutter Tests",
+            "type": "dart",
+            "request": "launch",
+            "program": "./test/"
+        },
+        {
             "name": "Demo",
             "request": "launch",
             "type": "dart",

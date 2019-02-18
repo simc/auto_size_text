@@ -177,8 +177,9 @@ class AutoSizeText extends StatelessWidget {
 
       DefaultTextStyle defaultTextStyle = DefaultTextStyle.of(context);
       TextStyle effectiveStyle = style;
-      if (style == null || style.inherit)
+      if (style == null || style.inherit) {
         effectiveStyle = defaultTextStyle.style.merge(style);
+      }
 
       var effectiveMaxLines = maxLines ?? defaultTextStyle.maxLines;
 
@@ -199,7 +200,8 @@ class AutoSizeText extends StatelessWidget {
       var currentScale =
           (initialFontSize * userScaleFactor) / effectiveStyle.fontSize;
 
-      while (!_checkTextFits(currentScale, effectiveStyle, effectiveMaxLines,
+      var span = textSpan ?? TextSpan(text: data, style: effectiveStyle);
+      while (!checkTextFits(span, locale, currentScale, effectiveMaxLines,
           size.maxWidth, size.maxHeight)) {
         if (presetFontSizes == null) {
           var newScale = currentScale - stepGranularity * unitScale;
@@ -246,27 +248,5 @@ class AutoSizeText extends StatelessWidget {
         semanticsLabel: semanticsLabel,
       );
     }
-  }
-
-  bool _checkTextFits(double scale, TextStyle style, int maxLines,
-      double maxWidth, double maxHeight) {
-    var span = textSpan ??
-        TextSpan(
-          text: data,
-          style: style,
-        );
-
-    var tp = TextPainter(
-      text: span,
-      textAlign: textAlign ?? TextAlign.left,
-      textDirection: textDirection ?? TextDirection.ltr,
-      textScaleFactor: scale,
-      maxLines: maxLines,
-      locale: locale,
-    );
-
-    tp.layout(maxWidth: maxWidth);
-
-    return !(tp.didExceedMaxLines || tp.height > maxHeight);
   }
 }
