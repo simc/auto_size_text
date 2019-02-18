@@ -118,6 +118,31 @@ void main() {
     expect(testIfTextFits(text, 100), true);
   });
 
+  testWidgets("Test RichText fits width", (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Center(
+          child: SizedBox(
+            width: 100.0,
+            height: 100.0,
+            child: AutoSizeText.rich(
+              TextSpan(
+                text:
+                    "This is a very long text, which needs to be resized to fit the sized box.",
+                style: TextStyle(fontSize: 30.0),
+              ),
+              maxLines: 1,
+              minFontSize: 1,
+            ),
+          ),
+        ),
+      ),
+    );
+
+    Text text = tester.widget(find.byType(Text));
+    expect(testIfTextFits(text, 100), true);
+  });
+
   testWidgets("Test fits height", (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
