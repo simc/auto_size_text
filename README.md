@@ -27,6 +27,7 @@ AutoSizeText(
   maxLines: 2,
 )
 ```
+**Note:** `AutoSizeText` needs bounded constraints to resize the text. More info [here](#troubleshooting).
 
 ### maxLines
 
