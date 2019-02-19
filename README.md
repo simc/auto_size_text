@@ -131,7 +131,7 @@ If your font size has a large range, consider increasing `stepGranularity`.
 
 ## Troubleshooting
 
-If `AutoSizeText` overflows or does not resize the text, you should check if it has constraint width / height.
+If `AutoSizeText` overflows or does not resize the text, you should check if it has constrained width and height.
 
 **Wrong** code:
 ```dart
@@ -149,7 +149,8 @@ class MyPage extends StatelessWidget {
   }
 }
 ```
-Because `Row` does not constrain the width of its children, the text will overflow.
+Because `Row` and other widgets like `Container`, `Column` or `ListView` do not constrain their children, the text will overflow.  
+You can fix this by constraining the `AutoSizeText`. Wrap it with `Expanded` in case of `Row` and `Column` or use a `SizedBox` or another widget with fixed width (and height).
 
 **Correct** code:
 ```dart
@@ -170,6 +171,7 @@ class MyPage extends StatelessWidget {
 }
 ```
 
+Further explanation can be found [here](https://stackoverflow.com/a/53908204). If you still have problems, please [open an issue](https://github.com/leisim/auto_size_text/issues/new).
 
 ## MIT License
 ```
