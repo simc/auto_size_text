@@ -67,11 +67,11 @@ AutoSizeText(
 
 ### syncGroup
 
-You can synchronize the font size of multiple `AutoSizeText`s. They will all fit their boundaries but all `AutoSizeText`s in the same group have the same size. That means they adjust to the group member with the smallest effective font size.
+You can synchronize the font size of multiple `AutoSizeText`. They will fit their boundaries and all `AutoSizeText` in the same group have the same size. That means they adjust their font size to the group member with the smallest effective font size.
 
 **Note:** If a `AutoSizeText` cannot adjust because of constraints like `minFontSize`, it won't have the same size as the other group members.
 
-An instance of `AutoSizeSyncGroup` is one group. Pass this instance to all `AutoSizeText`s you want to add to that group. You don't have to care about disposing the group if it is no longer needed.
+An instance of `AutoSizeSyncGroup` represents one group. Pass this instance to all `AutoSizeText` you want to add to that group. You don't have to care about disposing the group if it is no longer needed.
 
 ```dart
 var group = AutoSizeSyncGroup();
