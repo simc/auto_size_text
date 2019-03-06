@@ -18,7 +18,7 @@ class AutoSizeText extends StatefulWidget {
     this.maxFontSize,
     this.stepGranularity = 1.0,
     this.presetFontSizes,
-    this.controller,
+    this.syncGroup,
     this.textAlign,
     this.textDirection,
     this.locale,
@@ -42,7 +42,7 @@ class AutoSizeText extends StatefulWidget {
     this.maxFontSize,
     this.stepGranularity = 1.0,
     this.presetFontSizes,
-    this.controller,
+    this.syncGroup,
     this.textAlign,
     this.textDirection,
     this.locale,
@@ -101,11 +101,12 @@ class AutoSizeText extends StatefulWidget {
   /// If the first fontSize matches, all others are being ignored.
   final List<double> presetFontSizes;
 
-  /// Coordinates the size of multiple [AutoSizeText]s.
+  /// Synchronizes the size of multiple [AutoSizeText]s.
   ///
-  /// If you want multiple [AutoSizeText]s to have the same text size, give all of them
-  /// the same controller instance. Every [AutoSizeText] with this
-  final AutoSizeTextController controller;
+  /// If you want multiple [AutoSizeText]s to have the same text size, give all
+  /// of them the same [AutoSizeSyncGroup] instance. All of them will have the
+  /// size of the smallest [AutoSizeText]
+  final AutoSizeSyncGroup syncGroup;
 
   /// How the text should be aligned horizontally.
   final TextAlign textAlign;
@@ -179,19 +180,24 @@ class AutoSizeText extends StatefulWidget {
 }
 
 class _AutoSizeTextState extends State<AutoSizeText> {
-  BoxConstraints _previousConstraints;
   double _previousFontSize;
 
-  double _cachedFontSize;
   Text _cachedText;
+  double _cachedFontSize;
 
   @override
   void initState() {
     super.initState();
 
-    if (widget.controller != null) {
-      widget.controller._register(this);
+    if (widget.syncGroup != null) {
+      widget.syncGroup._register(this);
     }
+  }
+
+  @override
+  void didUpdateWidget(AutoSizeText oldWidget) {
+    _cachedText = null;
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -204,24 +210,20 @@ class _AutoSizeTextState extends State<AutoSizeText> {
         style = defaultTextStyle.style.merge(widget.style);
       }
 
-      double fontSize = _previousFontSize;
-      if (_previousConstraints != size) {
-        fontSize = _calculateFontSize(size, style, defaultTextStyle);
-      }
+      double fontSize = _calculateFontSize(size, style, defaultTextStyle);
 
       Text text;
 
-      if (widget.controller != null) {
+      if (widget.syncGroup != null) {
         if (fontSize != _previousFontSize) {
-          widget.controller._updateFontSize(this, fontSize);
+          widget.syncGroup._updateFontSize(this, fontSize);
         }
-        text = _buildText(widget.controller._fontSize, style);
+        text = _buildText(widget.syncGroup._fontSize, style);
       } else {
         text = _buildText(fontSize, style);
       }
 
       _previousFontSize = fontSize;
-      _previousConstraints = size;
 
       return text;
     });
@@ -270,7 +272,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
   }
 
   Widget _buildText(double fontSize, TextStyle style) {
-    if (_cachedFontSize == fontSize) {
+    if (_cachedText != null && _cachedFontSize == fontSize) {
       return _cachedText;
     }
 
@@ -301,15 +303,19 @@ class _AutoSizeTextState extends State<AutoSizeText> {
       );
     }
 
-    _cachedFontSize = fontSize;
     _cachedText = text;
+    _cachedFontSize = fontSize;
     return text;
+  }
+
+  void _notifySync() {
+    setState(() {});
   }
 
   @override
   void dispose() {
-    if (widget.controller != null) {
-      widget.controller._remove(this);
+    if (widget.syncGroup != null) {
+      widget.syncGroup._remove(this);
     }
     super.dispose();
   }
