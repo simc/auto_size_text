@@ -67,7 +67,7 @@ AutoSizeText(
 
 ### syncGroup
 
-You can synchronize the font size of multiple `AutoSizeText`s. They will all fit their boundaries but all `AutoSizeText`s in the same group have the same size. That means they all adjust to the group member with the smallest effective font size.
+You can synchronize the font size of multiple `AutoSizeText`s. They will all fit their boundaries but all `AutoSizeText`s in the same group have the same size. That means they adjust to the group member with the smallest effective font size.
 
 **Note:** If a `AutoSizeText` cannot adjust because of constraints like `minFontSize`, it won't have the same size as the other group members.
 
