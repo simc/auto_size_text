@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 double effectiveFontSize(Text text) {
-  return text.textScaleFactor * text.style.fontSize;
+  return text.textScaleFactor ?? 1 * text.style.fontSize;
 }
 
 bool testIfTextFits(Text text, [double maxWidth, double maxHeight]) {
@@ -123,7 +123,7 @@ void main() {
       MaterialApp(
         home: Center(
           child: SizedBox(
-            width: 100.0,
+            width: 120.0,
             height: 100.0,
             child: AutoSizeText.rich(
               TextSpan(
@@ -140,7 +140,7 @@ void main() {
     );
 
     Text text = tester.widget(find.byType(Text));
-    expect(testIfTextFits(text, 100), true);
+    expect(testIfTextFits(text, 120), true);
   });
 
   testWidgets("Test fits height", (WidgetTester tester) async {

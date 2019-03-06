@@ -1,3 +1,11 @@
+## 1.1.0
+- Added `AutoSizeTextSync` to synchronize multiple `AutoSizeText`s
+- Improved documentation
+
+## 1.0.0
+- Library is used in multiple projects in production and can be considered stable now.
+- Added more tests
+
 ## 0.3.0
 - Added textScaleFactor property with fallback to `MediaQuery.textScaleFactorOf()` (thanks @jeroentrappers)
 

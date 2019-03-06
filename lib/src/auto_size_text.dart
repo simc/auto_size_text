@@ -5,7 +5,7 @@ part of auto_size_text;
 /// All size constraints as well as maxLines are taken into account. If the text
 /// overflows anyway, you should check if the parent widget actually constraints
 /// the size of this widget.
-class AutoSizeText extends StatelessWidget {
+class AutoSizeText extends StatefulWidget {
   /// Creates a [AutoSizeText] widget.
   ///
   /// If the [style] argument is null, the text will use the style from the
@@ -18,6 +18,7 @@ class AutoSizeText extends StatelessWidget {
     this.maxFontSize,
     this.stepGranularity = 1.0,
     this.presetFontSizes,
+    this.controller,
     this.textAlign,
     this.textDirection,
     this.locale,
@@ -41,6 +42,7 @@ class AutoSizeText extends StatelessWidget {
     this.maxFontSize,
     this.stepGranularity = 1.0,
     this.presetFontSizes,
+    this.controller,
     this.textAlign,
     this.textDirection,
     this.locale,
@@ -98,6 +100,12 @@ class AutoSizeText extends StatelessWidget {
   /// **Important:** The presetFontSizes are used the order they are given in.
   /// If the first fontSize matches, all others are being ignored.
   final List<double> presetFontSizes;
+
+  /// Coordinates the size of multiple [AutoSizeText]s.
+  ///
+  /// If you want multiple [AutoSizeText]s to have the same text size, give all of them
+  /// the same controller instance. Every [AutoSizeText] with this
+  final AutoSizeTextController controller;
 
   /// How the text should be aligned horizontally.
   final TextAlign textAlign;
@@ -167,86 +175,142 @@ class AutoSizeText extends StatelessWidget {
   final String semanticsLabel;
 
   @override
+  _AutoSizeTextState createState() => _AutoSizeTextState();
+}
+
+class _AutoSizeTextState extends State<AutoSizeText> {
+  BoxConstraints _previousConstraints;
+  double _previousFontSize;
+
+  double _cachedFontSize;
+  Text _cachedText;
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.controller != null) {
+      widget.controller._register(this);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, size) {
-      var userScaleFactor =
-          textScaleFactor ?? MediaQuery.textScaleFactorOf(context);
-      var effectiveMaxFontSize = (maxFontSize ?? double.infinity);
-      assert(minFontSize <= effectiveMaxFontSize,
-          "MinFontSize has to be smaller or equal than maxFontSize.");
-
       DefaultTextStyle defaultTextStyle = DefaultTextStyle.of(context);
-      TextStyle effectiveStyle = style;
-      if (style == null || style.inherit) {
-        effectiveStyle = defaultTextStyle.style.merge(style);
+
+      TextStyle style = widget.style;
+      if (widget.style == null || widget.style.inherit) {
+        style = defaultTextStyle.style.merge(widget.style);
       }
 
-      var effectiveMaxLines = maxLines ?? defaultTextStyle.maxLines;
-
-      int presetIndex = 0;
-      if (presetFontSizes != null) {
-        assert(presetFontSizes.isNotEmpty, "PresetFontSizes is empty.");
+      double fontSize = _previousFontSize;
+      if (_previousConstraints != size) {
+        fontSize = _calculateFontSize(size, style, defaultTextStyle);
       }
 
-      double initialFontSize;
-      if (presetFontSizes == null) {
-        var current = effectiveStyle.fontSize;
-        initialFontSize = current.clamp(minFontSize, effectiveMaxFontSize);
-      } else {
-        initialFontSize = presetFontSizes[presetIndex++];
-      }
+      Text text;
 
-      var unitScale = 1 / effectiveStyle.fontSize;
-      var currentScale =
-          (initialFontSize * userScaleFactor) / effectiveStyle.fontSize;
-
-      var span = textSpan ?? TextSpan(text: data, style: effectiveStyle);
-      while (!checkTextFits(span, locale, currentScale, effectiveMaxLines,
-          size.maxWidth, size.maxHeight)) {
-        if (presetFontSizes == null) {
-          var newScale = currentScale - stepGranularity * unitScale;
-          var newFontSize = newScale / unitScale;
-          if (newFontSize < (minFontSize * userScaleFactor)) break;
-          currentScale = newScale;
-        } else if (presetIndex < presetFontSizes.length) {
-          currentScale =
-              presetFontSizes[presetIndex++] * userScaleFactor * unitScale;
-        } else {
-          break;
+      if (widget.controller != null) {
+        if (fontSize != _previousFontSize) {
+          widget.controller._updateFontSize(this, fontSize);
         }
+        text = _buildText(widget.controller._fontSize, style);
+      } else {
+        text = _buildText(fontSize, style);
       }
 
-      return _buildText(currentScale, effectiveStyle);
+      _previousFontSize = fontSize;
+      _previousConstraints = size;
+
+      return text;
     });
   }
 
-  Widget _buildText(double scale, TextStyle style) {
-    if (data != null) {
-      return Text(
-        data,
-        style: style,
-        textAlign: textAlign,
-        textDirection: textDirection,
-        locale: locale,
-        softWrap: softWrap,
-        overflow: overflow,
-        textScaleFactor: scale,
-        maxLines: maxLines,
-        semanticsLabel: semanticsLabel,
+  double _calculateFontSize(
+      BoxConstraints size, TextStyle style, DefaultTextStyle defaultStyle) {
+    var userScale =
+        widget.textScaleFactor ?? MediaQuery.textScaleFactorOf(context);
+    var maxFontSize = (widget.maxFontSize ?? double.infinity);
+    assert(widget.minFontSize <= maxFontSize,
+        "MinFontSize has to be smaller or equal than maxFontSize.");
+
+    var maxLines = widget.maxLines ?? defaultStyle.maxLines;
+
+    int presetIndex = 0;
+    if (widget.presetFontSizes != null) {
+      assert(widget.presetFontSizes.isNotEmpty, "PresetFontSizes is empty.");
+    }
+
+    double initialFontSize;
+    if (widget.presetFontSizes == null) {
+      var current = style.fontSize;
+      initialFontSize = current.clamp(widget.minFontSize, maxFontSize);
+    } else {
+      initialFontSize = widget.presetFontSizes[presetIndex++];
+    }
+
+    var fontSize = initialFontSize * userScale;
+
+    var span = widget.textSpan ?? TextSpan(text: widget.data, style: style);
+    while (!checkTextFits(span, widget.locale, fontSize / style.fontSize,
+        maxLines, size.maxWidth, size.maxHeight)) {
+      if (widget.presetFontSizes == null) {
+        var newFontSize = fontSize - widget.stepGranularity;
+        if (newFontSize < (widget.minFontSize * userScale)) break;
+        fontSize = newFontSize;
+      } else if (presetIndex < widget.presetFontSizes.length) {
+        fontSize = widget.presetFontSizes[presetIndex++] * userScale;
+      } else {
+        break;
+      }
+    }
+
+    return fontSize;
+  }
+
+  Widget _buildText(double fontSize, TextStyle style) {
+    if (_cachedFontSize == fontSize) {
+      return _cachedText;
+    }
+
+    Text text;
+    if (widget.data != null) {
+      text = Text(
+        widget.data,
+        style: style.copyWith(fontSize: fontSize),
+        textAlign: widget.textAlign,
+        textDirection: widget.textDirection,
+        locale: widget.locale,
+        softWrap: widget.softWrap,
+        overflow: widget.overflow,
+        maxLines: widget.maxLines,
+        semanticsLabel: widget.semanticsLabel,
       );
     } else {
-      return Text.rich(
-        textSpan,
-        style: style,
-        textAlign: textAlign,
-        textDirection: textDirection,
-        locale: locale,
-        softWrap: softWrap,
-        overflow: overflow,
-        textScaleFactor: scale,
-        maxLines: maxLines,
-        semanticsLabel: semanticsLabel,
+      text = Text.rich(
+        widget.textSpan,
+        style: style.copyWith(fontSize: fontSize),
+        textAlign: widget.textAlign,
+        textDirection: widget.textDirection,
+        locale: widget.locale,
+        softWrap: widget.softWrap,
+        overflow: widget.overflow,
+        maxLines: widget.maxLines,
+        semanticsLabel: widget.semanticsLabel,
       );
     }
+
+    _cachedFontSize = fontSize;
+    _cachedText = text;
+    return text;
+  }
+
+  @override
+  void dispose() {
+    if (widget.controller != null) {
+      widget.controller._remove(this);
+    }
+    super.dispose();
   }
 }
