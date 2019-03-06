@@ -1,5 +1,5 @@
 ## 1.1.0
-- Added `AutoSizeTextSync` to synchronize multiple `AutoSizeText`s
+- Added `syncGroup` parameter and `AutoSizeSyncGroup` to synchronize multiple `AutoSizeText`s
 - Improved documentation
 
 ## 1.0.0
