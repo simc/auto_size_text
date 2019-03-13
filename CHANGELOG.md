@@ -1,5 +1,5 @@
 ## 1.1.0
-- Added `syncGroup` parameter and `AutoSizeSyncGroup` to synchronize multiple `AutoSizeText`s
+- Added `group` parameter and `AutoSizeGroup` to synchronize multiple `AutoSizeText`s
 - Fixed bug where `minFontSize` was not used correctly
 - Improved documentation
 
