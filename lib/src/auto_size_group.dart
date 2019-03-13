@@ -1,6 +1,6 @@
 part of auto_size_text;
 
-class AutoSizeSyncGroup {
+class AutoSizeGroup {
   var _listeners = Map<_AutoSizeTextState, double>();
   double _fontSize = double.infinity;
 
@@ -28,11 +28,9 @@ class AutoSizeSyncGroup {
     }
   }
 
-  _notifyListeners() async {
+  _notifyListeners() {
     for (var text in _listeners.keys) {
-      if (text.mounted) {
-        text._notifySync();
-      }
+      Timer.run(() => text._notifySync());
     }
   }
 

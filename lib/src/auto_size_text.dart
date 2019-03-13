@@ -18,7 +18,7 @@ class AutoSizeText extends StatefulWidget {
     this.maxFontSize,
     this.stepGranularity = 1.0,
     this.presetFontSizes,
-    this.syncGroup,
+    this.group,
     this.textAlign,
     this.textDirection,
     this.locale,
@@ -42,7 +42,7 @@ class AutoSizeText extends StatefulWidget {
     this.maxFontSize,
     this.stepGranularity = 1.0,
     this.presetFontSizes,
-    this.syncGroup,
+    this.group,
     this.textAlign,
     this.textDirection,
     this.locale,
@@ -104,9 +104,9 @@ class AutoSizeText extends StatefulWidget {
   /// Synchronizes the size of multiple [AutoSizeText]s.
   ///
   /// If you want multiple [AutoSizeText]s to have the same text size, give all
-  /// of them the same [AutoSizeSyncGroup] instance. All of them will have the
+  /// of them the same [AutoSizeGroup] instance. All of them will have the
   /// size of the smallest [AutoSizeText]
-  final AutoSizeSyncGroup syncGroup;
+  final AutoSizeGroup group;
 
   /// How the text should be aligned horizontally.
   final TextAlign textAlign;
@@ -189,8 +189,8 @@ class _AutoSizeTextState extends State<AutoSizeText> {
   void initState() {
     super.initState();
 
-    if (widget.syncGroup != null) {
-      widget.syncGroup._register(this);
+    if (widget.group != null) {
+      widget.group._register(this);
     }
   }
 
@@ -214,11 +214,11 @@ class _AutoSizeTextState extends State<AutoSizeText> {
 
       Text text;
 
-      if (widget.syncGroup != null) {
+      if (widget.group != null) {
         if (fontSize != _previousFontSize) {
-          widget.syncGroup._updateFontSize(this, fontSize);
+          widget.group._updateFontSize(this, fontSize);
         }
-        text = _buildText(widget.syncGroup._fontSize, style);
+        text = _buildText(widget.group._fontSize, style);
       } else {
         text = _buildText(fontSize, style);
       }
@@ -314,8 +314,8 @@ class _AutoSizeTextState extends State<AutoSizeText> {
 
   @override
   void dispose() {
-    if (widget.syncGroup != null) {
-      widget.syncGroup._remove(this);
+    if (widget.group != null) {
+      widget.group._remove(this);
     }
     super.dispose();
   }

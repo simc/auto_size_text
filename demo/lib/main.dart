@@ -52,7 +52,7 @@ class _AppState extends State<App> {
               tabs: [
                 Tab(text: "maxLines"),
                 Tab(text: "minFontSize"),
-                Tab(text: "syncGroup"),
+                Tab(text: "group"),
                 Tab(text: "stepGranularity"),
                 Tab(text: "presetFontSizes"),
               ],
@@ -63,7 +63,7 @@ class _AppState extends State<App> {
             children: [
               DemoScreen(Demo.MaxLines, _richText),
               DemoScreen(Demo.MinFontSize, _richText),
-              SyncDemo(Demo.SyncGroup.text, _richText),
+              SyncDemo(Demo.Group.text, _richText),
               DemoScreen(Demo.StepGranularity, _richText),
               DemoScreen(Demo.PresetFontSizes, _richText),
             ],
@@ -81,7 +81,7 @@ class Demo {
 
   static const Demo MaxLines =
       Demo._("This string will be automatically resized to fit on two lines.");
-  static const Demo SyncGroup = Demo._(
+  static const Demo Group = Demo._(
       "These AutoSizeTexts fit the available space and synchronize their text sizes.");
   static const Demo MinFontSize = Demo._(
       "This string's size will not be smaller than 20. It will be automatically resized to fit on 4 lines. Otherwise, the string will be ellipsized. Here is some random stuff, just to make sure it is long enough.");
@@ -387,7 +387,7 @@ class SyncDemo extends StatefulWidget {
 class _SyncDemoState extends State<SyncDemo>
     with SingleTickerProviderStateMixin {
   double _scale = 0;
-  var syncGroup = AutoSizeSyncGroup();
+  var group = AutoSizeGroup();
   AnimationController _controller;
 
   @override
@@ -434,13 +434,13 @@ class _SyncDemoState extends State<SyncDemo>
                 visible: !widget.richText,
                 child: AutoSizeText(
                   widget.text,
-                  syncGroup: syncGroup,
+                  group: group,
                   style: TextStyle(fontSize: 40.0),
                   maxLines: 3,
                 ),
                 replacement: AutoSizeText.rich(
                   spanFromString(widget.text),
-                  syncGroup: syncGroup,
+                  group: group,
                   style: TextStyle(fontSize: 40.0),
                   maxLines: 4,
                 ),
@@ -463,13 +463,13 @@ class _SyncDemoState extends State<SyncDemo>
                       visible: !widget.richText,
                       child: AutoSizeText(
                         widget.text,
-                        syncGroup: syncGroup,
+                        group: group,
                         style: TextStyle(fontSize: 40.0),
                         maxLines: 3,
                       ),
                       replacement: AutoSizeText.rich(
                         spanFromString(widget.text),
-                        syncGroup: syncGroup,
+                        group: group,
                         style: TextStyle(fontSize: 40.0),
                         maxLines: 4,
                       ),
