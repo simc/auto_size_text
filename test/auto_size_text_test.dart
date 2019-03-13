@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:auto_size_text/src/text_util.dart';
 import 'package:flutter/material.dart';
@@ -200,12 +202,12 @@ void main() {
   });
 
   testWidgets("Test stepGranularity", (WidgetTester tester) async {
-    for (int i = 0; i < 300; i++) {
+    for (int i = 0; i < 100; i++) {
       await tester.pumpWidget(
         MaterialApp(
           home: Center(
             child: SizedBox(
-              width: i.toDouble(),
+              width: i.toDouble() * 2,
               height: 50.0,
               child: AutoSizeText(
                 "This text should have stepGranularity 10.",
@@ -219,28 +221,51 @@ void main() {
       );
 
       Text text = tester.widget(find.byType(Text));
-      expect(effectiveFontSize(text) % 10 < 0.00001, true);
+      expect(effectiveFontSize(text) % 10, 0);
     }
   });
 
-  /*testWidgets("Test group", (WidgetTester tester) async {
+  testWidgets("Test group", (WidgetTester tester) async {
+    var group = AutoSizeGroup();
     await tester.pumpWidget(
       MaterialApp(
-        home: Center(
-          child: SizedBox(
-            width: 100.0,
-            height: 100.0,
-            child: AutoSizeText(
-              "This is a very long text, which needs to be resized to fit the sized box.",
-              style: TextStyle(fontSize: 30.0),
-              minFontSize: 1,
+        home: Column(
+          children: <Widget>[
+            SizedBox(
+              width: 300.0,
+              height: 100.0,
+              child: AutoSizeText(
+                "This is a very long text, which needs to be resized to fit the sized box.",
+                style: TextStyle(fontSize: 30.0),
+                minFontSize: 1,
+                group: group,
+              ),
             ),
-          ),
+            SizedBox(
+              width: 100.0,
+              height: 100.0,
+              child: AutoSizeText(
+                "This is a very long text, which needs to be resized to fit the sized box.",
+                style: TextStyle(fontSize: 30.0),
+                minFontSize: 1,
+                group: group,
+              ),
+            ),
+          ],
         ),
       ),
     );
 
-    Text text = tester.widget(find.byType(Text));
-    expect(testIfTextFits(text, 100, 100), true);
-  });*/
+    await tester.pump(Duration.zero);
+
+    var texts = tester.widgetList(find.byType(Text)).toList();
+    expect(testIfTextFits(texts[1], 100, 100), true);
+
+    var size1 = effectiveFontSize(texts[0]);
+    var size2 = effectiveFontSize(texts[1]);
+    expect(size1, size2);
+
+    await tester.pumpWidget(Container());
+    await tester.pump(Duration.zero);
+  });
 }

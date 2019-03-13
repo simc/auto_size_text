@@ -2,6 +2,7 @@ part of auto_size_text;
 
 class AutoSizeGroup {
   var _listeners = Map<_AutoSizeTextState, double>();
+  var _widgetsNotified = false;
   double _fontSize = double.infinity;
 
   _register(_AutoSizeTextState text) {
@@ -24,14 +25,21 @@ class AutoSizeGroup {
     }
 
     if (oldFontSize != _fontSize) {
-      _notifyListeners();
+      _widgetsNotified = false;
+      Timer.run(_notifyListeners);
     }
   }
 
   _notifyListeners() {
+    if (_widgetsNotified) {
+      return;
+    } else {
+      _widgetsNotified = true;
+    }
+
     _listeners.keys.toList().forEach((text) {
       if (text.mounted) {
-        Timer.run(() => text._notifySync());
+        text._notifySync();
       } else {
         _listeners.remove(text);
       }
