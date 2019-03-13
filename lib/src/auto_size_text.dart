@@ -292,12 +292,13 @@ class _AutoSizeTextState extends State<AutoSizeText> {
     } else {
       text = Text.rich(
         widget.textSpan,
-        style: style.copyWith(fontSize: fontSize),
+        style: style,
         textAlign: widget.textAlign,
         textDirection: widget.textDirection,
         locale: widget.locale,
         softWrap: widget.softWrap,
         overflow: widget.overflow,
+        textScaleFactor: fontSize / style.fontSize,
         maxLines: widget.maxLines,
         semanticsLabel: widget.semanticsLabel,
       );
