@@ -87,7 +87,7 @@ AutoSizeText(
 );
 ```
 
-![](https://raw.githubusercontent.com/leisim/auto_size_text/master/screenshots/syncgroup.gif)
+![](https://raw.githubusercontent.com/leisim/auto_size_text/master/screenshots/group.gif)
 
 
 ### stepGranularity

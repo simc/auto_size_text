@@ -29,9 +29,13 @@ class AutoSizeGroup {
   }
 
   _notifyListeners() {
-    for (var text in _listeners.keys) {
-      Timer.run(() => text._notifySync());
-    }
+    _listeners.keys.toList().forEach((text) {
+      if (text.mounted) {
+        Timer.run(() => text._notifySync());
+      } else {
+        _listeners.remove(text);
+      }
+    });
   }
 
   _remove(_AutoSizeTextState text) {

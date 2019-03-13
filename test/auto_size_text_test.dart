@@ -123,7 +123,7 @@ void main() {
       MaterialApp(
         home: Center(
           child: SizedBox(
-            width: 120.0,
+            width: 100.0,
             height: 100.0,
             child: AutoSizeText.rich(
               TextSpan(
@@ -140,7 +140,7 @@ void main() {
     );
 
     Text text = tester.widget(find.byType(Text));
-    expect(testIfTextFits(text, 120), true);
+    expect(testIfTextFits(text, 100), true);
   });
 
   testWidgets("Test fits height", (WidgetTester tester) async {
@@ -222,4 +222,25 @@ void main() {
       expect(effectiveFontSize(text) % 10 < 0.00001, true);
     }
   });
+
+  /*testWidgets("Test group", (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Center(
+          child: SizedBox(
+            width: 100.0,
+            height: 100.0,
+            child: AutoSizeText(
+              "This is a very long text, which needs to be resized to fit the sized box.",
+              style: TextStyle(fontSize: 30.0),
+              minFontSize: 1,
+            ),
+          ),
+        ),
+      ),
+    );
+
+    Text text = tester.widget(find.byType(Text));
+    expect(testIfTextFits(text, 100, 100), true);
+  });*/
 }

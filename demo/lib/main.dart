@@ -25,6 +25,24 @@ class _AppState extends State<App> {
     ]);
 
     return MaterialApp(
+      home: Center(
+        child: SizedBox(
+          width: 100.0,
+          height: 100.0,
+          child: AutoSizeText.rich(
+            TextSpan(
+              text:
+                  "This is a very long texzt, which needs to be resized to fit the sized box.",
+              style: TextStyle(fontSize: 30.0),
+            ),
+            maxLines: 1,
+            minFontSize: 1,
+          ),
+        ),
+      ),
+    );
+
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: DefaultTabController(
         length: 5,
