@@ -1,3 +1,12 @@
+## 1.1.0
+- Added `syncGroup` parameter and `AutoSizeSyncGroup` to synchronize multiple `AutoSizeText`s
+- Fixed bug where `minFontSize` was not used correctly
+- Improved documentation
+
+## 1.0.0
+- Library is used in multiple projects in production and is considered stable now.
+- Added more tests
+
 ## 0.3.0
 - Added textScaleFactor property with fallback to `MediaQuery.textScaleFactorOf()` (thanks @jeroentrappers)
 

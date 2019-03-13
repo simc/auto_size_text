@@ -65,6 +65,31 @@ AutoSizeText(
 ![](https://raw.githubusercontent.com/leisim/auto_size_text/master/screenshots/minfontsize.gif)
 
 
+### group
+
+You can synchronize the font size of multiple `AutoSizeText`. They will fit their boundaries and all `AutoSizeText` in the same group have the same size. That means they adjust their font size to the group member with the smallest effective font size.
+
+**Note:** If a `AutoSizeText` cannot adjust because of constraints like `minFontSize`, it won't have the same size as the other group members.
+
+An instance of `AutoSizeGroup` represents one group. Pass this instance to all `AutoSizeText` you want to add to that group. You don't have to care about disposing the group if it is no longer needed.
+
+```dart
+var myGroup = AutoSizeGroup();
+
+AutoSizeText(
+  "Text 1",
+  group: myGroup,
+);
+
+AutoSizeText(
+  "Text 2",
+  group: myGroup,
+);
+```
+
+![](https://raw.githubusercontent.com/leisim/auto_size_text/master/screenshots/group.gif)
+
+
 ### stepGranularity
 
 The `AutoSizeText` will try each font size, starting with `TextStyle.fontSize` until the text fits within its bounds.  
