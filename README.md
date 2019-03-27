@@ -206,6 +206,7 @@ AutoSizeText.rich(
 )
 ```
 This rich text does not have a style so it will fall back to the default style (probably `fontSize = 14`). It has an implicit `minFontSize` of 12 that means it can be resized to 86% of its original size at the most (14 -> 12). Just set `minFontSize = 0` or add `style: TextStyle(fontSize: 200)` to the `AutoSizeText`.
+
 **Note:** If you use the first option, you should also consider lowering `stepGranularity`. Otherwise the steps of resizing will be very large.
 
 **Correct** code:
