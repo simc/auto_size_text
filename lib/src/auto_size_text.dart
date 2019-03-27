@@ -28,7 +28,6 @@ class AutoSizeText extends StatefulWidget {
     this.maxLines,
     this.semanticsLabel,
   })  : assert(data != null),
-        assert(minFontSize > 0),
         assert(stepGranularity >= 0.1),
         textSpan = null,
         super(key: key);
@@ -52,7 +51,6 @@ class AutoSizeText extends StatefulWidget {
     this.maxLines,
     this.semanticsLabel,
   })  : assert(textSpan != null),
-        assert(minFontSize > 0),
         assert(stepGranularity >= 0.1),
         data = null,
         super(key: key);
@@ -233,8 +231,15 @@ class _AutoSizeTextState extends State<AutoSizeText> {
       BoxConstraints size, TextStyle style, DefaultTextStyle defaultStyle) {
     var userScale =
         widget.textScaleFactor ?? MediaQuery.textScaleFactorOf(context);
-    var maxFontSize = (widget.maxFontSize ?? double.infinity);
-    assert(widget.minFontSize <= maxFontSize,
+
+    var minFontSize = widget.minFontSize ?? 0;
+    assert(
+        minFontSize >= 0, "MinFontSize has to be greater than or equal to 0.");
+
+    var maxFontSize = widget.maxFontSize ?? double.infinity;
+    assert(maxFontSize > 0, "MaxFontSize has to be greater than 0.");
+
+    assert(minFontSize <= maxFontSize,
         "MinFontSize has to be smaller or equal than maxFontSize.");
 
     var maxLines = widget.maxLines ?? defaultStyle.maxLines;
@@ -247,19 +252,24 @@ class _AutoSizeTextState extends State<AutoSizeText> {
     double initialFontSize;
     if (widget.presetFontSizes == null) {
       var current = style.fontSize;
-      initialFontSize = current.clamp(widget.minFontSize, maxFontSize);
+      initialFontSize = current.clamp(minFontSize, maxFontSize);
     } else {
       initialFontSize = widget.presetFontSizes[presetIndex++];
     }
 
     var fontSize = initialFontSize * userScale;
 
-    var span = widget.textSpan ?? TextSpan(text: widget.data, style: style);
+    var span = TextSpan(
+      style: widget.textSpan?.style ?? style,
+      text: widget.textSpan?.text ?? widget.data,
+      children: widget.textSpan?.children,
+      recognizer: widget.textSpan?.recognizer,
+    );
     while (!checkTextFits(span, widget.locale, fontSize / style.fontSize,
         maxLines, size.maxWidth, size.maxHeight)) {
       if (widget.presetFontSizes == null) {
         var newFontSize = fontSize - widget.stepGranularity;
-        if (newFontSize < (widget.minFontSize * userScale)) break;
+        if (newFontSize < (minFontSize * userScale)) break;
         fontSize = newFontSize;
       } else if (presetIndex < widget.presetFontSizes.length) {
         fontSize = widget.presetFontSizes[presetIndex++] * userScale;
