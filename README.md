@@ -156,47 +156,70 @@ If your font size has a large range, consider increasing `stepGranularity`.
 
 ## Troubleshooting
 
+### Missing bounds
+
 If `AutoSizeText` overflows or does not resize the text, you should check if it has constrained width and height.
 
 **Wrong** code:
 ```dart
-class MyPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        AutoSizeText(
-          "Here is a very long text, which should be resized",
-          maxLines: 1,
-        ),
-      ],
-    );
-  }
-}
+Row(
+  children: <Widget>[
+    AutoSizeText(
+      "Here is a very long text, which should be resized",
+      maxLines: 1,
+    ),
+  ],
+)
 ```
 Because `Row` and other widgets like `Container`, `Column` or `ListView` do not constrain their children, the text will overflow.  
 You can fix this by constraining the `AutoSizeText`. Wrap it with `Expanded` in case of `Row` and `Column` or use a `SizedBox` or another widget with fixed width (and height).
 
 **Correct** code:
 ```dart
-class MyPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Expanded( // Constrains AutoSizeText to the width of the Row
-          child: AutoSizeText(
-            "Here is a very long text, which should be resized",
-            maxLines: 1,
-          )
-        ),
-      ],
-    );
-  }
+Row(
+  children: <Widget>[
+    Expanded( // Constrains AutoSizeText to the width of the Row
+      child: AutoSizeText(
+        "Here is a very long text, which should be resized",
+        maxLines: 1,
+      )
+    ),
+  ],
+)
 }
 ```
 
 Further explanation can be found [here](https://stackoverflow.com/a/53908204). If you still have problems, please [open an issue](https://github.com/leisim/auto_size_text/issues/new).
+
+
+### MinFontSize too large
+
+`AutoSizeText` does not resize text below the `minFontSize` which defaults to 12. This can happen very easily if you use `AutoSizeText.rich()`:
+
+**Wrong** code:
+```dart
+AutoSizeText.rich(
+  TextSpan(
+    text: "Text that will not be resized correctly in some cases",
+    style: TextStyle(fontSize: 200),
+  ),
+)
+```
+This rich text does not have a style so it will fall back to the default style (probably `fontSize = 14`). It has an implicit `minFontSize` of 12 that means it can be resized to 86% of its original size at the most (14 -> 12). Just set `minFontSize = 0` or add `style: TextStyle(fontSize: 200)` to the `AutoSizeText`.
+
+**Note:** If you use the first option, you should also consider lowering `stepGranularity`. Otherwise the steps of resizing will be very large.
+
+**Correct** code:
+```dart
+AutoSizeText.rich(
+  TextSpan(
+    text: "Text that will be resized correctly",
+    style: TextStyle(fontSize: 200),
+  ),
+  minFontSize: 0,
+  stepGranularity: 0.1,
+)
+```
 
 ## MIT License
 ```

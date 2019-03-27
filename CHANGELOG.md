@@ -1,3 +1,6 @@
+## 1.1.1
+- Fixed bug where setting the style of a `TextSpan` to null in `AutoSizeText.rich` didn't work (thanks @Koridev)
+
 ## 1.1.0
 - Added `group` parameter and `AutoSizeGroup` to synchronize multiple `AutoSizeText`s
 - Fixed bug where `minFontSize` was not used correctly
