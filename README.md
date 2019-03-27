@@ -195,6 +195,7 @@ Further explanation can be found [here](https://stackoverflow.com/a/53908204). I
 ### MinFontSize too large
 
 `AutoSizeText` does not resize text below the `minFontSize` which defaults to 12. This can happen very easily if you use `AutoSizeText.rich()`:
+
 **Wrong** code:
 ```dart
 AutoSizeText.rich(
