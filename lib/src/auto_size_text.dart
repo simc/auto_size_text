@@ -257,7 +257,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
       initialFontSize = widget.presetFontSizes[presetIndex++];
     }
 
-    var fontSize = initialFontSize * userScale;
+    var fontSize = initialFontSize;
 
     var span = TextSpan(
       style: widget.textSpan?.style ?? style,
@@ -265,14 +265,14 @@ class _AutoSizeTextState extends State<AutoSizeText> {
       children: widget.textSpan?.children,
       recognizer: widget.textSpan?.recognizer,
     );
-    while (!checkTextFits(span, widget.locale, fontSize / style.fontSize,
+    while (!checkTextFits(span, widget.locale, fontSize / initialFontSize * userScale,
         maxLines, size.maxWidth, size.maxHeight)) {
       if (widget.presetFontSizes == null) {
         var newFontSize = fontSize - widget.stepGranularity;
-        if (newFontSize < (minFontSize * userScale)) break;
+        if (newFontSize < (minFontSize)) break;
         fontSize = newFontSize;
       } else if (presetIndex < widget.presetFontSizes.length) {
-        fontSize = widget.presetFontSizes[presetIndex++] * userScale;
+        fontSize = widget.presetFontSizes[presetIndex++];
       } else {
         break;
       }
