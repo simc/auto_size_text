@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 double effectiveFontSize(Text text) {
-  return text.textScaleFactor ?? 1 * text.style.fontSize;
+  return (text.textScaleFactor ?? 1) * text.style.fontSize;
 }
 
 bool testIfTextFits(Text text, [double maxWidth, double maxHeight]) {
@@ -180,7 +180,7 @@ void main() {
     );
 
     Text text = tester.widget(find.byType(Text));
-    expect(effectiveFontSize(text) == 15, true);
+    expect(effectiveFontSize(text), 15);
 
     await tester.pumpWidget(
       MaterialApp(

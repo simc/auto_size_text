@@ -296,6 +296,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
         locale: widget.locale,
         softWrap: widget.softWrap,
         overflow: widget.overflow,
+        textScaleFactor: 1,
         maxLines: widget.maxLines,
         semanticsLabel: widget.semanticsLabel,
       );
