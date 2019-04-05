@@ -1,3 +1,6 @@
+## 1.1.2
+- Fixed bug where system font scale was applied twice (thanks @jeffersonatsafe)
+
 ## 1.1.1
 - Fixed bug where setting the style of a `TextSpan` to null in `AutoSizeText.rich` didn't work (thanks @Koridev)
 - Allow `minFontSize = 0`
