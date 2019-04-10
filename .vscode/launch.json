@@ -11,7 +11,7 @@
             "name": "Demo",
             "request": "launch",
             "type": "dart",
-            "program": "./demo/lib/main.dart",
+            "program": "./example/lib/showcase.dart",
         }
     ]
 }
