@@ -23,6 +23,7 @@ class AutoSizeText extends StatefulWidget {
     this.textDirection,
     this.locale,
     this.softWrap,
+    this.wrapWords,
     this.overflow,
     this.textScaleFactor,
     this.maxLines,
@@ -46,6 +47,7 @@ class AutoSizeText extends StatefulWidget {
     this.textDirection,
     this.locale,
     this.softWrap,
+    this.wrapWords,
     this.overflow,
     this.textScaleFactor,
     this.maxLines,
@@ -138,6 +140,12 @@ class AutoSizeText extends StatefulWidget {
   /// If false, the glyphs in the text will be positioned as if there was
   /// unlimited horizontal space.
   final bool softWrap;
+
+  /// Whether words which don't fit in one line should be wrapped.
+  ///
+  /// If false, the fontSize is lowered as far as possible until all words fit
+  /// into a single line.
+  final bool wrapWords;
 
   /// How visual overflow should be handled.
   final TextOverflow overflow;
@@ -265,7 +273,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
       children: widget.textSpan?.children,
       recognizer: widget.textSpan?.recognizer,
     );
-    while (!checkTextFits(span, widget.locale, fontSize / style.fontSize,
+    /*while (!checkTextFits(span, widget.locale, fontSize / style.fontSize,
         maxLines, size.maxWidth, size.maxHeight)) {
       if (widget.presetFontSizes == null) {
         var newFontSize = fontSize - widget.stepGranularity;
@@ -276,9 +284,47 @@ class _AutoSizeTextState extends State<AutoSizeText> {
       } else {
         break;
       }
+    }*/
+
+    if (widget.presetFontSizes == null) {
+      while (true) {}
     }
 
     return fontSize;
+  }
+
+  bool _areWordsWrapping(
+      BoxConstraints size, double fontSize, TextStyle style) {
+    if (widget.wrapWords) return true;
+
+    TextSpan span;
+    int wordCount;
+    if (widget.data != null) {
+      var words = widget.data.split(' ');
+      wordCount = words.length;
+      var text = words.join('\n');
+      span = TextSpan(
+        style: style,
+        text: text,
+      );
+    } else {
+      while (true) {
+        widget.textSpan.
+      }
+    }
+
+    var tp = TextPainter(
+      text: span,
+      textAlign: TextAlign.left,
+      textDirection: TextDirection.ltr,
+      textScaleFactor: fontSize / style.fontSize,
+      maxLines: wordCount,
+      locale: widget.locale,
+    );
+
+    tp.layout(maxWidth: size.maxWidth);
+
+    return tp.didExceedMaxLines;
   }
 
   Widget _buildText(double fontSize, TextStyle style) {
