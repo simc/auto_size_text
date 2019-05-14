@@ -25,11 +25,20 @@ class AutoSizeText extends StatefulWidget {
     this.softWrap,
     this.wrapWords,
     this.overflow,
+    this.overflowReplacement,
     this.textScaleFactor,
     this.maxLines,
     this.semanticsLabel,
-  })  : assert(data != null),
-        assert(stepGranularity >= 0.1),
+  })  : assert(data != null,
+            'A non-null String must be provided to a AutoSizeText widget.'),
+        assert(stepGranularity >= 0.1,
+            'StepGranularity has to be greater than or equal to 0.1.'),
+        assert(minFontSize == null || minFontSize >= 0,
+            "MinFontSize has to be greater than or equal to 0."),
+        assert(maxFontSize == null || maxFontSize > 0,
+            "MaxFontSize has to be greater than 0."),
+        assert(overflow == null || overflowReplacement == null,
+            'Either overflow or overflowReplacement have to be null.'),
         textSpan = null,
         super(key: key);
 
@@ -49,11 +58,20 @@ class AutoSizeText extends StatefulWidget {
     this.softWrap,
     this.wrapWords,
     this.overflow,
+    this.overflowReplacement,
     this.textScaleFactor,
     this.maxLines,
     this.semanticsLabel,
-  })  : assert(textSpan != null),
-        assert(stepGranularity >= 0.1),
+  })  : assert(textSpan != null,
+            'A non-null TextSpan must be provided to a AutoSizeText.rich widget.'),
+        assert(stepGranularity >= 0.1,
+            'StepGranularity has to be greater than or equal to 0.1.'),
+        assert(minFontSize == null || minFontSize >= 0,
+            "MinFontSize has to be greater than or equal to 0."),
+        assert(maxFontSize == null || maxFontSize > 0,
+            "MaxFontSize has to be greater than 0."),
+        assert(overflow == null || overflowReplacement == null,
+            'Either overflow or overflowReplacement have to be null.'),
         data = null,
         super(key: key);
 
@@ -150,6 +168,10 @@ class AutoSizeText extends StatefulWidget {
   /// How visual overflow should be handled.
   final TextOverflow overflow;
 
+  /// If the text is overflowing and does not fit its bounds, this widget is
+  /// displayed instead.
+  final Widget overflowReplacement;
+
   /// The number of font pixels for each logical pixel.
   ///
   /// For example, if the text scale factor is 1.5, text will be 50% larger than
@@ -241,12 +263,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
         widget.textScaleFactor ?? MediaQuery.textScaleFactorOf(context);
 
     var minFontSize = widget.minFontSize ?? 0;
-    assert(
-        minFontSize >= 0, "MinFontSize has to be greater than or equal to 0.");
-
     var maxFontSize = widget.maxFontSize ?? double.infinity;
-    assert(maxFontSize > 0, "MaxFontSize has to be greater than 0.");
-
     assert(minFontSize <= maxFontSize,
         "MinFontSize has to be smaller or equal than maxFontSize.");
 
@@ -286,45 +303,35 @@ class _AutoSizeTextState extends State<AutoSizeText> {
       }
     }*/
 
-    if (widget.presetFontSizes == null) {
-      while (true) {}
-    }
-
-    return fontSize;
-  }
-
-  bool _areWordsWrapping(
-      BoxConstraints size, double fontSize, TextStyle style) {
-    if (widget.wrapWords) return true;
-
-    TextSpan span;
-    int wordCount;
-    if (widget.data != null) {
-      var words = widget.data.split(' ');
-      wordCount = words.length;
-      var text = words.join('\n');
-      span = TextSpan(
-        style: style,
-        text: text,
-      );
-    } else {
-      while (true) {
-        widget.textSpan.
+    bool checkTextFitsAndWordWrap(double scale) {
+      var textFits = checkTextFits(
+          span, widget.locale, scale, maxLines, size.maxWidth, size.maxHeight);
+      if (textFits) {
+        if (!widget.wrapWords) {
+          return !checkWordsWrapping(span, widget.locale, scale, size.maxWidth);
+        } else {
+          return true;
+        }
+      } else {
+        return false;
       }
     }
 
-    var tp = TextPainter(
-      text: span,
-      textAlign: TextAlign.left,
-      textDirection: TextDirection.ltr,
-      textScaleFactor: fontSize / style.fontSize,
-      maxLines: wordCount,
-      locale: widget.locale,
-    );
+    if (widget.presetFontSizes == null) {
+      int l = 0;
+      int r = widget.presetFontSizes.length - 1;
+      while (l <= r) {
+        int m = (l + (r - l) / 2).toInt();
+        var scale = widget.presetFontSizes[m] * userScale / style.fontSize;
+        if (checkTextFitsAndWordWrap(scale)) {
+          l = m + 1;
+        } else {
+          r = m - 1;
+        }
+      }
+    }
 
-    tp.layout(maxWidth: size.maxWidth);
-
-    return tp.didExceedMaxLines;
+    return fontSize;
   }
 
   Widget _buildText(double fontSize, TextStyle style) {
