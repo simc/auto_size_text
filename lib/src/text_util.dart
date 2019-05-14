@@ -22,11 +22,14 @@ bool checkTextFits(TextSpan text, Locale locale, double scale, int maxLines,
 
 bool checkWordsWrapping(
     TextSpan text, Locale locale, double scale, double maxWidth) {
-  int wordCount;
+  int wordCount = 0;
   TextSpan oneLineForEachWord(TextSpan span) {
-    var children = List<TextSpan>(span.children.length);
-    for (var child in span.children) {
-      children.add(oneLineForEachWord(child));
+    List<TextSpan> children;
+    if (span.children != null) {
+      children = List(span.children.length);
+      for (var child in span.children) {
+        children.add(oneLineForEachWord(child));
+      }
     }
 
     var words = span.text.split(' ');

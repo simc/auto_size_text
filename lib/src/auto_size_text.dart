@@ -23,7 +23,7 @@ class AutoSizeText extends StatefulWidget {
     this.textDirection,
     this.locale,
     this.softWrap,
-    this.wrapWords,
+    this.wrapWords = false,
     this.overflow,
     this.overflowReplacement,
     this.textScaleFactor,
@@ -56,7 +56,7 @@ class AutoSizeText extends StatefulWidget {
     this.textDirection,
     this.locale,
     this.softWrap,
-    this.wrapWords,
+    this.wrapWords = false,
     this.overflow,
     this.overflowReplacement,
     this.textScaleFactor,
@@ -115,8 +115,7 @@ class AutoSizeText extends StatefulWidget {
 
   /// Lets you specify all the possible font sizes.
   ///
-  /// **Important:** The presetFontSizes are used the order they are given in.
-  /// If the first fontSize matches, all others are being ignored.
+  /// **Important:** PresetFontSizes have to be in descending order.
   final List<double> presetFontSizes;
 
   /// Synchronizes the size of multiple [AutoSizeText]s.
@@ -238,7 +237,9 @@ class _AutoSizeTextState extends State<AutoSizeText> {
         style = defaultTextStyle.style.merge(widget.style);
       }
 
-      double fontSize = _calculateFontSize(size, style, defaultTextStyle);
+      var result = _calculateFontSize(size, style, defaultTextStyle);
+      var fontSize = result[0];
+      var textFits = result[1];
 
       Text text;
 
@@ -253,85 +254,102 @@ class _AutoSizeTextState extends State<AutoSizeText> {
 
       _previousFontSize = fontSize;
 
-      return text;
+      if (widget.overflowReplacement != null && !textFits) {
+        return widget.overflowReplacement;
+      } else {
+        return text;
+      }
     });
   }
 
-  double _calculateFontSize(
+  List _calculateFontSize(
       BoxConstraints size, TextStyle style, DefaultTextStyle defaultStyle) {
-    var userScale =
-        widget.textScaleFactor ?? MediaQuery.textScaleFactorOf(context);
-
-    var minFontSize = widget.minFontSize ?? 0;
-    var maxFontSize = widget.maxFontSize ?? double.infinity;
-    assert(minFontSize <= maxFontSize,
-        "MinFontSize has to be smaller or equal than maxFontSize.");
-
-    var maxLines = widget.maxLines ?? defaultStyle.maxLines;
-
-    int presetIndex = 0;
-    if (widget.presetFontSizes != null) {
-      assert(widget.presetFontSizes.isNotEmpty, "PresetFontSizes is empty.");
-    }
-
-    double initialFontSize;
-    if (widget.presetFontSizes == null) {
-      var current = style.fontSize;
-      initialFontSize = current.clamp(minFontSize, maxFontSize);
-    } else {
-      initialFontSize = widget.presetFontSizes[presetIndex++];
-    }
-
-    var fontSize = initialFontSize * userScale;
-
     var span = TextSpan(
       style: widget.textSpan?.style ?? style,
       text: widget.textSpan?.text ?? widget.data,
       children: widget.textSpan?.children,
       recognizer: widget.textSpan?.recognizer,
     );
-    /*while (!checkTextFits(span, widget.locale, fontSize / style.fontSize,
-        maxLines, size.maxWidth, size.maxHeight)) {
-      if (widget.presetFontSizes == null) {
-        var newFontSize = fontSize - widget.stepGranularity;
-        if (newFontSize < (minFontSize * userScale)) break;
-        fontSize = newFontSize;
-      } else if (presetIndex < widget.presetFontSizes.length) {
-        fontSize = widget.presetFontSizes[presetIndex++] * userScale;
-      } else {
-        break;
-      }
-    }*/
 
-    bool checkTextFitsAndWordWrap(double scale) {
-      var textFits = checkTextFits(
-          span, widget.locale, scale, maxLines, size.maxWidth, size.maxHeight);
-      if (textFits) {
-        if (!widget.wrapWords) {
-          return !checkWordsWrapping(span, widget.locale, scale, size.maxWidth);
-        } else {
-          return true;
-        }
+    var maxLines = widget.maxLines ?? defaultStyle.maxLines;
+
+    int left;
+    int right;
+
+    var presetFontSizes = widget.presetFontSizes?.reversed?.toList();
+
+    if (presetFontSizes == null) {
+      var minFontSize = widget.minFontSize ?? 0;
+      var maxFontSize = widget.maxFontSize ?? double.infinity;
+      assert(minFontSize <= maxFontSize,
+          "MinFontSize has to be smaller or equal than maxFontSize.");
+      assert(minFontSize / widget.stepGranularity % 1 < 0.00001,
+          "MinFontSize has to be multiples of stepGranularity.");
+      if (widget.maxFontSize != null) {
+        assert(maxFontSize / widget.stepGranularity % 1 < 0.00001,
+            "MaxFontSize has to be multiples of stepGranularity.");
+      }
+      assert(style.fontSize / widget.stepGranularity % 1 < 0.00001,
+          "FontSize has to be multiples of stepGranularity.");
+
+      left = (minFontSize / widget.stepGranularity).round();
+      var initialFontSize = style.fontSize.clamp(minFontSize, maxFontSize);
+      right = (initialFontSize / widget.stepGranularity).round();
+    } else {
+      assert(presetFontSizes.isNotEmpty, "PresetFontSizes has to be nonempty.");
+
+      left = 0;
+      right = presetFontSizes.length - 1;
+    }
+
+    var userScale =
+        widget.textScaleFactor ?? MediaQuery.textScaleFactorOf(context);
+    bool lastValueFits = false;
+    while (left <= right) {
+      int mid = (left + (right - left) / 2).toInt();
+      double scale;
+
+      if (presetFontSizes == null) {
+        scale = mid * userScale / style.fontSize;
       } else {
-        return false;
+        scale = presetFontSizes[mid] * userScale / style.fontSize;
+      }
+
+      if (_checkTextFitsAndWordWrap(span, scale, size, maxLines)) {
+        left = mid + 1;
+        lastValueFits = true;
+      } else {
+        right = mid - 1;
+        lastValueFits = false;
       }
     }
 
-    if (widget.presetFontSizes == null) {
-      int l = 0;
-      int r = widget.presetFontSizes.length - 1;
-      while (l <= r) {
-        int m = (l + (r - l) / 2).toInt();
-        var scale = widget.presetFontSizes[m] * userScale / style.fontSize;
-        if (checkTextFitsAndWordWrap(scale)) {
-          l = m + 1;
-        } else {
-          r = m - 1;
-        }
-      }
+    if (presetFontSizes == null) {
+      return [((left - 1) * userScale * widget.stepGranularity), lastValueFits];
+    } else {
+      return [presetFontSizes[left - 1] * userScale, lastValueFits];
     }
+  }
 
-    return fontSize;
+  bool _checkTextFitsAndWordWrap(
+      TextSpan span, double scale, BoxConstraints size, int maxLines) {
+    var textFits = checkTextFits(
+      span,
+      widget.locale,
+      scale,
+      maxLines,
+      size.maxWidth,
+      size.maxHeight,
+    );
+    if (textFits) {
+      if (widget.wrapWords) {
+        return !checkWordsWrapping(span, widget.locale, scale, size.maxWidth);
+      } else {
+        return true;
+      }
+    } else {
+      return false;
+    }
   }
 
   Widget _buildText(double fontSize, TextStyle style) {
