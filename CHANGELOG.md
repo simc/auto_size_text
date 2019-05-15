@@ -1,3 +1,8 @@
+## 2.0.0-dev
+- Significant performance improvements
+- Disable word wrapping using `wordWrap: false`
+- Replacement widget in case of text overflow: `overflowReplacement`
+
 ## 1.1.2
 - Fixed bug where system font scale was applied twice (thanks @jeffersonatsafe)
 

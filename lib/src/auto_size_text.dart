@@ -23,7 +23,7 @@ class AutoSizeText extends StatefulWidget {
     this.textDirection,
     this.locale,
     this.softWrap,
-    this.wrapWords = false,
+    this.wrapWords = true,
     this.overflow,
     this.overflowReplacement,
     this.textScaleFactor,
@@ -56,7 +56,7 @@ class AutoSizeText extends StatefulWidget {
     this.textDirection,
     this.locale,
     this.softWrap,
-    this.wrapWords = false,
+    this.wrapWords = true,
     this.overflow,
     this.overflowReplacement,
     this.textScaleFactor,
@@ -310,46 +310,40 @@ class _AutoSizeTextState extends State<AutoSizeText> {
       double scale;
 
       if (presetFontSizes == null) {
-        scale = mid * userScale / style.fontSize;
+        scale = mid * userScale * widget.stepGranularity / style.fontSize;
       } else {
         scale = presetFontSizes[mid] * userScale / style.fontSize;
       }
 
-      if (_checkTextFitsAndWordWrap(span, scale, size, maxLines)) {
+      var textFits = checkTextFits(
+        span,
+        widget.locale,
+        scale,
+        maxLines,
+        size.maxWidth,
+        size.maxHeight,
+        widget.wrapWords,
+      );
+
+      if (textFits) {
         left = mid + 1;
         lastValueFits = true;
       } else {
         right = mid - 1;
-        lastValueFits = false;
       }
     }
 
+    if (!lastValueFits) {
+      right += 1;
+    }
+    double fontSize;
     if (presetFontSizes == null) {
-      return [((left - 1) * userScale * widget.stepGranularity), lastValueFits];
+      fontSize = right * userScale * widget.stepGranularity;
     } else {
-      return [presetFontSizes[left - 1] * userScale, lastValueFits];
+      fontSize = presetFontSizes[right] * userScale;
     }
-  }
 
-  bool _checkTextFitsAndWordWrap(
-      TextSpan span, double scale, BoxConstraints size, int maxLines) {
-    var textFits = checkTextFits(
-      span,
-      widget.locale,
-      scale,
-      maxLines,
-      size.maxWidth,
-      size.maxHeight,
-    );
-    if (textFits) {
-      if (widget.wrapWords) {
-        return !checkWordsWrapping(span, widget.locale, scale, size.maxWidth);
-      } else {
-        return true;
-      }
-    } else {
-      return false;
-    }
+    return [fontSize, lastValueFits];
   }
 
   Widget _buildText(double fontSize, TextStyle style) {
