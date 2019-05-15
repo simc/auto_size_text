@@ -151,7 +151,7 @@ But it does not mean that all `TextSpan`s have at least font size 5.0.
 
 `AutoSizeText` is really fast. Nevertheless you should not use an unreasonable high `fontSize` in your `TextStyle`. E.g. don't set the `fontSize` to `1000.0` if you know, that the text will never be larger than `30.0`.
 
-If your font size has a large range, consider increasing `stepGranularity`.
+If your font size has a very large range, consider increasing `stepGranularity`.
 
 
 ## Troubleshooting

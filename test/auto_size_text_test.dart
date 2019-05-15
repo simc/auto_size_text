@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:auto_size_text/src/text_util.dart';
 import 'package:flutter/material.dart';
@@ -9,10 +7,18 @@ double effectiveFontSize(Text text) {
   return (text.textScaleFactor ?? 1) * text.style.fontSize;
 }
 
-bool testIfTextFits(Text text, [double maxWidth, double maxHeight]) {
+bool testIfTextFits(Text text,
+    [double maxWidth, double maxHeight, bool wrapWords]) {
   var span = text.textSpan ?? TextSpan(text: text.data, style: text.style);
-  return checkTextFits(span, text.locale, text.textScaleFactor, text.maxLines,
-      maxWidth ?? double.infinity, maxHeight ?? double.infinity);
+  return checkTextFits(
+    span,
+    text.locale,
+    text.textScaleFactor,
+    text.maxLines,
+    maxWidth ?? double.infinity,
+    maxHeight ?? double.infinity,
+    wrapWords ?? true,
+  );
 }
 
 void main() {
@@ -214,6 +220,7 @@ void main() {
                 style: TextStyle(fontSize: 100),
                 maxLines: 1,
                 stepGranularity: 10,
+                minFontSize: 10,
               ),
             ),
           ),
