@@ -209,9 +209,6 @@ class AutoSizeText extends StatefulWidget {
 class _AutoSizeTextState extends State<AutoSizeText> {
   double _previousFontSize;
 
-  Text _cachedText;
-  double _cachedFontSize;
-
   @override
   void initState() {
     super.initState();
@@ -219,12 +216,6 @@ class _AutoSizeTextState extends State<AutoSizeText> {
     if (widget.group != null) {
       widget.group._register(this);
     }
-  }
-
-  @override
-  void didUpdateWidget(AutoSizeText oldWidget) {
-    _cachedText = null;
-    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -347,13 +338,8 @@ class _AutoSizeTextState extends State<AutoSizeText> {
   }
 
   Widget _buildText(double fontSize, TextStyle style) {
-    if (_cachedText != null && _cachedFontSize == fontSize) {
-      return _cachedText;
-    }
-
-    Text text;
     if (widget.data != null) {
-      text = Text(
+      return Text(
         widget.data,
         style: style.copyWith(fontSize: fontSize),
         textAlign: widget.textAlign,
@@ -366,7 +352,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
         semanticsLabel: widget.semanticsLabel,
       );
     } else {
-      text = Text.rich(
+      return Text.rich(
         widget.textSpan,
         style: style,
         textAlign: widget.textAlign,
@@ -379,10 +365,6 @@ class _AutoSizeTextState extends State<AutoSizeText> {
         semanticsLabel: widget.semanticsLabel,
       );
     }
-
-    _cachedText = text;
-    _cachedFontSize = fontSize;
-    return text;
   }
 
   void _notifySync() {
