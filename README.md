@@ -16,6 +16,23 @@ Also check out the [superpower](https://github.com/leisim/superpower) plugin ðŸ¦
 
 ![](https://raw.githubusercontent.com/leisim/auto_size_text/master/screenshots/maxlines.gif)
 
+## Contents
+
+- [Usage](##usage)
+  - [maxLines](###maxlines)
+  - [minFontSize & maxFontSize](###minFontSize--maxFontSize)
+  - [group](###group)
+  - [stepGranularity](###stepgranularity)
+  - [presetFontSizes](###presetfontsizes)
+  - [overflowReplacement](###overflowreplacement)
+- [Rich Text](##rich-text)
+- [Parameters](##parameters)
+- [Performance](##performance)
+- [Troubleshooting](##roubleshooting)
+  - [Missing bounds](###missing-bounds)
+  - [MinFontSize too large](###minFontSize-too-large)
+
+
 ## Usage
 
 `AutoSizeText` behaves exactly like a `Text`. The only difference is that it resizes text to fit within its bounds.
@@ -23,7 +40,7 @@ Also check out the [superpower](https://github.com/leisim/superpower) plugin ðŸ¦
 ```dart
 AutoSizeText(
   "The text to display",
-  style: TextStyle(fontSize: 20.0),
+  style: TextStyle(fontSize: 20),
   maxLines: 2,
 )
 ```
@@ -36,7 +53,7 @@ The `maxLines` parameter works like you are used to with the `Text` widget. If t
 ```dart
 AutoSizeText(
   "A really long String",
-  style: TextStyle(fontSize: 30.0),
+  style: TextStyle(fontSize: 30),
   maxLines: 2,
 )
 ```
@@ -48,15 +65,15 @@ AutoSizeText(
 
 The `AutoSizeText` starts with `TextStyle.fontSize`. It measures the resulting text and rescales it to fit within its bonds. You can however set the allowed range of the resulting font size.
 
-With `minFontSize` you can specify the smallest possible font size. If the text still doesn't fit, it will be handled according to `overflow`. The default `minFontSize` is 12.0.
+With `minFontSize` you can specify the smallest possible font size. If the text still doesn't fit, it will be handled according to `overflow`. The default `minFontSize` is `12`.
 
 `maxFontSize` sets the largest possible font size. This is useful if the `TextStyle` inherits the font size and you want to constrain it.
 
 ```dart
 AutoSizeText(
   "A really long String",
-  style: TextStyle(fontSize: 30.0),
-  minFontSize: 18.0,
+  style: TextStyle(fontSize: 30),
+  minFontSize: 18,
   maxLines: 4,
   overflow: TextOverflow.ellipsis,
 )
@@ -72,6 +89,8 @@ You can synchronize the font size of multiple `AutoSizeText`. They will fit thei
 **Note:** If a `AutoSizeText` cannot adjust because of constraints like `minFontSize`, it won't have the same size as the other group members.
 
 An instance of `AutoSizeGroup` represents one group. Pass this instance to all `AutoSizeText` you want to add to that group. You don't have to care about disposing the group if it is no longer needed.
+
+**Important:** Please don't pass a new instance of `AutoSizeGroup` every build. In other words, save the `AutoSizeGroup` instance in a `StatefulWidget`.
 
 ```dart
 var myGroup = AutoSizeGroup();
@@ -93,14 +112,14 @@ AutoSizeText(
 ### stepGranularity
 
 The `AutoSizeText` will try each font size, starting with `TextStyle.fontSize` until the text fits within its bounds.  
-`stepGranularity` specifies how much the font size is decreased each step. Usually, this value should not be below 1.0 for best performance.
+`stepGranularity` specifies how much the font size is decreased each step. Usually, this value should not be below `1` for best performance.
 
 ```dart
 AutoSizeText(
   "A really long String",
-  style: TextStyle(fontSize: 40.0),
-  minFontSize: 10.0,
-  stepGranularity: 10.0,
+  style: TextStyle(fontSize: 40),
+  minFontSize: 10,
+  stepGranularity: 10,
   maxLines: 4,
   overflow: TextOverflow.ellipsis,
 )
@@ -117,12 +136,27 @@ If `presetFontSizes` is set, `minFontSize`, `maxFontSize` and `stepGranularity` 
 ```dart
 AutoSizeText(
   "A really long String",
-  presetFontSizes: [40.0, 20.0, 14.0],
+  presetFontSizes: [40, 20, 14],
   maxLines: 4,
 )
 ```
 
 ![](https://raw.githubusercontent.com/leisim/auto_size_text/master/screenshots/presetfontsizes.gif)
+
+
+### overflowReplacement
+
+If the text is overflowing and does not fit its bounds, this widget is displayed instead. This can be useful to prevent text being too small to read.
+
+```dart
+AutoSizeText(
+  "A String tool long to display without extreme scaling or overflow.",
+  maxLines: 1,
+  overflowReplacement: Text("Sorry String too long"),
+)
+```
+
+![](https://raw.githubusercontent.com/leisim/auto_size_text/master/screenshots/overflowreplacement.gif)
 
 
 ## Rich Text
@@ -137,19 +171,44 @@ For example:
 ```dart
 AutoSizeText.rich(
   TextSpan(text: "A really long String"),
-  style: TextStyle(fontSize: 20.0),
-  minFontSize: 5.0,
+  style: TextStyle(fontSize: 20),
+  minFontSize: 5,
 )
 ```
 The text will be at least 1/4 of its original size (5 / 20 = 1/4).  
-But it does not mean that all `TextSpan`s have at least font size 5.0.
+But it does not mean that all `TextSpan`s have at least font size `5`.
 
 ![](https://raw.githubusercontent.com/leisim/auto_size_text/master/screenshots/maxlines_rich.gif)
 
 
+## Parameters
+
+| Parameter  | Description  |
+|---|---|
+| `key`* | Controls how one widget replaces another widget in the tree. |
+| `style`* | If non-null, the style to use for this text |
+| `minFontSize` | The **minimum** text size constraint to be used when auto-sizing text. *Is being ignored if `presetFontSizes` is set.*  |
+| `maxFontSize` | The **maximum** text size constraint to be used when auto-sizing text. *Is being ignored if `presetFontSizes` is set.* |
+| `stepGranularity` | The step size in which the font size is being adapted to constraints. |
+| `presetFontSizes` | Predefines all the possible font sizes.<br> **Important:** `presetFontSizes` have to be in descending order.  |
+| `group` | Synchronizes the size of multiple `AutoSizeText`s |
+| `textAlign`* | How the text should be aligned horizontally. |
+| `textDirection`* | The directionality of the text. This decides how `textAlign` values like `TextAlign.start` and `TextAlign.end` are interpreted. |
+| `locale`* |  Used to select a font when the same Unicode character can be rendered differently, depending on the locale. |
+| `softWrap`* | Whether the text should break at soft line breaks. |
+| `wrapWords` | Whether words which don't fit in one line should be wrapped. *Defaults to `true` to behave like `Text`.* |
+| `overflow`* | How visual overflow should be handled. |
+| `overflowReplacement` | If the text is overflowing and does not fit its bounds, this widget is displayed instead. |
+| `textScaleFactor`* | The number of font pixels for each logical pixel. Also affects `minFontSize`, `maxFontSize` and `presetFontSizes`. |
+| `maxLines` | An optional maximum number of lines for the text to span. |
+| `semanticsLabel` | An alternative semantics label for this text. |
+Parameters marked with \* behave exactly the same as in `Text`
+
+
 ## Performance
 
-`AutoSizeText` is really fast. Nevertheless you should not use an unreasonable high `fontSize` in your `TextStyle`. E.g. don't set the `fontSize` to `1000.0` if you know, that the text will never be larger than `30.0`.
+`AutoSizeText` is really fast. In fact, you can replace all your `Text` widgets with `AutoSizeText`.<br>
+Nevertheless you should not use an unreasonable high `fontSize` in your `TextStyle`. E.g. don't set the `fontSize` to `1000` if you know, that the text will never be larger than `30`.
 
 If your font size has a very large range, consider increasing `stepGranularity`.
 
