@@ -2,8 +2,8 @@
 library auto_size_text;
 
 import 'dart:async';
+import 'dart:ui' as prefix0;
 
-import 'package:auto_size_text/src/text_util.dart';
 import 'package:flutter/widgets.dart';
 
 part 'src/auto_size_text.dart';

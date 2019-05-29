@@ -1,5 +1,6 @@
 part of auto_size_text;
 
+/// Controller to synchronize the fontSize of multiple AutoSizeTexts.
 class AutoSizeGroup {
   var _listeners = Map<_AutoSizeTextState, double>();
   var _widgetsNotified = false;
