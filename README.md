@@ -18,19 +18,19 @@ Also check out the [superpower](https://github.com/leisim/superpower) plugin ðŸ¦
 
 ## Contents
 
-- [Usage](##usage)
-  - [maxLines](###maxlines)
-  - [minFontSize & maxFontSize](###minFontSize--maxFontSize)
-  - [group](###group)
-  - [stepGranularity](###stepgranularity)
-  - [presetFontSizes](###presetfontsizes)
-  - [overflowReplacement](###overflowreplacement)
-- [Rich Text](##rich-text)
-- [Parameters](##parameters)
-- [Performance](##performance)
-- [Troubleshooting](##roubleshooting)
-  - [Missing bounds](###missing-bounds)
-  - [MinFontSize too large](###minFontSize-too-large)
+- [Usage](#usage)
+  - [maxLines](#maxlines)
+  - [minFontSize & maxFontSize](#minFontSize--maxFontSize)
+  - [group](#group)
+  - [stepGranularity](#stepgranularity)
+  - [presetFontSizes](#presetfontsizes)
+  - [overflowReplacement](#overflowreplacement)
+- [Rich Text](#rich-text)
+- [Parameters](#parameters)
+- [Performance](#performance)
+- [Troubleshooting](#roubleshooting)
+  - [Missing bounds](#missing-bounds)
+  - [MinFontSize too large](#minFontSize-too-large)
 
 
 ## Usage
@@ -183,7 +183,7 @@ But it does not mean that all `TextSpan`s have at least font size `5`.
 
 ## Parameters
 
-| Parameter  | Description  |
+| Parameter | Description |
 |---|---|
 | `key`* | Controls how one widget replaces another widget in the tree. |
 | `style`* | If non-null, the style to use for this text |
@@ -202,6 +202,7 @@ But it does not mean that all `TextSpan`s have at least font size `5`.
 | `textScaleFactor`* | The number of font pixels for each logical pixel. Also affects `minFontSize`, `maxFontSize` and `presetFontSizes`. |
 | `maxLines` | An optional maximum number of lines for the text to span. |
 | `semanticsLabel` | An alternative semantics label for this text. |
+
 Parameters marked with \* behave exactly the same as in `Text`
 
 
