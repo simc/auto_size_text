@@ -13,6 +13,9 @@ dependencies:
   auto_size_text:
     path: ../
 
+  bottom_navy_bar: ^4.2.0
+  material_design_icons_flutter: ^3.2.3695
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
