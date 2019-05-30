@@ -41,8 +41,6 @@ class AutoSizeGroup {
     _listeners.keys.toList().forEach((text) {
       if (text.mounted) {
         text._notifySync();
-      } else {
-        _listeners.remove(text);
       }
     });
   }
