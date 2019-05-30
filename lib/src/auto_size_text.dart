@@ -217,11 +217,21 @@ class AutoSizeText extends StatefulWidget {
 
 class _AutoSizeTextState extends State<AutoSizeText> {
   @override
+  initState() {
+    super.initState();
+
+    if (widget.group != null) {
+      widget.group._register(this);
+    }
+  }
+
+  @override
   void didUpdateWidget(AutoSizeText oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (widget.group != null && oldWidget.group != widget.group) {
-      widget.group._register(this);
+    if (oldWidget.group != widget.group) {
+      oldWidget.group?._remove(this);
+      widget.group?._register(this);
     }
   }
 
