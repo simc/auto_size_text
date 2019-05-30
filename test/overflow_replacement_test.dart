@@ -13,8 +13,8 @@ void main() {
         height: 20,
         child: AutoSizeText(
           "XXXXXX",
-          style: TextStyle(fontSize: 20),
           overflowReplacement: Text("OVERFLOW!"),
+          minFontSize: 20,
         ),
       ),
     );

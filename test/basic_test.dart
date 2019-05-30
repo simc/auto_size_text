@@ -13,11 +13,7 @@ void main() {
   });
 
   testWidgets('Crash when text null', (tester) async {
-    await pump(
-      tester: tester,
-      widget: AutoSizeText(null),
-    );
-    expect(tester.takeException(), isAssertionError);
+    expect(() => AutoSizeText(null), throwsAssertionError);
   });
 
   testWidgets('Only text (rich)', (tester) async {
@@ -28,11 +24,7 @@ void main() {
   });
 
   testWidgets('Crash when text null (rich)', (tester) async {
-    await pump(
-      tester: tester,
-      widget: AutoSizeText.rich(null),
-    );
-    expect(tester.takeException(), isAssertionError);
+    expect(() => AutoSizeText.rich(null), throwsAssertionError);
   });
 
   testWidgets('Uses style fontSize', (tester) async {
