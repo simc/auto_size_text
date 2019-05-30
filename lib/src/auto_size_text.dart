@@ -220,7 +220,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
   void didUpdateWidget(AutoSizeText oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (widget.group != null) {
+    if (widget.group != null && oldWidget.group != widget.group) {
       widget.group._register(this);
     }
   }
