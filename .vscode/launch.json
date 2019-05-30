@@ -11,13 +11,13 @@
             "name": "Demo",
             "request": "launch",
             "type": "dart",
-            "program": "./example/lib/demo.dart",
+            "program": "./demo/lib/main.dart",
         },
         {
             "name": "Demo Release",
             "request": "launch",
             "type": "dart",
-            "program": "./example/lib/demo.dart",
+            "program": "./demo/lib/main.dart",
             "flutterMode": "release"
         }
     ]

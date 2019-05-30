@@ -1,4 +1,4 @@
-name: example
+name: demo
 description: AutoSizeText Demo App
 
 version: 1.0.0+1
@@ -17,7 +17,7 @@ dependencies:
   material_design_icons_flutter: ^3.2.3695
 
 dev_dependencies:
-  flutter_test:
+  flutter_test: 
     sdk: flutter
 
 flutter:
