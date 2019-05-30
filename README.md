@@ -10,8 +10,9 @@ Flutter widget that automatically resizes text to fit perfectly within its bound
 - [Documentation](https://pub.dartlang.org/documentation/auto_size_text/latest/auto_size_text/AutoSizeText-class.html)
 - [Pub Package](https://pub.dartlang.org/packages/auto_size_text)
 - [GitHub Repository](https://github.com/leisim/auto_size_text)
+- [Online Demo](https://appetize.io/app/w352kxbnz51c6pfvxrdvxcb3xw?device=nexus5&scale=100&orientation=landscape&osVersion=8.1&deviceColor=black)
 
-Also check out the [superpower](https://github.com/leisim/superpower) plugin ðŸ¦„
+I'd love to see the apps you create with `AutoSizeText`. [Drop me a line](mailto:simonleier@gmail.com) if you like :)
 
 
 ![](https://raw.githubusercontent.com/leisim/auto_size_text/master/screenshots/maxlines.gif)
@@ -20,7 +21,7 @@ Also check out the [superpower](https://github.com/leisim/superpower) plugin ðŸ¦
 
 - [Usage](#usage)
   - [maxLines](#maxlines)
-  - [minFontSize & maxFontSize](#minFontSize--maxFontSize)
+  - [minFontSize & maxFontSize](#minfontsize--maxfontsize)
   - [group](#group)
   - [stepGranularity](#stepgranularity)
   - [presetFontSizes](#presetfontsizes)
@@ -30,7 +31,7 @@ Also check out the [superpower](https://github.com/leisim/superpower) plugin ðŸ¦
 - [Performance](#performance)
 - [Troubleshooting](#roubleshooting)
   - [Missing bounds](#missing-bounds)
-  - [MinFontSize too large](#minFontSize-too-large)
+  - [MinFontSize too large](#minfontsize-too-large)
 
 
 ## Usage
@@ -187,8 +188,8 @@ But it does not mean that all `TextSpan`s have at least font size `5`.
 |---|---|
 | `key`* | Controls how one widget replaces another widget in the tree. |
 | `style`* | If non-null, the style to use for this text |
-| `minFontSize` | The **minimum** text size constraint to be used when auto-sizing text. *Is being ignored if `presetFontSizes` is set.*  |
-| `maxFontSize` | The **maximum** text size constraint to be used when auto-sizing text. *Is being ignored if `presetFontSizes` is set.* |
+| `minFontSize` | The **minimum** text size constraint to be used when auto-sizing text. <br>*Is being ignored if `presetFontSizes` is set.*  |
+| `maxFontSize` | The **maximum** text size constraint to be used when auto-sizing text. <br>*Is being ignored if `presetFontSizes` is set.* |
 | `stepGranularity` | The step size in which the font size is being adapted to constraints. |
 | `presetFontSizes` | Predefines all the possible font sizes.<br> **Important:** `presetFontSizes` have to be in descending order.  |
 | `group` | Synchronizes the size of multiple `AutoSizeText`s |

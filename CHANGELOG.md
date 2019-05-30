@@ -1,7 +1,11 @@
-## 2.0.0-dev
+## 2.0.0-dev+2
 - Significant performance improvements
-- Disable word wrapping using `wordWrap: false`
+- Prevent word wrapping using `wordWrap: false`
 - Replacement widget in case of text overflow: `overflowReplacement`
+- Added `strutStyle` parameter from `Text`
+- Fixed problem in case the `AutoSizeTextGroup` changes
+- Improved documentation
+- Added many more tests
 
 ## 1.1.2
 - Fixed bug where system font scale was applied twice (thanks @jeffersonatsafe)

@@ -1,10 +1,10 @@
-name: demo
+name: example
 description: AutoSizeText Demo App
 
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.0.0-dev.68.0 <3.0.0" 
+  sdk: ">=2.1.0 <3.0.0" 
 
 dependencies:
   flutter:

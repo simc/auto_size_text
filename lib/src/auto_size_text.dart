@@ -16,7 +16,7 @@ class AutoSizeText extends StatefulWidget {
     this.style,
     this.strutStyle,
     this.minFontSize = 12,
-    this.maxFontSize,
+    this.maxFontSize = double.infinity,
     this.stepGranularity = 1,
     this.presetFontSizes,
     this.group,
@@ -32,16 +32,6 @@ class AutoSizeText extends StatefulWidget {
     this.semanticsLabel,
   })  : assert(data != null,
             'A non-null String must be provided to a AutoSizeText widget.'),
-        assert(stepGranularity >= 0.1,
-            'StepGranularity has to be greater than or equal to 0.1.'),
-        assert(minFontSize == null || minFontSize >= 0,
-            "MinFontSize has to be greater than or equal to 0."),
-        assert(maxFontSize == null || maxFontSize > 0,
-            "MaxFontSize has to be greater than 0."),
-        assert(overflow == null || overflowReplacement == null,
-            'Either overflow or overflowReplacement have to be null.'),
-        assert(maxLines == null || maxLines > 0,
-            "MaxLines has to be grater than or equal to 1."),
         textSpan = null,
         super(key: key);
 
@@ -52,7 +42,7 @@ class AutoSizeText extends StatefulWidget {
     this.style,
     this.strutStyle,
     this.minFontSize = 12,
-    this.maxFontSize,
+    this.maxFontSize = double.infinity,
     this.stepGranularity = 1,
     this.presetFontSizes,
     this.group,
@@ -68,16 +58,6 @@ class AutoSizeText extends StatefulWidget {
     this.semanticsLabel,
   })  : assert(textSpan != null,
             'A non-null TextSpan must be provided to a AutoSizeText.rich widget.'),
-        assert(stepGranularity >= 0.1,
-            'StepGranularity has to be greater than or equal to 0.1.'),
-        assert(minFontSize == null || minFontSize >= 0,
-            "MinFontSize has to be greater than or equal to 0."),
-        assert(maxFontSize == null || maxFontSize > 0,
-            "MaxFontSize has to be greater than 0."),
-        assert(overflow == null || overflowReplacement == null,
-            'Either overflow or overflowReplacement have to be null.'),
-        assert(maxLines == null || maxLines > 0,
-            "MaxLines has to be grater than or equal to 1."),
         data = null,
         super(key: key);
 
@@ -97,6 +77,9 @@ class AutoSizeText extends StatefulWidget {
   /// the closest enclosing [DefaultTextStyle]. Otherwise, the style will
   /// replace the closest enclosing [DefaultTextStyle].
   final TextStyle style;
+
+  // The default font size if none is specified.
+  static const double _defaultFontSize = 14.0;
 
   /// The strut style to use. Strut style defines the strut, which sets minimum
   /// vertical layout metrics.
@@ -251,8 +234,15 @@ class _AutoSizeTextState extends State<AutoSizeText> {
       if (widget.style == null || widget.style.inherit) {
         style = defaultTextStyle.style.merge(widget.style);
       }
+      if (style.fontSize == null) {
+        style = style.copyWith(fontSize: AutoSizeText._defaultFontSize);
+      }
 
-      var result = _calculateFontSize(size, style, defaultTextStyle);
+      var maxLines = widget.maxLines ?? defaultTextStyle.maxLines;
+
+      _sanityCheck(style, maxLines);
+
+      var result = _calculateFontSize(size, style, maxLines);
       var fontSize = result[0];
       var textFits = result[1];
 
@@ -260,9 +250,9 @@ class _AutoSizeTextState extends State<AutoSizeText> {
 
       if (widget.group != null) {
         widget.group._updateFontSize(this, fontSize);
-        text = _buildText(widget.group._fontSize, style);
+        text = _buildText(widget.group._fontSize, style, maxLines);
       } else {
-        text = _buildText(fontSize, style);
+        text = _buildText(fontSize, style, maxLines);
       }
 
       if (widget.overflowReplacement != null && !textFits) {
@@ -273,8 +263,35 @@ class _AutoSizeTextState extends State<AutoSizeText> {
     });
   }
 
-  List _calculateFontSize(
-      BoxConstraints size, TextStyle style, DefaultTextStyle defaultStyle) {
+  void _sanityCheck(TextStyle style, int maxLines) {
+    assert(widget.overflow == null || widget.overflowReplacement == null,
+        'Either overflow or overflowReplacement have to be null.');
+    assert(maxLines == null || maxLines > 0,
+        "MaxLines has to be grater than or equal to 1.");
+
+    if (widget.presetFontSizes == null) {
+      assert(widget.stepGranularity >= 0.1,
+          'StepGranularity has to be greater than or equal to 0.1. It is not a good idea to resize the font with a higher accuracy.');
+      assert(widget.minFontSize >= 0,
+          "MinFontSize has to be greater than or equal to 0.");
+      assert(widget.maxFontSize > 0, "MaxFontSize has to be greater than 0.");
+      assert(widget.minFontSize <= widget.maxFontSize,
+          "MinFontSize has to be smaller or equal than maxFontSize.");
+      assert(widget.minFontSize / widget.stepGranularity % 1 == 0,
+          "MinFontSize has to be multiples of stepGranularity.");
+      if (widget.maxFontSize != double.infinity) {
+        assert(widget.maxFontSize / widget.stepGranularity % 1 == 0,
+            "MaxFontSize has to be multiples of stepGranularity.");
+      }
+      assert(style.fontSize / widget.stepGranularity % 1 == 0,
+          "FontSize has to be multiples of stepGranularity.");
+    } else {
+      assert(widget.presetFontSizes.isNotEmpty,
+          "PresetFontSizes has to be nonempty.");
+    }
+  }
+
+  List _calculateFontSize(BoxConstraints size, TextStyle style, int maxLines) {
     var span = TextSpan(
       style: widget.textSpan?.style ?? style,
       text: widget.textSpan?.text ?? widget.data,
@@ -282,33 +299,16 @@ class _AutoSizeTextState extends State<AutoSizeText> {
       recognizer: widget.textSpan?.recognizer,
     );
 
-    var maxLines = widget.maxLines ?? defaultStyle.maxLines;
-
     int left;
     int right;
 
     var presetFontSizes = widget.presetFontSizes?.reversed?.toList();
-
     if (presetFontSizes == null) {
-      var minFontSize = widget.minFontSize ?? 0;
-      var maxFontSize = widget.maxFontSize ?? double.infinity;
-      assert(minFontSize <= maxFontSize,
-          "MinFontSize has to be smaller or equal than maxFontSize.");
-      assert(minFontSize / widget.stepGranularity % 1 < 0.00001,
-          "MinFontSize has to be multiples of stepGranularity.");
-      if (widget.maxFontSize != null) {
-        assert(maxFontSize / widget.stepGranularity % 1 < 0.00001,
-            "MaxFontSize has to be multiples of stepGranularity.");
-      }
-      assert(style.fontSize / widget.stepGranularity % 1 < 0.00001,
-          "FontSize has to be multiples of stepGranularity.");
-
-      left = (minFontSize / widget.stepGranularity).round();
-      var initialFontSize = style.fontSize.clamp(minFontSize, maxFontSize);
+      left = (widget.minFontSize / widget.stepGranularity).round();
+      var initialFontSize =
+          style.fontSize.clamp(widget.minFontSize, widget.maxFontSize);
       right = (initialFontSize / widget.stepGranularity).round();
     } else {
-      assert(presetFontSizes.isNotEmpty, "PresetFontSizes has to be nonempty.");
-
       left = 0;
       right = presetFontSizes.length - 1;
     }
@@ -360,7 +360,11 @@ class _AutoSizeTextState extends State<AutoSizeText> {
       TextSpan text, double scale, int maxLines, BoxConstraints constraints) {
     if (!widget.wrapWords) {
       var wordCount = text.toPlainText().split(RegExp('\\s+')).length;
-      maxLines = maxLines.clamp(1, wordCount);
+      if (maxLines == null) {
+        maxLines = wordCount;
+      } else {
+        maxLines = maxLines.clamp(1, wordCount);
+      }
     }
 
     var tp = TextPainter(
@@ -380,7 +384,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
         tp.width > constraints.maxWidth);
   }
 
-  Widget _buildText(double fontSize, TextStyle style) {
+  Widget _buildText(double fontSize, TextStyle style, int maxLines) {
     if (widget.data != null) {
       return Text(
         widget.data,
@@ -392,7 +396,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
         softWrap: widget.softWrap,
         overflow: widget.overflow,
         textScaleFactor: 1,
-        maxLines: widget.maxLines,
+        maxLines: maxLines,
         semanticsLabel: widget.semanticsLabel,
       );
     } else {
@@ -406,7 +410,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
         softWrap: widget.softWrap,
         overflow: widget.overflow,
         textScaleFactor: fontSize / style.fontSize,
-        maxLines: widget.maxLines,
+        maxLines: maxLines,
         semanticsLabel: widget.semanticsLabel,
       );
     }

@@ -13,9 +13,9 @@ before_script:
   - git clone https://github.com/flutter/flutter.git -b beta
   - ./flutter/bin/flutter doctor
 script:
-  - flutter/bin/flutter pub get
-  - flutter/bin/cache/dart-sdk/bin/dart tool/grind.dart
-  - flutter/bin/flutter test --coverage --coverage-path=coverage.lcov
+  - ./flutter/bin/flutter pub get
+  - ./flutter/bin/cache/dart-sdk/bin/dartfmt -n --set-exit-if-changed ./lib ./test ./example || travis_terminate 1
+  - ./flutter/bin/flutter test --coverage --coverage-path=coverage.lcov
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 cache:
