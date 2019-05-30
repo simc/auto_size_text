@@ -5,18 +5,34 @@ import 'package:flutter_test/flutter_test.dart';
 import 'utils.dart';
 
 void main() {
-  testWidgets('Only Data', (tester) async {
+  testWidgets('Only Text', (tester) async {
     await pump(
       tester: tester,
       widget: AutoSizeText("Some Text"),
     );
   });
 
-  testWidgets('Only Data (rich)', (tester) async {
+  testWidgets('Crash when text null', (tester) async {
+    await pump(
+      tester: tester,
+      widget: AutoSizeText(null),
+    );
+    expect(tester.takeException(), isAssertionError);
+  });
+
+  testWidgets('Only text (rich)', (tester) async {
     await pump(
       tester: tester,
       widget: AutoSizeText.rich(TextSpan(text: "Some Text")),
     );
+  });
+
+  testWidgets('Crash when text null (rich)', (tester) async {
+    await pump(
+      tester: tester,
+      widget: AutoSizeText.rich(null),
+    );
+    expect(tester.takeException(), isAssertionError);
   });
 
   testWidgets('Uses style fontSize', (tester) async {
