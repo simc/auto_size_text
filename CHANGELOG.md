@@ -1,4 +1,4 @@
-## 2.0.0-dev+2
+## 2.0.0
 - Significant performance improvements
 - Prevent word wrapping using `wordWrap: false`
 - Replacement widget in case of text overflow: `overflowReplacement`
