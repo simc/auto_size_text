@@ -1,4 +1,4 @@
-<img src="art/logo.svg" width="300"/>
+<img src="https://raw.githubusercontent.com/leisim/auto_size_text/master/art/logo.svg?sanitize=true" width="300"/>
 
 [![Travis](https://img.shields.io/travis/com/leisim/auto_size_text/master.svg)](https://travis-ci.com/leisim/auto_size_text) [![codecov](https://codecov.io/gh/leisim/auto_size_text/branch/master/graph/badge.svg)](https://codecov.io/gh/leisim/auto_size_text) [![Version](https://img.shields.io/pub/v/auto_size_text.svg)](https://pub.dartlang.org/packages/auto_size_text) ![Runtime](https://img.shields.io/badge/dart-%3E%3D2.0-brightgreen.svg) ![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
 
