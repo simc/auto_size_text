@@ -1,3 +1,6 @@
+## 2.0.0+1
+- Added logo
+
 ## 2.0.0
 - Significant performance improvements
 - Prevent word wrapping using `wordWrap: false`

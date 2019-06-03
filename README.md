@@ -1,4 +1,4 @@
-# AutoSizeText
+<img src="art/logo.svg" width="240"/>
 
 [![Travis](https://img.shields.io/travis/com/leisim/auto_size_text/master.svg)](https://travis-ci.com/leisim/auto_size_text) [![codecov](https://codecov.io/gh/leisim/auto_size_text/branch/master/graph/badge.svg)](https://codecov.io/gh/leisim/auto_size_text) [![Version](https://img.shields.io/pub/v/auto_size_text.svg)](https://pub.dartlang.org/packages/auto_size_text) ![Runtime](https://img.shields.io/badge/dart-%3E%3D2.0-brightgreen.svg) ![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
 
@@ -15,7 +15,7 @@ Flutter widget that automatically resizes text to fit perfectly within its bound
 I'd love to see the apps you create with `AutoSizeText`. [Drop me a line](mailto:simonleier@gmail.com) if you like :)
 
 
-![](https://raw.githubusercontent.com/leisim/auto_size_text/master/screenshots/maxlines.gif)
+![](https://raw.githubusercontent.com/leisim/auto_size_text/master/art/maxlines.gif)
 
 ## Contents
 
@@ -80,7 +80,7 @@ AutoSizeText(
 )
 ```
 
-![](https://raw.githubusercontent.com/leisim/auto_size_text/master/screenshots/minfontsize.gif)
+![](https://raw.githubusercontent.com/leisim/auto_size_text/master/art/minfontsize.gif)
 
 
 ### group
@@ -107,7 +107,7 @@ AutoSizeText(
 );
 ```
 
-![](https://raw.githubusercontent.com/leisim/auto_size_text/master/screenshots/group.gif)
+![](https://raw.githubusercontent.com/leisim/auto_size_text/master/art/group.gif)
 
 
 ### stepGranularity
@@ -126,7 +126,7 @@ AutoSizeText(
 )
 ```
 
-![](https://raw.githubusercontent.com/leisim/auto_size_text/master/screenshots/stepgranularity.gif)
+![](https://raw.githubusercontent.com/leisim/auto_size_text/master/art/stepgranularity.gif)
 
 
 ### presetFontSizes
@@ -142,7 +142,7 @@ AutoSizeText(
 )
 ```
 
-![](https://raw.githubusercontent.com/leisim/auto_size_text/master/screenshots/presetfontsizes.gif)
+![](https://raw.githubusercontent.com/leisim/auto_size_text/master/art/presetfontsizes.gif)
 
 
 ### overflowReplacement
@@ -157,7 +157,7 @@ AutoSizeText(
 )
 ```
 
-![](https://raw.githubusercontent.com/leisim/auto_size_text/master/screenshots/overflowreplacement.gif)
+![](https://raw.githubusercontent.com/leisim/auto_size_text/master/art/overflowreplacement.gif)
 
 
 ## Rich Text
@@ -179,7 +179,7 @@ AutoSizeText.rich(
 The text will be at least 1/4 of its original size (5 / 20 = 1/4).  
 But it does not mean that all `TextSpan`s have at least font size `5`.
 
-![](https://raw.githubusercontent.com/leisim/auto_size_text/master/screenshots/maxlines_rich.gif)
+![](https://raw.githubusercontent.com/leisim/auto_size_text/master/art/maxlines_rich.gif)
 
 
 ## Parameters
