@@ -1,3 +1,7 @@
+## 2.0.1
+- Allow fractional font sizes again
+- Fixed bug with `wrapWords` not working
+
 ## 2.0.0+2
 - Added logo
 

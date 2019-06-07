@@ -293,8 +293,6 @@ class _AutoSizeTextState extends State<AutoSizeText> {
         assert(widget.maxFontSize / widget.stepGranularity % 1 == 0,
             "MaxFontSize has to be multiples of stepGranularity.");
       }
-      assert(style.fontSize / widget.stepGranularity % 1 == 0,
-          "FontSize has to be multiples of stepGranularity.");
     } else {
       assert(widget.presetFontSizes.isNotEmpty,
           "PresetFontSizes has to be nonempty.");
@@ -309,51 +307,47 @@ class _AutoSizeTextState extends State<AutoSizeText> {
       recognizer: widget.textSpan?.recognizer,
     );
 
+    var userScale =
+        widget.textScaleFactor ?? MediaQuery.textScaleFactorOf(context);
+
     int left;
     int right;
 
     var presetFontSizes = widget.presetFontSizes?.reversed?.toList();
     if (presetFontSizes == null) {
-      left = (widget.minFontSize / widget.stepGranularity).round();
-      var initialFontSize =
+      var defaultFontSize =
           style.fontSize.clamp(widget.minFontSize, widget.maxFontSize);
-      right = (initialFontSize / widget.stepGranularity).round();
+      var defaultScale = defaultFontSize * userScale / style.fontSize;
+      if (_checkTextFits(span, defaultScale, maxLines, size)) {
+        return [defaultFontSize, true];
+      }
+
+      left = (widget.minFontSize / widget.stepGranularity).floor();
+      right = (defaultFontSize / widget.stepGranularity).ceil();
     } else {
       left = 0;
       right = presetFontSizes.length - 1;
     }
 
-    var userScale =
-        widget.textScaleFactor ?? MediaQuery.textScaleFactorOf(context);
-
-    bool _testValue(int value) {
+    bool lastValueFits = false;
+    while (left <= right) {
+      int mid = (left + (right - left) / 2).toInt();
       double scale;
       if (presetFontSizes == null) {
-        scale = value * userScale * widget.stepGranularity / style.fontSize;
+        scale = mid * userScale * widget.stepGranularity / style.fontSize;
       } else {
-        scale = presetFontSizes[value] * userScale / style.fontSize;
+        scale = presetFontSizes[mid] * userScale / style.fontSize;
       }
-      return _checkTextFits(span, scale, maxLines, size);
+      if (_checkTextFits(span, scale, maxLines, size)) {
+        left = mid + 1;
+        lastValueFits = true;
+      } else {
+        right = mid - 1;
+      }
     }
 
-    bool lastValueFits = false;
-    if (_testValue(right)) {
-      lastValueFits = true;
-    } else {
-      right -= 1;
-      while (left <= right) {
-        int mid = (left + (right - left) / 2).toInt();
-        if (_testValue(mid)) {
-          left = mid + 1;
-          lastValueFits = true;
-        } else {
-          right = mid - 1;
-        }
-      }
-
-      if (!lastValueFits) {
-        right += 1;
-      }
+    if (!lastValueFits) {
+      right += 1;
     }
 
     double fontSize;
@@ -369,11 +363,26 @@ class _AutoSizeTextState extends State<AutoSizeText> {
   bool _checkTextFits(
       TextSpan text, double scale, int maxLines, BoxConstraints constraints) {
     if (!widget.wrapWords) {
-      var wordCount = text.toPlainText().split(RegExp('\\s+')).length;
-      if (maxLines == null) {
-        maxLines = wordCount;
-      } else {
-        maxLines = maxLines.clamp(1, wordCount);
+      var words = text.toPlainText().split(RegExp('\\s+'));
+
+      var wordWrapTp = TextPainter(
+        text: TextSpan(
+          style: text.style,
+          text: words.join('\n'),
+        ),
+        textAlign: widget.textAlign ?? TextAlign.left,
+        textDirection: widget.textDirection ?? TextDirection.ltr,
+        textScaleFactor: scale ?? 1,
+        maxLines: words.length,
+        locale: widget.locale,
+        strutStyle: widget.strutStyle,
+      );
+
+      wordWrapTp.layout(maxWidth: constraints.maxWidth);
+
+      if (wordWrapTp.didExceedMaxLines ||
+          wordWrapTp.width > constraints.maxWidth) {
+        return false;
       }
     }
 

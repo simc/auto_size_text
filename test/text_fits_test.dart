@@ -103,4 +103,36 @@ void main() {
       ),
     );
   });
+
+  testWidgets('Handle style.fontSize fraction', (tester) async {
+    await pumpAndExpectFontSize(
+      tester: tester,
+      expectedFontSize: 33.5,
+      widget: SizedBox(
+        width: 201,
+        height: 40,
+        child: AutoSizeText(
+          "XXXXXX",
+          style: TextStyle(fontSize: 33.5),
+          maxLines: 1,
+          stepGranularity: 1,
+        ),
+      ),
+    );
+
+    await pumpAndExpectFontSize(
+      tester: tester,
+      expectedFontSize: 33,
+      widget: SizedBox(
+        width: 200.9,
+        height: 40,
+        child: AutoSizeText(
+          "XXXXXX",
+          style: TextStyle(fontSize: 33.5),
+          maxLines: 1,
+          stepGranularity: 1,
+        ),
+      ),
+    );
+  });
 }
