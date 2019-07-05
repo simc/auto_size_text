@@ -11,7 +11,9 @@ assignees: ''
 Please tell me exactly how to reproduce the problem you are running into.
 
 **Code sample**
+```
 Provide a few simple lines of code to show your problem.
+```
 
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
