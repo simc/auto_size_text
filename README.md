@@ -1,18 +1,18 @@
 # ![](https://raw.githubusercontent.com/leisim/auto_size_text/master/art/logo.svg?sanitize=true)
 
-[![Travis](https://img.shields.io/travis/com/leisim/auto_size_text/master.svg)](https://travis-ci.com/leisim/auto_size_text) [![codecov](https://codecov.io/gh/leisim/auto_size_text/branch/master/graph/badge.svg)](https://codecov.io/gh/leisim/auto_size_text) [![Version](https://img.shields.io/pub/v/auto_size_text.svg)](https://pub.dartlang.org/packages/auto_size_text) ![Runtime](https://img.shields.io/badge/dart-%3E%3D2.0-brightgreen.svg) ![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
+[![Travis](https://img.shields.io/travis/com/leisim/auto_size_text/master.svg)](https://travis-ci.com/leisim/auto_size_text) [![codecov](https://codecov.io/gh/leisim/auto_size_text/branch/master/graph/badge.svg)](https://codecov.io/gh/leisim/auto_size_text) [![Version](https://img.shields.io/pub/v/auto_size_text.svg)](https://pub.dev/packages/auto_size_text) ![Runtime](https://img.shields.io/badge/dart-%3E%3D2.0-brightgreen.svg) ![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
 
 Flutter widget that automatically resizes text to fit perfectly within its bounds.
 
 **Show some ❤️ and star the repo to support the project**
 
 ### Resources:
-- [Documentation](https://pub.dartlang.org/documentation/auto_size_text/latest/auto_size_text/AutoSizeText-class.html)
-- [Pub Package](https://pub.dartlang.org/packages/auto_size_text)
+- [Documentation](https://pub.dev/documentation/auto_size_text/latest/auto_size_text/AutoSizeText-class.html)
+- [Pub Package](https://pub.dev/packages/auto_size_text)
 - [GitHub Repository](https://github.com/leisim/auto_size_text)
 - [Online Demo](https://appetize.io/app/w352kxbnz51c6pfvxrdvxcb3xw?device=nexus5&scale=100&orientation=landscape&osVersion=8.1&deviceColor=black)
 
-I'd love to see the apps you create with `AutoSizeText`. [Drop me a line](mailto:simonleier@gmail.com) if you like :)
+Also check out the blazing fast key-value store [hive](https://pub.dev/packages/hive)...
 
 
 ![](https://raw.githubusercontent.com/leisim/auto_size_text/master/art/maxlines.gif)

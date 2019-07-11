@@ -1,3 +1,6 @@
+## 2.0.2
+- Fixed bug where `textScaleFactor` was not taken into account (thanks @Kavantix)
+
 ## 2.0.1
 - Allow fractional font sizes again
 - Fixed bug with `wrapWords` not working
