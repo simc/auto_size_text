@@ -75,4 +75,16 @@ void main() {
     expect(richText.overflow, TextOverflow.ellipsis);
     expect(richText.maxLines, 17);
   });
+
+  testWidgets('Used scale if initial fontSize fits (#25)', (tester) async {
+    await pumpAndExpectFontSize(
+      tester: tester,
+      expectedFontSize: 60,
+      widget: AutoSizeText(
+        "Some Text",
+        style: TextStyle(fontSize: 15),
+        textScaleFactor: 4,
+      ),
+    );
+  });
 }
