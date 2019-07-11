@@ -319,7 +319,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
           style.fontSize.clamp(widget.minFontSize, widget.maxFontSize);
       var defaultScale = defaultFontSize * userScale / style.fontSize;
       if (_checkTextFits(span, defaultScale, maxLines, size)) {
-        return [defaultFontSize, true];
+        return [defaultFontSize * userScale, true];
       }
 
       left = (widget.minFontSize / widget.stepGranularity).floor();
