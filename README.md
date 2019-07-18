@@ -15,7 +15,7 @@ Flutter widget that automatically resizes text to fit perfectly within its bound
 Also check out the blazing fast key-value store [hive](https://pub.dev/packages/hive).
 
 
-![](https://raw.githubusercontent.com/leisim/auto_size_text/master/art/maxlines.gif)
+![](https://raw.githubusercontent.com/leisim/auto_size_text/master/.github/art/maxlines.gif)
 
 ## Contents
 
@@ -80,7 +80,7 @@ AutoSizeText(
 )
 ```
 
-![](https://raw.githubusercontent.com/leisim/auto_size_text/master/art/minfontsize.gif)
+![](https://raw.githubusercontent.com/leisim/auto_size_text/master/.github/art/minfontsize.gif)
 
 
 ### group
@@ -107,7 +107,7 @@ AutoSizeText(
 );
 ```
 
-![](https://raw.githubusercontent.com/leisim/auto_size_text/master/art/group.gif)
+![](https://raw.githubusercontent.com/leisim/auto_size_text/master/.github/art/group.gif)
 
 
 ### stepGranularity
@@ -126,7 +126,7 @@ AutoSizeText(
 )
 ```
 
-![](https://raw.githubusercontent.com/leisim/auto_size_text/master/art/stepgranularity.gif)
+![](https://raw.githubusercontent.com/leisim/auto_size_text/master/.github/art/stepgranularity.gif)
 
 
 ### presetFontSizes
@@ -142,7 +142,7 @@ AutoSizeText(
 )
 ```
 
-![](https://raw.githubusercontent.com/leisim/auto_size_text/master/art/presetfontsizes.gif)
+![](https://raw.githubusercontent.com/leisim/auto_size_text/master/.github/art/presetfontsizes.gif)
 
 
 ### overflowReplacement
@@ -157,7 +157,7 @@ AutoSizeText(
 )
 ```
 
-![](https://raw.githubusercontent.com/leisim/auto_size_text/master/art/overflowreplacement.gif)
+![](https://raw.githubusercontent.com/leisim/auto_size_text/master/.github/art/overflowreplacement.gif)
 
 
 ## Rich Text
@@ -179,7 +179,7 @@ AutoSizeText.rich(
 The text will be at least 1/4 of its original size (5 / 20 = 1/4).  
 But it does not mean that all `TextSpan`s have at least font size `5`.
 
-![](https://raw.githubusercontent.com/leisim/auto_size_text/master/art/maxlines_rich.gif)
+![](https://raw.githubusercontent.com/leisim/auto_size_text/master/.github/art/maxlines_rich.gif)
 
 
 ## Parameters

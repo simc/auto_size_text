@@ -2,6 +2,7 @@
 .dart_tool/
 .idea/
 .iml
+.vscode/
 
 .packages
 .pub/
