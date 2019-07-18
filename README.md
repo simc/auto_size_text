@@ -12,7 +12,7 @@ Flutter widget that automatically resizes text to fit perfectly within its bound
 - [GitHub Repository](https://github.com/leisim/auto_size_text)
 - [Online Demo](https://appetize.io/app/w352kxbnz51c6pfvxrdvxcb3xw?device=nexus5&scale=100&orientation=landscape&osVersion=8.1&deviceColor=black)
 
-Also check out the blazing fast key-value store [hive](https://pub.dev/packages/hive).
+Also check out the blazing fast key-value store [hive](https://github.com/leisim/hive).
 
 
 ![](https://raw.githubusercontent.com/leisim/auto_size_text/master/.github/art/maxlines.gif)

@@ -1,3 +1,6 @@
+## 2.0.2+1
+- Fixed screenshots
+
 ## 2.0.2
 - Fixed bug where `textScaleFactor` was not taken into account (thanks @Kavantix)
 
