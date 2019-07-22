@@ -13,7 +13,7 @@ void main() {
         width: 500,
         height: 100,
         child: AutoSizeText(
-          "XXXXX",
+          'XXXXX',
           presetFontSizes: [100, 50, 5],
         ),
       ),
@@ -26,7 +26,7 @@ void main() {
         width: 300,
         height: 100,
         child: AutoSizeText(
-          "XXXXX",
+          'XXXXX',
           presetFontSizes: [100, 50, 5],
         ),
       ),
@@ -39,7 +39,7 @@ void main() {
         width: 20,
         height: 100,
         child: AutoSizeText(
-          "XXXXX",
+          'XXXXX',
           presetFontSizes: [100, 50, 5],
         ),
       ),

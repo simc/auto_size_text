@@ -46,12 +46,12 @@ List<MaterialColor> colors = [
 ];
 
 List<String> demoNames = [
-  "MaxLines",
-  "MinFontSize",
-  "Group",
-  "StepGranularity",
-  "PresetFontSizes",
-  "OverflowReplacement",
+  'MaxLines',
+  'MinFontSize',
+  'Group',
+  'StepGranularity',
+  'PresetFontSizes',
+  'OverflowReplacement',
 ];
 
 class _DemoAppState extends State<DemoApp> {
@@ -69,7 +69,7 @@ class _DemoAppState extends State<DemoApp> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Text(
-                _richText ? "Rich Text" : "Normal Text",
+                _richText ? 'Rich Text' : 'Normal Text',
                 style: TextStyle(color: Colors.black, inherit: true),
               ),
               Switch(

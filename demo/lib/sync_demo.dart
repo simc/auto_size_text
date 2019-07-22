@@ -53,12 +53,12 @@ class _SyncDemoState extends State<SyncDemo>
   Widget build(BuildContext context) {
     var group = AutoSizeGroup();
     var text =
-        "These AutoSizeTexts fit the available space and synchronize their text sizes.";
+        'These AutoSizeTexts fit the available space and synchronize their text sizes.';
     return Column(
       children: <Widget>[
         Expanded(
           child: TextCard(
-            title: "AutoSizeText 1",
+            title: 'AutoSizeText 1',
             child: Visibility(
               visible: !widget.richText,
               child: AutoSizeText(
@@ -89,7 +89,7 @@ class _SyncDemoState extends State<SyncDemo>
               Flexible(
                 flex: (_scale * 1000).round(),
                 child: TextCard(
-                  title: "AutoSizeText 2",
+                  title: 'AutoSizeText 2',
                   child: Visibility(
                     visible: !widget.richText,
                     child: AutoSizeText(

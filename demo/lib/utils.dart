@@ -11,9 +11,9 @@ TextSpan spanFromString(String text) {
     if (index == 3) index = 0;
     return TextSpan(
       style: styles[index++],
-      text: word + " ",
+      text: word + ' ',
     );
   }).toList();
 
-  return TextSpan(text: "", children: spans);
+  return TextSpan(text: '', children: spans);
 }

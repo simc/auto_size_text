@@ -8,7 +8,7 @@ void main() {
   testWidgets('Only Text', (tester) async {
     await pump(
       tester: tester,
-      widget: AutoSizeText("Some Text"),
+      widget: AutoSizeText('Some Text'),
     );
   });
 
@@ -19,7 +19,7 @@ void main() {
   testWidgets('Only text (rich)', (tester) async {
     await pump(
       tester: tester,
-      widget: AutoSizeText.rich(TextSpan(text: "Some Text")),
+      widget: AutoSizeText.rich(TextSpan(text: 'Some Text')),
     );
   });
 
@@ -32,7 +32,7 @@ void main() {
       tester: tester,
       expectedFontSize: 34,
       widget: AutoSizeText(
-        "Some Text",
+        'Some Text',
         style: TextStyle(fontSize: 34),
       ),
     );
@@ -43,13 +43,13 @@ void main() {
       tester: tester,
       expectedFontSize: 35,
       widget: AutoSizeText.rich(
-        TextSpan(text: "Some Text"),
+        TextSpan(text: 'Some Text'),
         style: TextStyle(fontSize: 35),
       ),
     );
   });
 
-  testWidgets("Respects inherit style", (tester) async {
+  testWidgets('Respects inherit style', (tester) async {
     var defaultStyle = TextStyle(
       fontSize: 20.0,
       color: Colors.yellow,
@@ -63,7 +63,7 @@ void main() {
         overflow: TextOverflow.ellipsis,
         maxLines: 17,
         child: AutoSizeText(
-          "AutoSizeText Test",
+          'AutoSizeText Test',
         ),
       ),
     );
@@ -81,7 +81,7 @@ void main() {
       tester: tester,
       expectedFontSize: 60,
       widget: AutoSizeText(
-        "Some Text",
+        'Some Text',
         style: TextStyle(fontSize: 15),
         textScaleFactor: 4,
       ),

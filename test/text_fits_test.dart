@@ -12,7 +12,7 @@ void main() {
       widget: SizedBox(
         width: 100,
         child: AutoSizeText(
-          "XXXXX",
+          'XXXXX',
           style: TextStyle(fontSize: 60),
           maxLines: 1,
         ),
@@ -25,7 +25,7 @@ void main() {
       widget: SizedBox(
         width: 85,
         child: AutoSizeText(
-          "XXXXX",
+          'XXXXX',
           style: TextStyle(fontSize: 200),
           maxLines: 1,
         ),
@@ -38,7 +38,7 @@ void main() {
       widget: SizedBox(
         width: 6,
         child: AutoSizeText(
-          "XXXXX",
+          'XXXXX',
           style: TextStyle(fontSize: 20),
           maxLines: 1,
           minFontSize: 1,
@@ -52,7 +52,7 @@ void main() {
       widget: SizedBox(
         width: 100,
         child: AutoSizeText(
-          "XXXXX XXXXX XXXXX",
+          'XXXXX XXXXX XXXXX',
           style: TextStyle(fontSize: 30),
           maxLines: 3,
         ),
@@ -68,7 +68,7 @@ void main() {
       widget: SizedBox(
         height: 30,
         child: AutoSizeText(
-          "XXXXX",
+          'XXXXX',
           style: TextStyle(fontSize: 60),
           maxLines: 1,
         ),
@@ -82,7 +82,7 @@ void main() {
         width: 120,
         height: 60,
         child: AutoSizeText(
-          "XXXXXX",
+          'XXXXXX',
           style: TextStyle(fontSize: 200),
           maxLines: 2,
         ),
@@ -96,7 +96,7 @@ void main() {
         width: 120,
         height: 141,
         child: AutoSizeText(
-          "XX XX XX",
+          'XX XX XX',
           style: TextStyle(fontSize: 200),
           maxLines: 3,
         ),
@@ -112,7 +112,7 @@ void main() {
         width: 201,
         height: 40,
         child: AutoSizeText(
-          "XXXXXX",
+          'XXXXXX',
           style: TextStyle(fontSize: 33.5),
           maxLines: 1,
           stepGranularity: 1,
@@ -127,7 +127,7 @@ void main() {
         width: 200.9,
         height: 40,
         child: AutoSizeText(
-          "XXXXXX",
+          'XXXXXX',
           style: TextStyle(fontSize: 33.5),
           maxLines: 1,
           stepGranularity: 1,

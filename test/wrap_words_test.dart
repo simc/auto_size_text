@@ -12,7 +12,7 @@ void main() {
       widget: SizedBox(
         width: 100,
         child: AutoSizeText(
-          "XXXXX XXXXX",
+          'XXXXX XXXXX',
           style: TextStyle(fontSize: 25),
           wrapWords: false,
         ),
@@ -27,7 +27,7 @@ void main() {
       widget: SizedBox(
         width: 40,
         child: AutoSizeText(
-          "XXXXX",
+          'XXXXX',
           style: TextStyle(fontSize: 25),
           minFontSize: 10,
           maxLines: 10,
@@ -46,7 +46,7 @@ void main() {
       widget: SizedBox(
         width: 90,
         child: AutoSizeText(
-          "XXXXXX",
+          'XXXXXX',
           style: TextStyle(fontSize: 40),
           maxLines: 2,
         ),

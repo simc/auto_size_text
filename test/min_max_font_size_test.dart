@@ -6,10 +6,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'utils.dart';
 
 void main() {
-  testWidgets("Forces valid min and max fontSize", (tester) async {
+  testWidgets('Forces valid min and max fontSize', (tester) async {
     await tester.pumpWidget(
       AutoSizeText(
-        "AutoSizeText Test",
+        'AutoSizeText Test',
         style: TextStyle(fontSize: 25),
         minFontSize: -1,
       ),
@@ -18,7 +18,7 @@ void main() {
 
     await tester.pumpWidget(
       AutoSizeText(
-        "AutoSizeText Test",
+        'AutoSizeText Test',
         style: TextStyle(fontSize: 25),
         maxFontSize: 0,
       ),
@@ -27,7 +27,7 @@ void main() {
 
     await tester.pumpWidget(
       AutoSizeText(
-        "AutoSizeText Test",
+        'AutoSizeText Test',
         style: TextStyle(fontSize: 25),
         minFontSize: 20,
         maxFontSize: 10,
@@ -36,7 +36,7 @@ void main() {
     expect(tester.takeException(), isAssertionError);
   });
 
-  testWidgets("Respects minFontSize", (tester) async {
+  testWidgets('Respects minFontSize', (tester) async {
     await pumpAndExpectFontSize(
       tester: tester,
       expectedFontSize: 15,
@@ -44,7 +44,7 @@ void main() {
         width: 10,
         height: 10,
         child: AutoSizeText(
-          "AutoSizeText Test",
+          'AutoSizeText Test',
           style: TextStyle(fontSize: 25),
           minFontSize: 15,
         ),
@@ -52,7 +52,7 @@ void main() {
     );
   });
 
-  testWidgets("Is larger than minFontSize if enough space", (tester) async {
+  testWidgets('Is larger than minFontSize if enough space', (tester) async {
     await pumpAndExpectFontSize(
       tester: tester,
       expectedFontSize: 30,
@@ -60,7 +60,7 @@ void main() {
         width: 120,
         height: 40,
         child: AutoSizeText(
-          "XXXX",
+          'XXXX',
           style: TextStyle(fontSize: 30, fontFamily: 'Roboto'),
           minFontSize: 15,
         ),
@@ -68,14 +68,14 @@ void main() {
     );
   });
 
-  testWidgets("Respects maxFontSize", (tester) async {
+  testWidgets('Respects maxFontSize', (tester) async {
     await pumpAndExpectFontSize(
       tester: tester,
       expectedFontSize: 20,
       widget: DefaultTextStyle(
         style: TextStyle(fontSize: 30),
         child: AutoSizeText(
-          "AutoSizeText Test",
+          'AutoSizeText Test',
           maxFontSize: 20,
         ),
       ),
@@ -85,7 +85,7 @@ void main() {
       tester: tester,
       expectedFontSize: 20,
       widget: AutoSizeText(
-        "AutoSizeText Test",
+        'AutoSizeText Test',
         style: TextStyle(fontSize: 30),
         maxFontSize: 20,
       ),
@@ -95,7 +95,7 @@ void main() {
       tester: tester,
       expectedFontSize: 20,
       widget: AutoSizeText(
-        "AutoSizeText Test",
+        'AutoSizeText Test',
         style: TextStyle(fontSize: 20),
         maxFontSize: 30,
       ),

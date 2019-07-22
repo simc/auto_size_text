@@ -22,7 +22,7 @@ class GroupTestState extends State<GroupTest> {
             width: width1,
             height: 100,
             child: AutoSizeText(
-              "XXXXXX",
+              'XXXXXX',
               style: TextStyle(fontSize: 60),
               minFontSize: 1,
               maxLines: 1,
@@ -33,7 +33,7 @@ class GroupTestState extends State<GroupTest> {
             width: width2,
             height: 100.0,
             child: AutoSizeText(
-              "XXXXXX",
+              'XXXXXX',
               style: TextStyle(fontSize: 60),
               minFontSize: 1,
               maxLines: 1,
@@ -56,7 +56,7 @@ _expectFontSizes(WidgetTester tester, double fontSize) {
 }
 
 void main() {
-  testWidgets("Group sync", (tester) async {
+  testWidgets('Group sync', (tester) async {
     await tester.pumpWidget(GroupTest());
 
     _expectFontSizes(tester, 50);

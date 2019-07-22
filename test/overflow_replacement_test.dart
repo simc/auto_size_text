@@ -12,13 +12,13 @@ void main() {
         width: 100,
         height: 20,
         child: AutoSizeText(
-          "XXXXXX",
-          overflowReplacement: Text("OVERFLOW!"),
+          'XXXXXX',
+          overflowReplacement: Text('OVERFLOW!'),
           minFontSize: 20,
         ),
       ),
     );
-    expect(text.data, "OVERFLOW!");
+    expect(text.data, 'OVERFLOW!');
   });
 
   testWidgets('Overflow replacement not visible without overflow',
@@ -29,12 +29,12 @@ void main() {
         width: 100,
         height: 20,
         child: AutoSizeText(
-          "XXXXX",
+          'XXXXX',
           style: TextStyle(fontSize: 20),
-          overflowReplacement: Text("OVERFLOW!"),
+          overflowReplacement: Text('OVERFLOW!'),
         ),
       ),
     );
-    expect(text.data, "XXXXX");
+    expect(text.data, 'XXXXX');
   });
 }

@@ -14,13 +14,13 @@ class PresetFontSizesDemo extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedInput(
       text:
-          "This String has only three allowed sizes: 40, 20 and 14. It will be automatically resized to fit on 4 lines. With this setting, you have the most control.",
+          'This String has only three allowed sizes: 40, 20 and 14. It will be automatically resized to fit on 4 lines. With this setting, you have the most control.',
       builder: (input) {
         return Row(
           children: <Widget>[
             Expanded(
               child: TextCard(
-                title: "Text",
+                title: 'Text',
                 child: !richText
                     ? Text(
                         input,
@@ -37,7 +37,7 @@ class PresetFontSizesDemo extends StatelessWidget {
             SizedBox(width: 10.0),
             Expanded(
               child: TextCard(
-                title: "AutoSizeText",
+                title: 'AutoSizeText',
                 child: !richText
                     ? AutoSizeText(
                         input,

@@ -13,13 +13,13 @@ class MaxlinesDemo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedInput(
-      text: "This String will be automatically resized to fit on two lines.",
+      text: 'This String will be automatically resized to fit on two lines.',
       builder: (input) {
         return Row(
           children: <Widget>[
             Expanded(
               child: TextCard(
-                title: "Text",
+                title: 'Text',
                 child: !richText
                     ? Text(
                         input,
@@ -34,7 +34,7 @@ class MaxlinesDemo extends StatelessWidget {
             SizedBox(width: 10.0),
             Expanded(
               child: TextCard(
-                title: "AutoSizeText",
+                title: 'AutoSizeText',
                 child: !richText
                     ? AutoSizeText(
                         input,

@@ -40,7 +40,7 @@ Also check out the blazing fast key-value store [hive](https://github.com/leisim
 
 ```dart
 AutoSizeText(
-  "The text to display",
+  'The text to display',
   style: TextStyle(fontSize: 20),
   maxLines: 2,
 )
@@ -53,7 +53,7 @@ The `maxLines` parameter works like you are used to with the `Text` widget. If t
 
 ```dart
 AutoSizeText(
-  "A really long String",
+  'A really long String',
   style: TextStyle(fontSize: 30),
   maxLines: 2,
 )
@@ -72,7 +72,7 @@ With `minFontSize` you can specify the smallest possible font size. If the text 
 
 ```dart
 AutoSizeText(
-  "A really long String",
+  'A really long String',
   style: TextStyle(fontSize: 30),
   minFontSize: 18,
   maxLines: 4,
@@ -97,12 +97,12 @@ An instance of `AutoSizeGroup` represents one group. Pass this instance to all `
 var myGroup = AutoSizeGroup();
 
 AutoSizeText(
-  "Text 1",
+  'Text 1',
   group: myGroup,
 );
 
 AutoSizeText(
-  "Text 2",
+  'Text 2',
   group: myGroup,
 );
 ```
@@ -117,7 +117,7 @@ The `AutoSizeText` will try each font size, starting with `TextStyle.fontSize` u
 
 ```dart
 AutoSizeText(
-  "A really long String",
+  'A really long String',
   style: TextStyle(fontSize: 40),
   minFontSize: 10,
   stepGranularity: 10,
@@ -136,7 +136,7 @@ If `presetFontSizes` is set, `minFontSize`, `maxFontSize` and `stepGranularity` 
 
 ```dart
 AutoSizeText(
-  "A really long String",
+  'A really long String',
   presetFontSizes: [40, 20, 14],
   maxLines: 4,
 )
@@ -151,9 +151,9 @@ If the text is overflowing and does not fit its bounds, this widget is displayed
 
 ```dart
 AutoSizeText(
-  "A String tool long to display without extreme scaling or overflow.",
+  'A String tool long to display without extreme scaling or overflow.',
   maxLines: 1,
-  overflowReplacement: Text("Sorry String too long"),
+  overflowReplacement: Text('Sorry String too long'),
 )
 ```
 
@@ -171,7 +171,7 @@ parameter of `AutoSizeText` (or the inherited `fontSize` if none is set) is used
 For example:
 ```dart
 AutoSizeText.rich(
-  TextSpan(text: "A really long String"),
+  TextSpan(text: 'A really long String'),
   style: TextStyle(fontSize: 20),
   minFontSize: 5,
 )
@@ -187,6 +187,7 @@ But it does not mean that all `TextSpan`s have at least font size `5`.
 | Parameter | Description |
 |---|---|
 | `key`* | Controls how one widget replaces another widget in the tree. |
+| `textKey` | Sets the key for the resulting `Text` widget |
 | `style`* | If non-null, the style to use for this text |
 | `minFontSize` | The **minimum** text size constraint to be used when auto-sizing text. <br>*Is being ignored if `presetFontSizes` is set.*  |
 | `maxFontSize` | The **maximum** text size constraint to be used when auto-sizing text. <br>*Is being ignored if `presetFontSizes` is set.* |
@@ -202,7 +203,7 @@ But it does not mean that all `TextSpan`s have at least font size `5`.
 | `overflowReplacement` | If the text is overflowing and does not fit its bounds, this widget is displayed instead. |
 | `textScaleFactor`* | The number of font pixels for each logical pixel. Also affects `minFontSize`, `maxFontSize` and `presetFontSizes`. |
 | `maxLines` | An optional maximum number of lines for the text to span. |
-| `semanticsLabel` | An alternative semantics label for this text. |
+| `semanticsLabel`* | An alternative semantics label for this text. |
 
 Parameters marked with \* behave exactly the same as in `Text`
 
@@ -226,7 +227,7 @@ If `AutoSizeText` overflows or does not resize the text, you should check if it 
 Row(
   children: <Widget>[
     AutoSizeText(
-      "Here is a very long text, which should be resized",
+      'Here is a very long text, which should be resized',
       maxLines: 1,
     ),
   ],
@@ -241,7 +242,7 @@ Row(
   children: <Widget>[
     Expanded( // Constrains AutoSizeText to the width of the Row
       child: AutoSizeText(
-        "Here is a very long text, which should be resized",
+        'Here is a very long text, which should be resized',
         maxLines: 1,
       )
     ),
@@ -261,7 +262,7 @@ Further explanation can be found [here](https://stackoverflow.com/a/53908204). I
 ```dart
 AutoSizeText.rich(
   TextSpan(
-    text: "Text that will not be resized correctly in some cases",
+    text: 'Text that will not be resized correctly in some cases',
     style: TextStyle(fontSize: 200),
   ),
 )
@@ -274,7 +275,7 @@ This rich text does not have a style so it will fall back to the default style (
 ```dart
 AutoSizeText.rich(
   TextSpan(
-    text: "Text that will be resized correctly",
+    text: 'Text that will be resized correctly',
     style: TextStyle(fontSize: 200),
   ),
   minFontSize: 0,
@@ -287,7 +288,7 @@ AutoSizeText.rich(
 Copyright (c) 2018 Simon Leier
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
+of this software and associated documentation files (the 'Software'), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
@@ -296,7 +297,7 @@ furnished to do so, subject to the following conditions:
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER

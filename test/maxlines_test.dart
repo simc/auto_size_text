@@ -9,7 +9,7 @@ void main() {
     await pump(
       tester: tester,
       widget: AutoSizeText(
-        "XXXXX",
+        'XXXXX',
         style: TextStyle(fontSize: 27),
         maxLines: 1,
       ),
@@ -22,7 +22,7 @@ void main() {
       widget: SizedBox(
         width: 75,
         child: AutoSizeText(
-          "XXX XXX",
+          'XXX XXX',
           style: TextStyle(fontSize: 25),
           maxLines: 2,
         ),

@@ -14,7 +14,7 @@ class AnimatedInput extends StatefulWidget {
 
 class _AnimatedInputState extends State<AnimatedInput>
     with SingleTickerProviderStateMixin {
-  String _input = "";
+  String _input = '';
 
   AnimationController _controller;
 

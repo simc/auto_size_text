@@ -20,7 +20,7 @@ class OverflowReplacementDemo extends StatelessWidget {
           children: <Widget>[
             Expanded(
               child: TextCard(
-                title: "Text",
+                title: 'Text',
                 child: !richText
                     ? Text(
                         input,
@@ -37,14 +37,14 @@ class OverflowReplacementDemo extends StatelessWidget {
             SizedBox(width: 10),
             Expanded(
               child: TextCard(
-                title: "AutoSizeText",
+                title: 'AutoSizeText',
                 child: !richText
                     ? AutoSizeText(
                         input,
                         style: TextStyle(fontSize: 30),
                         minFontSize: 20,
                         overflowReplacement: Text(
-                          "String cannot be displayed.",
+                          'String cannot be displayed.',
                           style: TextStyle(
                             color: Colors.red,
                             fontSize: 20,
@@ -57,7 +57,7 @@ class OverflowReplacementDemo extends StatelessWidget {
                         style: TextStyle(fontSize: 30),
                         minFontSize: 20,
                         overflowReplacement: Text(
-                          "String cannot be displayed.",
+                          'String cannot be displayed.',
                           style: TextStyle(
                             color: Colors.red,
                             fontSize: 20,

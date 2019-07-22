@@ -20,7 +20,7 @@ class StepGranularityDemo extends StatelessWidget {
           children: <Widget>[
             Expanded(
               child: TextCard(
-                title: "Text",
+                title: 'Text',
                 child: !richText
                     ? Text(
                         input,
@@ -37,7 +37,7 @@ class StepGranularityDemo extends StatelessWidget {
             SizedBox(width: 10.0),
             Expanded(
               child: TextCard(
-                title: "AutoSizeText",
+                title: 'AutoSizeText',
                 child: !richText
                     ? AutoSizeText(
                         input,

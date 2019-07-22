@@ -1,3 +1,6 @@
+## 2.0.3
+- Added `textKey` parameter
+
 ## 2.0.2+1
 - Fixed screenshots
 
