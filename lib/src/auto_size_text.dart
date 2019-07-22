@@ -63,6 +63,9 @@ class AutoSizeText extends StatefulWidget {
         data = null,
         super(key: key);
 
+  /// Sets the key for the resulting [Text] widget.
+  ///
+  /// This allows you to find the actual `Text` widget built by `AutoSizeText`.
   final Key textKey;
 
   /// The text to display.
@@ -283,7 +286,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
     assert(maxLines == null || maxLines > 0,
         'MaxLines has to be grater than or equal to 1.');
     assert(widget.key == null || widget.key != widget.textKey,
-        'Key and textKey cannot use the same key.');
+        'Key and textKey cannot be the same.');
 
     if (widget.presetFontSizes == null) {
       assert(widget.stepGranularity >= 0.1,
