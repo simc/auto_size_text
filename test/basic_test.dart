@@ -76,7 +76,8 @@ void main() {
     expect(richText.maxLines, 17);
   });
 
-  testWidgets('Used scale if initial fontSize fits (#25)', (tester) async {
+  testWidgets('Applies scale even if initial fontSize fits (#25)',
+      (tester) async {
     await pumpAndExpectFontSize(
       tester: tester,
       expectedFontSize: 60,
@@ -86,5 +87,17 @@ void main() {
         textScaleFactor: 4,
       ),
     );
+  });
+
+  testWidgets('Uses textKey', (tester) async {
+    var textKey = GlobalKey();
+    var text = await pumpAndGetText(
+      tester: tester,
+      widget: AutoSizeText(
+        'A text with key',
+        textKey: textKey,
+      ),
+    );
+    expect(text.key, textKey);
   });
 }

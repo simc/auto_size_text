@@ -1,4 +1,4 @@
-## 2.0.3
+## 2.1.0
 - Added `textKey` parameter
 
 ## 2.0.2+1
