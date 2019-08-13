@@ -17,6 +17,10 @@ script:
   - flutter test --coverage --coverage-path=coverage.lcov
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+matrix:
+  fast_finish: true
+  allow_failures:
+  - env: FLUTTER_CHANNEL="master"
 cache:
   directories:
     - $HOME/.pub-cache
