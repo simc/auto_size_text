@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'utils.dart';
 
 class GroupTest extends StatefulWidget {
+  @override
   GroupTestState createState() => GroupTestState();
 }
 
@@ -52,7 +53,9 @@ class GroupTestState extends State<GroupTest> {
 
 _expectFontSizes(WidgetTester tester, double fontSize) {
   var texts = tester.widgetList(find.byType(Text));
-  texts.forEach((it) => expect(effectiveFontSize(it), fontSize));
+  for (var text in texts) {
+    expect(effectiveFontSize(text as Text), fontSize);
+  }
 }
 
 void main() {
@@ -61,7 +64,7 @@ void main() {
 
     _expectFontSizes(tester, 50);
 
-    GroupTestState state = tester.state(find.byType(GroupTest));
+    var state = tester.state(find.byType(GroupTest)) as GroupTestState;
 
     state.width1 = 200;
     state.refresh();

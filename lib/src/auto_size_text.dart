@@ -95,7 +95,7 @@ class AutoSizeText extends StatefulWidget {
   ///
   /// Omitting or providing null for any properties of [StrutStyle] will result in
   /// default values being used. It is highly recommended to at least specify a
-  /// [fontSize].
+  /// font size.
   ///
   /// See [StrutStyle] for details.
   final StrutStyle strutStyle;
@@ -156,8 +156,6 @@ class AutoSizeText extends StatefulWidget {
   ///
   /// It's rarely necessary to set this property. By default its value
   /// is inherited from the enclosing app with `Localizations.localeOf(context)`.
-  ///
-  /// See [RenderParagraph.locale] for more information.
   final Locale locale;
 
   /// Whether the text should break at soft line breaks.
@@ -245,9 +243,9 @@ class _AutoSizeTextState extends State<AutoSizeText> {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, size) {
-      DefaultTextStyle defaultTextStyle = DefaultTextStyle.of(context);
+      var defaultTextStyle = DefaultTextStyle.of(context);
 
-      TextStyle style = widget.style;
+      var style = widget.style;
       if (widget.style == null || widget.style.inherit) {
         style = defaultTextStyle.style.merge(widget.style);
       }
@@ -260,10 +258,10 @@ class _AutoSizeTextState extends State<AutoSizeText> {
       _sanityCheck(style, maxLines);
 
       var result = _calculateFontSize(size, style, maxLines);
-      var fontSize = result[0];
-      var textFits = result[1];
+      var fontSize = result[0] as double;
+      var textFits = result[1] as bool;
 
-      Text text;
+      Widget text;
 
       if (widget.group != null) {
         widget.group._updateFontSize(this, fontSize);
@@ -338,9 +336,9 @@ class _AutoSizeTextState extends State<AutoSizeText> {
       right = presetFontSizes.length - 1;
     }
 
-    bool lastValueFits = false;
+    var lastValueFits = false;
     while (left <= right) {
-      int mid = (left + (right - left) / 2).toInt();
+      var mid = (left + (right - left) / 2).toInt();
       double scale;
       if (presetFontSizes == null) {
         scale = mid * userScale * widget.stepGranularity / style.fontSize;

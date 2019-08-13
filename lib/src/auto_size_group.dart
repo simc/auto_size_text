@@ -2,7 +2,7 @@ part of auto_size_text;
 
 /// Controller to synchronize the fontSize of multiple AutoSizeTexts.
 class AutoSizeGroup {
-  var _listeners = Map<_AutoSizeTextState, double>();
+  final _listeners = <_AutoSizeTextState, double>{};
   var _widgetsNotified = false;
   double _fontSize = double.infinity;
 
@@ -18,7 +18,7 @@ class AutoSizeGroup {
     } else if (_listeners[text] == _fontSize) {
       _listeners[text] = maxFontSize;
       _fontSize = double.infinity;
-      for (double size in _listeners.values) {
+      for (var size in _listeners.values) {
         if (size < _fontSize) _fontSize = size;
       }
     } else {
@@ -38,11 +38,11 @@ class AutoSizeGroup {
       _widgetsNotified = true;
     }
 
-    _listeners.keys.toList().forEach((text) {
-      if (text.mounted) {
-        text._notifySync();
+    for (var textState in _listeners.keys) {
+      if (textState.mounted) {
+        textState._notifySync();
       }
-    });
+    }
   }
 
   _remove(_AutoSizeTextState text) {

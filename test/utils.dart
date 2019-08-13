@@ -19,7 +19,7 @@ bool testIfTextFits(
   var maxLines = text.maxLines;
   if (!wrapWords) {
     var wordCount = span.toPlainText().split(RegExp('\\s+')).length;
-    maxLines = maxLines.clamp(1, wordCount);
+    maxLines = maxLines.clamp(1, wordCount) as int;
   }
 
   var tp = TextPainter(
@@ -75,8 +75,7 @@ Future<Text> pumpAndGetText({
   @required Widget widget,
 }) async {
   await pump(tester: tester, widget: widget);
-  Text text = tester.widget(find.byType(Text));
-  return text;
+  return tester.widget<Text>(find.byType(Text));
 }
 
 Future pumpAndExpectFontSize({
