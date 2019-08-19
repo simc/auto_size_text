@@ -18,4 +18,4 @@ jobs:
     - name: flutter unit test
       run: ./flutter/bin/flutter test --coverage --coverage-path=lcov.info
     - name: upload coverage
-      run: bash <(curl -s https://codecov.io/bash)
+      run: bash <(curl -s https://codecov.io/bash) -t ${{secrets.CODECOV_TOKEN}}
