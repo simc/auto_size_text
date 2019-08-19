@@ -1,0 +1,21 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: setup flutter
+      run: |
+        git clone https://github.com/flutter/flutter.git -b stable --depth 1
+        ./flutter/bin/flutter doctor
+    - name: check dartfmt
+      run: dartfmt -n --set-exit-if-changed ./lib ./test ./example || exit 1
+    - name: flutter unit test
+      run: ./flutter/bin/flutter test --coverage --coverage-path=lcov.info
+    - name: upload coverage
+      run: bash <(curl -s https://codecov.io/bash)
