@@ -14,7 +14,7 @@ jobs:
         git clone https://github.com/flutter/flutter.git -b stable --depth 1
         ./flutter/bin/flutter doctor
     - name: check dartfmt
-      run: dartfmt -n --set-exit-if-changed ./lib ./test ./example || exit 1
+      run: /flutter/bin/cache/dart-sdk/bin/dartfmt -n --set-exit-if-changed ./lib ./test ./example || exit 1
     - name: flutter unit test
       run: ./flutter/bin/flutter test --coverage --coverage-path=lcov.info
     - name: upload coverage
