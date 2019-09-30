@@ -27,7 +27,7 @@ class AutoSizeGroup {
 
     if (oldFontSize != _fontSize) {
       _widgetsNotified = false;
-      Timer.run(_notifyListeners);
+      scheduleMicrotask(_notifyListeners);
     }
   }
 
