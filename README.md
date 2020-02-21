@@ -204,6 +204,7 @@ But it does not mean that all `TextSpan`s have at least font size `5`.
 | `textScaleFactor`* | The number of font pixels for each logical pixel. Also affects `minFontSize`, `maxFontSize` and `presetFontSizes`. |
 | `maxLines` | An optional maximum number of lines for the text to span. |
 | `semanticsLabel`* | An alternative semantics label for this text. |
+| `groupScaleFactor` | The factor by which font should be scaled relative to the other elements in the same group. |
 
 Parameters marked with \* behave exactly the same as in `Text`
 
