@@ -200,6 +200,7 @@ But it does not mean that all `TextSpan`s have at least font size `5`.
 | `softWrap`* | Whether the text should break at soft line breaks. |
 | `wrapWords` | Whether words which don't fit in one line should be wrapped. *Defaults to `true` to behave like `Text`.* |
 | `overflow`* | How visual overflow should be handled. |
+| `onOverflow`* | Callback that notifies when the content overflowed. |
 | `overflowReplacement` | If the text is overflowing and does not fit its bounds, this widget is displayed instead. |
 | `textScaleFactor`* | The number of font pixels for each logical pixel. Also affects `minFontSize`, `maxFontSize` and `presetFontSizes`. |
 | `maxLines` | An optional maximum number of lines for the text to span. |
