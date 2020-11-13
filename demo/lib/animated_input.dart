@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-typedef InputBuilder = Function(String input);
+typedef InputBuilder = Widget Function(String input);
 
 class AnimatedInput extends StatefulWidget {
   final String text;
@@ -27,7 +27,7 @@ class _AnimatedInputState extends State<AnimatedInput>
       vsync: this,
     );
 
-    Animation<int> number = IntTween(
+    final number = IntTween(
       begin: 0,
       end: widget.text.length,
     ).animate(_controller);

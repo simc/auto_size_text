@@ -9,6 +9,7 @@ class SyncDemo extends StatefulWidget {
 
   SyncDemo(this.richText);
 
+  @override
   _SyncDemoState createState() => _SyncDemoState();
 }
 

@@ -222,7 +222,7 @@ class AutoSizeText extends StatefulWidget {
 
 class _AutoSizeTextState extends State<AutoSizeText> {
   @override
-  initState() {
+  void initState() {
     super.initState();
 
     if (widget.group != null) {

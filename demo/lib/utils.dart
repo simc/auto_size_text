@@ -11,7 +11,7 @@ TextSpan spanFromString(String text) {
     if (index == 3) index = 0;
     return TextSpan(
       style: styles[index++],
-      text: word + ' ',
+      text: '$word ',
     );
   }).toList();
 

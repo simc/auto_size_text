@@ -6,11 +6,11 @@ class AutoSizeGroup {
   var _widgetsNotified = false;
   double _fontSize = double.infinity;
 
-  _register(_AutoSizeTextState text) {
+  void _register(_AutoSizeTextState text) {
     _listeners[text] = double.infinity;
   }
 
-  _updateFontSize(_AutoSizeTextState text, double maxFontSize) {
+  void _updateFontSize(_AutoSizeTextState text, double maxFontSize) {
     var oldFontSize = _fontSize;
     if (maxFontSize <= _fontSize) {
       _fontSize = maxFontSize;
@@ -31,7 +31,7 @@ class AutoSizeGroup {
     }
   }
 
-  _notifyListeners() {
+  void _notifyListeners() {
     if (_widgetsNotified) {
       return;
     } else {
@@ -45,7 +45,7 @@ class AutoSizeGroup {
     }
   }
 
-  _remove(_AutoSizeTextState text) {
+  void _remove(_AutoSizeTextState text) {
     _updateFontSize(text, double.infinity);
     _listeners.remove(text);
   }

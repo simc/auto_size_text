@@ -33,6 +33,7 @@ class App extends StatelessWidget {
 }
 
 class DemoApp extends StatefulWidget {
+  @override
   _DemoAppState createState() => _DemoAppState();
 }
 
@@ -86,7 +87,7 @@ class _DemoAppState extends State<DemoApp> {
           ),
         ],
         title: Text(
-          'AutoSizeText: ' + demoNames[_selectedDemo],
+          'AutoSizeText: ${demoNames[_selectedDemo]}',
           style: TextStyle(
             color: _selectedColor[500],
             inherit: true,
