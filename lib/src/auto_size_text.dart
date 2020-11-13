@@ -329,7 +329,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
           style.fontSize.clamp(widget.minFontSize, widget.maxFontSize);
       final defaultScale = defaultFontSize * userScale / style.fontSize;
       if (_checkTextFits(span, defaultScale, maxLines, size)) {
-        return [defaultFontSize * userScale, true];
+        return <Object>[defaultFontSize * userScale, true];
       }
 
       left = (widget.minFontSize / widget.stepGranularity).floor();
@@ -367,7 +367,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
       fontSize = presetFontSizes[right] * userScale;
     }
 
-    return [fontSize, lastValueFits];
+    return <Object>[fontSize, lastValueFits];
   }
 
   bool _checkTextFits(
