@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 double effectiveFontSize(Text text) {
-  return (text.textScaleFactor ?? 1) * text.style.fontSize;
+  return (text.textScaleFactor ?? 1) * text.style!.fontSize!;
 }
 
 bool testIfTextFits(
@@ -15,16 +15,16 @@ bool testIfTextFits(
   double maxHeight = double.infinity,
   bool wrapWords = true,
 ]) {
-  var span = text.textSpan ?? TextSpan(text: text.data, style: text.style);
+  final span = text.textSpan ?? TextSpan(text: text.data, style: text.style);
   var maxLines = text.maxLines;
   if (!wrapWords) {
-    var wordCount = span.toPlainText().split(RegExp('\\s+')).length;
-    maxLines = maxLines.clamp(1, wordCount) as int;
+    final wordCount = span.toPlainText().split(RegExp('\\s+')).length;
+    maxLines = maxLines!.clamp(1, wordCount);
   }
 
-  var tp = TextPainter(
+  final tp = TextPainter(
     text: span,
-    textAlign: text.textAlign,
+    textAlign: text.textAlign!,
     textDirection: text.textDirection,
     textScaleFactor: text.textScaleFactor ?? 1,
     maxLines: text.maxLines,
@@ -57,8 +57,8 @@ Future prepareTests(WidgetTester tester) async {
 }
 
 Future pump({
-  @required WidgetTester tester,
-  @required Widget widget,
+  required WidgetTester tester,
+  required Widget widget,
 }) async {
   await tester.pumpWidget(
     Directionality(
@@ -71,19 +71,19 @@ Future pump({
 }
 
 Future<Text> pumpAndGetText({
-  @required WidgetTester tester,
-  @required Widget widget,
+  required WidgetTester tester,
+  required Widget widget,
 }) async {
   await pump(tester: tester, widget: widget);
   return tester.widget<Text>(find.byType(Text));
 }
 
 Future pumpAndExpectFontSize({
-  @required WidgetTester tester,
-  @required double expectedFontSize,
-  @required Widget widget,
+  required WidgetTester tester,
+  required double expectedFontSize,
+  required Widget widget,
 }) async {
-  var text = await pumpAndGetText(tester: tester, widget: widget);
+  final text = await pumpAndGetText(tester: tester, widget: widget);
   expect(effectiveFontSize(text), expectedFontSize);
 }
 
