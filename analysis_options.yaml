@@ -4,6 +4,7 @@ analyzer:
     - "**/*.g.dart"
   strong-mode:
     implicit-casts: false
+    implicit-dynamic: false
   errors:
     todo: error
     include_file_not_found: ignore
