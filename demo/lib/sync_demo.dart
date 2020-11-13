@@ -54,7 +54,8 @@ class _SyncDemoState extends State<SyncDemo>
   Widget build(BuildContext context) {
     var group = AutoSizeGroup();
     var text =
-        'These AutoSizeTexts fit the available space and synchronize their text sizes.';
+        'These AutoSizeTexts fit the available space and synchronize their '
+        'text sizes.';
     return Column(
       children: <Widget>[
         Expanded(
@@ -65,14 +66,14 @@ class _SyncDemoState extends State<SyncDemo>
               child: AutoSizeText(
                 text,
                 group: group,
-                style: TextStyle(fontSize: 40.0),
+                style: TextStyle(fontSize: 40),
                 stepGranularity: 0.1,
                 maxLines: 3,
               ),
               replacement: AutoSizeText.rich(
                 spanFromString(text),
                 group: group,
-                style: TextStyle(fontSize: 40.0),
+                style: TextStyle(fontSize: 40),
                 stepGranularity: 0.1,
                 maxLines: 4,
               ),
@@ -96,14 +97,14 @@ class _SyncDemoState extends State<SyncDemo>
                     child: AutoSizeText(
                       text,
                       group: group,
-                      style: TextStyle(fontSize: 40.0),
+                      style: TextStyle(fontSize: 40),
                       stepGranularity: 0.1,
                       maxLines: 3,
                     ),
                     replacement: AutoSizeText.rich(
                       spanFromString(text),
                       group: group,
-                      style: TextStyle(fontSize: 40.0),
+                      style: TextStyle(fontSize: 40),
                       stepGranularity: 0.1,
                       maxLines: 4,
                     ),

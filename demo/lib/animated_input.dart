@@ -41,7 +41,7 @@ class _AnimatedInputState extends State<AnimatedInput>
     number.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         Future.delayed(Duration(seconds: 3), () {
-          if (mounted) _controller.forward(from: 0.0);
+          if (mounted) _controller.forward(from: 0);
         });
       }
     });

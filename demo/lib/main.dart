@@ -7,7 +7,7 @@ import 'max_lines_demo.dart';
 import 'min_font_size_demo.dart';
 import 'overflow_replacement_demo.dart';
 import 'preset_font_sizes_demo.dart';
-import 'step_granulartity.dart';
+import 'step_granularity.dart';
 import 'sync_demo.dart';
 
 void main() {
@@ -25,7 +25,6 @@ class App extends StatelessWidget {
     SystemChrome.setEnabledSystemUIOverlays([]);
 
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       theme: ThemeData.light(),
       home: DemoApp(),
     );
@@ -97,7 +96,7 @@ class _DemoAppState extends State<DemoApp> {
       body: Container(
         color: _selectedColor[50],
         child: Padding(
-          padding: EdgeInsets.all(15.0),
+          padding: EdgeInsets.all(15),
           child: _buildDemo(),
         ),
       ),
