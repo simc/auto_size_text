@@ -1,6 +1,7 @@
 part of auto_size_text;
 
-/// Flutter widget that automatically resizes text to fit perfectly within its bounds.
+/// Flutter widget that automatically resizes text to fit perfectly within its
+/// bounds.
 ///
 /// All size constraints as well as maxLines are taken into account. If the text
 /// overflows anyway, you should check if the parent widget actually constraints
@@ -86,16 +87,16 @@ class AutoSizeText extends StatefulWidget {
   final TextStyle style;
 
   // The default font size if none is specified.
-  static const double _defaultFontSize = 14.0;
+  static const double _defaultFontSize = 14;
 
   /// The strut style to use. Strut style defines the strut, which sets minimum
   /// vertical layout metrics.
   ///
   /// Omitting or providing null will disable strut.
   ///
-  /// Omitting or providing null for any properties of [StrutStyle] will result in
-  /// default values being used. It is highly recommended to at least specify a
-  /// font size.
+  /// Omitting or providing null for any properties of [StrutStyle] will result
+  /// in default values being used. It is highly recommended to at least specify
+  /// a font size.
   ///
   /// See [StrutStyle] for details.
   final StrutStyle strutStyle;
@@ -243,7 +244,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, size) {
-      var defaultTextStyle = DefaultTextStyle.of(context);
+      final defaultTextStyle = DefaultTextStyle.of(context);
 
       var style = widget.style;
       if (widget.style == null || widget.style.inherit) {
@@ -253,13 +254,13 @@ class _AutoSizeTextState extends State<AutoSizeText> {
         style = style.copyWith(fontSize: AutoSizeText._defaultFontSize);
       }
 
-      var maxLines = widget.maxLines ?? defaultTextStyle.maxLines;
+      final maxLines = widget.maxLines ?? defaultTextStyle.maxLines;
 
       _sanityCheck(style, maxLines);
 
-      var result = _calculateFontSize(size, style, maxLines);
-      var fontSize = result[0] as double;
-      var textFits = result[1] as bool;
+      final result = _calculateFontSize(size, style, maxLines);
+      final fontSize = result[0] as double;
+      final textFits = result[1] as bool;
 
       Widget text;
 
@@ -287,8 +288,10 @@ class _AutoSizeTextState extends State<AutoSizeText> {
         'Key and textKey cannot be the same.');
 
     if (widget.presetFontSizes == null) {
-      assert(widget.stepGranularity >= 0.1,
-          'StepGranularity has to be greater than or equal to 0.1. It is not a good idea to resize the font with a higher accuracy.');
+      assert(
+          widget.stepGranularity >= 0.1,
+          'StepGranularity has to be greater than or equal to 0.1. It is not a '
+          'good idea to resize the font with a higher accuracy.');
       assert(widget.minFontSize >= 0,
           'MinFontSize has to be greater than or equal to 0.');
       assert(widget.maxFontSize > 0, 'MaxFontSize has to be greater than 0.');
@@ -307,24 +310,24 @@ class _AutoSizeTextState extends State<AutoSizeText> {
   }
 
   List _calculateFontSize(BoxConstraints size, TextStyle style, int maxLines) {
-    var span = TextSpan(
+    final span = TextSpan(
       style: widget.textSpan?.style ?? style,
       text: widget.textSpan?.text ?? widget.data,
       children: widget.textSpan?.children,
       recognizer: widget.textSpan?.recognizer,
     );
 
-    var userScale =
+    final userScale =
         widget.textScaleFactor ?? MediaQuery.textScaleFactorOf(context);
 
     int left;
     int right;
 
-    var presetFontSizes = widget.presetFontSizes?.reversed?.toList();
+    final presetFontSizes = widget.presetFontSizes?.reversed?.toList();
     if (presetFontSizes == null) {
-      var defaultFontSize =
+      final defaultFontSize =
           style.fontSize.clamp(widget.minFontSize, widget.maxFontSize);
-      var defaultScale = defaultFontSize * userScale / style.fontSize;
+      final defaultScale = defaultFontSize * userScale / style.fontSize;
       if (_checkTextFits(span, defaultScale, maxLines, size)) {
         return [defaultFontSize * userScale, true];
       }
@@ -338,7 +341,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
 
     var lastValueFits = false;
     while (left <= right) {
-      var mid = (left + (right - left) / 2).toInt();
+      final mid = (left + (right - left) / 2).toInt();
       double scale;
       if (presetFontSizes == null) {
         scale = mid * userScale * widget.stepGranularity / style.fontSize;
@@ -370,9 +373,9 @@ class _AutoSizeTextState extends State<AutoSizeText> {
   bool _checkTextFits(
       TextSpan text, double scale, int maxLines, BoxConstraints constraints) {
     if (!widget.wrapWords) {
-      var words = text.toPlainText().split(RegExp('\\s+'));
+      final words = text.toPlainText().split(RegExp('\\s+'));
 
-      var wordWrapTp = TextPainter(
+      final wordWrapTp = TextPainter(
         text: TextSpan(
           style: text.style,
           text: words.join('\n'),
@@ -393,7 +396,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
       }
     }
 
-    var tp = TextPainter(
+    final tp = TextPainter(
       text: text,
       textAlign: widget.textAlign ?? TextAlign.left,
       textDirection: widget.textDirection ?? TextDirection.ltr,
