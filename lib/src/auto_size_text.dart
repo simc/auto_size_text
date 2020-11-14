@@ -32,9 +32,7 @@ class AutoSizeText extends StatefulWidget {
     this.textScaleFactor,
     this.maxLines,
     this.semanticsLabel,
-  })  : assert(data != null,
-            'A non-null String must be provided to a AutoSizeText widget.'),
-        textSpan = null,
+  })  : textSpan = null,
         super(key: key);
 
   /// Creates a [AutoSizeText] widget with a [TextSpan].
@@ -59,9 +57,7 @@ class AutoSizeText extends StatefulWidget {
     this.textScaleFactor,
     this.maxLines,
     this.semanticsLabel,
-  })  : assert(textSpan != null,
-            'A non-null TextSpan must be provided to a AutoSizeText.rich widget.'),
-        data = null,
+  })  : data = null,
         super(key: key);
 
   /// Sets the key for the resulting [Text] widget.
@@ -309,7 +305,8 @@ class _AutoSizeTextState extends State<AutoSizeText> {
     }
   }
 
-  List _calculateFontSize(BoxConstraints size, TextStyle? style, int? maxLines) {
+  List _calculateFontSize(
+      BoxConstraints size, TextStyle? style, int? maxLines) {
     final span = TextSpan(
       style: widget.textSpan?.style ?? style,
       text: widget.textSpan?.text ?? widget.data,
@@ -382,7 +379,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
         ),
         textAlign: widget.textAlign ?? TextAlign.left,
         textDirection: widget.textDirection ?? TextDirection.ltr,
-        textScaleFactor: scale ?? 1,
+        textScaleFactor: scale,
         maxLines: words.length,
         locale: widget.locale,
         strutStyle: widget.strutStyle,
@@ -400,7 +397,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
       text: text,
       textAlign: widget.textAlign ?? TextAlign.left,
       textDirection: widget.textDirection ?? TextDirection.ltr,
-      textScaleFactor: scale ?? 1,
+      textScaleFactor: scale,
       maxLines: maxLines,
       locale: widget.locale,
       strutStyle: widget.strutStyle,
