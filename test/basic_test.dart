@@ -42,11 +42,11 @@ void main() {
   });
 
   testWidgets('Respects inherit style', (tester) async {
-    var defaultStyle = TextStyle(
+    final defaultStyle = TextStyle(
       fontSize: 20,
       color: Colors.yellow,
     );
-    var text = await pumpAndGetText(
+    final text = await pumpAndGetText(
       tester: tester,
       widget: DefaultTextStyle(
         style: defaultStyle,
@@ -61,7 +61,7 @@ void main() {
     );
     expect(text.style, defaultStyle);
 
-    var richText = getRichText(tester);
+    final richText = getRichText(tester);
     expect(richText.textAlign, TextAlign.right);
     expect(richText.softWrap, false);
     expect(richText.overflow, TextOverflow.ellipsis);
@@ -82,8 +82,8 @@ void main() {
   });
 
   testWidgets('Uses textKey', (tester) async {
-    var textKey = GlobalKey();
-    var text = await pumpAndGetText(
+    final textKey = GlobalKey();
+    final text = await pumpAndGetText(
       tester: tester,
       widget: AutoSizeText(
         'A text with key',

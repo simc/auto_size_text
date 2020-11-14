@@ -6,7 +6,7 @@ import 'utils.dart';
 
 void main() {
   testWidgets('Overflow replacement visible on overflow', (tester) async {
-    var text = await pumpAndGetText(
+    final text = await pumpAndGetText(
       tester: tester,
       widget: SizedBox(
         width: 100,
@@ -23,7 +23,7 @@ void main() {
 
   testWidgets('Overflow replacement not visible without overflow',
       (tester) async {
-    var text = await pumpAndGetText(
+    final text = await pumpAndGetText(
       tester: tester,
       widget: SizedBox(
         width: 100,

@@ -18,7 +18,7 @@ class AutoSizeGroup {
     } else if (_listeners[text] == _fontSize) {
       _listeners[text] = maxFontSize;
       _fontSize = double.infinity;
-      for (var size in _listeners.values) {
+      for (final size in _listeners.values) {
         if (size < _fontSize) _fontSize = size;
       }
     } else {

@@ -52,8 +52,8 @@ class GroupTestState extends State<GroupTest> {
 }
 
 void _expectFontSizes(WidgetTester tester, double fontSize) {
-  var texts = tester.widgetList(find.byType(Text));
-  for (var text in texts) {
+  final texts = tester.widgetList(find.byType(Text));
+  for (final text in texts) {
     expect(effectiveFontSize(text as Text), fontSize);
   }
 }
@@ -64,7 +64,7 @@ void main() {
 
     _expectFontSizes(tester, 50);
 
-    var state = tester.state(find.byType(GroupTest)) as GroupTestState;
+    final state = tester.state(find.byType(GroupTest)) as GroupTestState;
 
     state.width1 = 200;
     state.refresh();

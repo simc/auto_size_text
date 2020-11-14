@@ -52,7 +52,7 @@ void main() {
         ),
       ),
     );
-    var height = tester.getSize(find.byType(RichText)).height;
+    final height = tester.getSize(find.byType(RichText)).height;
     expect(height, 60);
   });
 }
