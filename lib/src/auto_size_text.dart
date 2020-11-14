@@ -77,7 +77,7 @@ class AutoSizeText extends StatefulWidget {
 
   /// If non-null, the style to use for this text.
   ///
-  /// If the style's 'inherit' property is true, the style will be merged with
+  /// If the style's "inherit" property is true, the style will be merged with
   /// the closest enclosing [DefaultTextStyle]. Otherwise, the style will
   /// replace the closest enclosing [DefaultTextStyle].
   final TextStyle? style;
@@ -168,6 +168,8 @@ class AutoSizeText extends StatefulWidget {
   final bool wrapWords;
 
   /// How visual overflow should be handled.
+  ///
+  /// Defaults to retrieving the value from the nearest [DefaultTextStyle] ancestor.
   final TextOverflow? overflow;
 
   /// If the text is overflowing and does not fit its bounds, this widget is
@@ -209,7 +211,7 @@ class AutoSizeText extends StatefulWidget {
   /// text value:
   ///
   /// ```dart
-  /// Text(r'$$', semanticsLabel: 'Double dollars')
+  /// AutoSizeText(r'$$', semanticsLabel: 'Double dollars')
   /// ```
   final String? semanticsLabel;
 
@@ -250,7 +252,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
 
       final maxLines = widget.maxLines ?? defaultTextStyle.maxLines;
 
-      _sanityCheck(style, maxLines);
+      _validateProperties(style, maxLines);
 
       final result = _calculateFontSize(size, style, maxLines);
       final fontSize = result[0] as double;
@@ -273,7 +275,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
     });
   }
 
-  void _sanityCheck(TextStyle? style, int? maxLines) {
+  void _validateProperties(TextStyle style, int? maxLines) {
     assert(widget.overflow == null || widget.overflowReplacement == null,
         'Either overflow or overflowReplacement have to be null.');
     assert(maxLines == null || maxLines > 0,
