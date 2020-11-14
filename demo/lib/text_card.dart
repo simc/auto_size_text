@@ -4,7 +4,7 @@ class TextCard extends StatelessWidget {
   final String title;
   final Widget child;
 
-  TextCard({this.title, this.child});
+  TextCard({required this.title, required this.child});
 
   @override
   Widget build(BuildContext context) {
