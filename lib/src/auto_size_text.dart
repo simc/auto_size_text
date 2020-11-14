@@ -222,9 +222,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
   void initState() {
     super.initState();
 
-    if (widget.group != null) {
-      widget.group!._register(this);
-    }
+    widget.group?._register(this);
   }
 
   @override
