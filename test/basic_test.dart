@@ -51,7 +51,7 @@ void main() {
 
   testWidgets('Respects inherit style', (tester) async {
     var defaultStyle = TextStyle(
-      fontSize: 20.0,
+      fontSize: 20,
       color: Colors.yellow,
     );
     var text = await pumpAndGetText(

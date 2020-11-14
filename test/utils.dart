@@ -87,9 +87,8 @@ Future pumpAndExpectFontSize({
   expect(effectiveFontSize(text), expectedFontSize);
 }
 
-RichText getRichText(WidgetTester tester) {
-  return tester.widget(find.byType(RichText));
-}
+RichText getRichText(WidgetTester tester) =>
+    tester.widget(find.byType(RichText));
 
 class OverflowNotifier extends StatelessWidget {
   final VoidCallback overflowCallback;
