@@ -320,7 +320,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
     int left;
     int right;
 
-    final presetFontSizes = widget.presetFontSizes?.reversed?.toList();
+    final presetFontSizes = widget.presetFontSizes?.reversed.toList();
     if (presetFontSizes == null) {
       final num defaultFontSize =
           style!.fontSize!.clamp(widget.minFontSize, widget.maxFontSize);
