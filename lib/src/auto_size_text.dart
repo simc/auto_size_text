@@ -172,6 +172,8 @@ class AutoSizeText extends StatefulWidget {
   final bool wrapWords;
 
   /// How visual overflow should be handled.
+  ///
+  /// Defaults to retrieving the value from the nearest [DefaultTextStyle] ancestor.
   final TextOverflow overflow;
 
   /// If the text is overflowing and does not fit its bounds, this widget is
@@ -341,7 +343,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
 
     var lastValueFits = false;
     while (left <= right) {
-      final mid = (left + (right - left) / 2).toInt();
+      final mid = (left + (right - left) / 2).floor();
       double scale;
       if (presetFontSizes == null) {
         scale = mid * userScale * widget.stepGranularity / style.fontSize;
@@ -375,7 +377,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
     if (!widget.wrapWords) {
       final words = text.toPlainText().split(RegExp('\\s+'));
 
-      final wordWrapTp = TextPainter(
+      final wordWrapTextPainter = TextPainter(
         text: TextSpan(
           style: text.style,
           text: words.join('\n'),
@@ -388,15 +390,15 @@ class _AutoSizeTextState extends State<AutoSizeText> {
         strutStyle: widget.strutStyle,
       );
 
-      wordWrapTp.layout(maxWidth: constraints.maxWidth);
+      wordWrapTextPainter.layout(maxWidth: constraints.maxWidth);
 
-      if (wordWrapTp.didExceedMaxLines ||
-          wordWrapTp.width > constraints.maxWidth) {
+      if (wordWrapTextPainter.didExceedMaxLines ||
+          wordWrapTextPainter.width > constraints.maxWidth) {
         return false;
       }
     }
 
-    final tp = TextPainter(
+    final textPainter = TextPainter(
       text: text,
       textAlign: widget.textAlign ?? TextAlign.left,
       textDirection: widget.textDirection ?? TextDirection.ltr,
@@ -406,11 +408,11 @@ class _AutoSizeTextState extends State<AutoSizeText> {
       strutStyle: widget.strutStyle,
     );
 
-    tp.layout(maxWidth: constraints.maxWidth);
+    textPainter.layout(maxWidth: constraints.maxWidth);
 
-    return !(tp.didExceedMaxLines ||
-        tp.height > constraints.maxHeight ||
-        tp.width > constraints.maxWidth);
+    return !(textPainter.didExceedMaxLines ||
+        textPainter.height > constraints.maxHeight ||
+        textPainter.width > constraints.maxWidth);
   }
 
   Widget _buildText(double fontSize, TextStyle style, int maxLines) {
