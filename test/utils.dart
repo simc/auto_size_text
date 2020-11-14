@@ -5,11 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-double effectiveFontSize(Text text) {
-  return (text.textScaleFactor ?? 1) * text.style.fontSize;
-}
+double effectiveFontSize(Text text) =>
+    (text.textScaleFactor ?? 1) * text.style.fontSize;
 
-bool testIfTextFits(
+bool doesTextFit(
   Text text, [
   double maxWidth = double.infinity,
   double maxHeight = double.infinity,
@@ -22,7 +21,7 @@ bool testIfTextFits(
     maxLines = maxLines.clamp(1, wordCount) as int;
   }
 
-  final tp = TextPainter(
+  final textPainter = TextPainter(
     text: span,
     textAlign: text.textAlign,
     textDirection: text.textDirection,
@@ -32,11 +31,11 @@ bool testIfTextFits(
     strutStyle: text.strutStyle,
   );
 
-  tp.layout(maxWidth: maxWidth);
+  textPainter.layout(maxWidth: maxWidth);
 
-  return !(tp.didExceedMaxLines ||
-      tp.height > maxHeight ||
-      tp.width > maxWidth);
+  return !(textPainter.didExceedMaxLines ||
+      textPainter.height > maxHeight ||
+      textPainter.width > maxWidth);
 }
 
 bool prepared = false;
