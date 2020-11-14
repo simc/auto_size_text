@@ -279,7 +279,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
     assert(widget.overflow == null || widget.overflowReplacement == null,
         'Either overflow or overflowReplacement have to be null.');
     assert(maxLines == null || maxLines > 0,
-        'MaxLines has to be grater than or equal to 1.');
+        'MaxLines has to be greater than or equal to 1.');
     assert(widget.key == null || widget.key != widget.textKey,
         'Key and textKey cannot be the same.');
 
