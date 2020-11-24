@@ -6,7 +6,7 @@ class AnimatedInput extends StatefulWidget {
   final String text;
   final InputBuilder builder;
 
-  AnimatedInput({this.text, this.builder});
+  AnimatedInput({required this.text, required this.builder});
 
   @override
   _AnimatedInputState createState() => _AnimatedInputState();
@@ -16,7 +16,7 @@ class _AnimatedInputState extends State<AnimatedInput>
     with SingleTickerProviderStateMixin {
   String _input = '';
 
-  AnimationController _controller;
+  late AnimationController _controller;
 
   @override
   void initState() {

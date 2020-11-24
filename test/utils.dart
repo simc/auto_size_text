@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 double effectiveFontSize(Text text) =>
-    (text.textScaleFactor ?? 1) * text.style.fontSize;
+    (text.textScaleFactor ?? 1) * text.style!.fontSize!;
 
 bool doesTextFit(
   Text text, [
@@ -18,12 +18,12 @@ bool doesTextFit(
   var maxLines = text.maxLines;
   if (!wrapWords) {
     final wordCount = span.toPlainText().split(RegExp('\\s+')).length;
-    maxLines = maxLines.clamp(1, wordCount) as int;
+    maxLines = maxLines!.clamp(1, wordCount);
   }
 
   final textPainter = TextPainter(
     text: span,
-    textAlign: text.textAlign,
+    textAlign: text.textAlign ?? TextAlign.start,
     textDirection: text.textDirection,
     textScaleFactor: text.textScaleFactor ?? 1,
     maxLines: text.maxLines,
@@ -56,8 +56,8 @@ Future prepareTests(WidgetTester tester) async {
 }
 
 Future pump({
-  @required WidgetTester tester,
-  @required Widget widget,
+  required WidgetTester tester,
+  required Widget widget,
 }) async {
   await tester.pumpWidget(
     Directionality(
@@ -70,17 +70,17 @@ Future pump({
 }
 
 Future<Text> pumpAndGetText({
-  @required WidgetTester tester,
-  @required Widget widget,
+  required WidgetTester tester,
+  required Widget widget,
 }) async {
   await pump(tester: tester, widget: widget);
   return tester.widget<Text>(find.byType(Text));
 }
 
 Future pumpAndExpectFontSize({
-  @required WidgetTester tester,
-  @required double expectedFontSize,
-  @required Widget widget,
+  required WidgetTester tester,
+  required double expectedFontSize,
+  required Widget widget,
 }) async {
   final text = await pumpAndGetText(tester: tester, widget: widget);
   expect(effectiveFontSize(text), expectedFontSize);

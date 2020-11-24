@@ -12,19 +12,11 @@ void main() {
     );
   });
 
-  testWidgets('Crash when text null', (tester) async {
-    expect(() => AutoSizeText(null), throwsAssertionError);
-  });
-
   testWidgets('Only text (rich)', (tester) async {
     await pump(
       tester: tester,
       widget: AutoSizeText.rich(TextSpan(text: 'Some Text')),
     );
-  });
-
-  testWidgets('Crash when text null (rich)', (tester) async {
-    expect(() => AutoSizeText.rich(null), throwsAssertionError);
   });
 
   testWidgets('Uses style fontSize', (tester) async {
