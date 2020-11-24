@@ -52,8 +52,8 @@ class _SyncDemoState extends State<SyncDemo>
 
   @override
   Widget build(BuildContext context) {
-    var group = AutoSizeGroup();
-    var text =
+    final group = AutoSizeGroup();
+    const text =
         'These AutoSizeTexts fit the available space and synchronize their '
         'text sizes.';
     return Column(
