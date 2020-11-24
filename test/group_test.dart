@@ -51,9 +51,9 @@ class GroupTestState extends State<GroupTest> {
   }
 }
 
-_expectFontSizes(WidgetTester tester, double fontSize) {
-  var texts = tester.widgetList(find.byType(Text));
-  for (var text in texts) {
+void _expectFontSizes(WidgetTester tester, double fontSize) {
+  final texts = tester.widgetList(find.byType(Text));
+  for (final text in texts) {
     expect(effectiveFontSize(text as Text), fontSize);
   }
 }
@@ -64,7 +64,7 @@ void main() {
 
     _expectFontSizes(tester, 50);
 
-    var state = tester.state(find.byType(GroupTest)) as GroupTestState;
+    final state = tester.state(find.byType(GroupTest)) as GroupTestState;
 
     state.width1 = 200;
     state.refresh();
@@ -109,8 +109,6 @@ void main() {
     await tester.pump(Duration.zero);
     _expectFontSizes(tester, 50);
 
-    //TODO remove when flutter bug is fixed https://github.com/flutter/flutter/issues/24166
-    await tester.pumpWidget(Container());
     await tester.pump(Duration.zero);
   });
 }

@@ -61,10 +61,9 @@ void main() {
   });
 
   testWidgets('Text fits height', (tester) async {
-    // TODO uncomment when flutter bug is fixed (https://github.com/flutter/flutter/issues/22557)
-    /*await pumpAndExpectFontSize(
+    await pumpAndExpectFontSize(
       tester: tester,
-      fontSize: 30,
+      expectedFontSize: 30,
       widget: SizedBox(
         height: 30,
         child: AutoSizeText(
@@ -73,7 +72,7 @@ void main() {
           maxLines: 1,
         ),
       ),
-    );*/
+    );
 
     await pumpAndExpectFontSize(
       tester: tester,
