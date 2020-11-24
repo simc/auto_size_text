@@ -5,7 +5,7 @@ author: Simon Leier <simonleier@gmail.com>
 homepage: https://github.com/leisim/auto_size_text
 
 environment:
-  sdk: '>=2.12.0-40.0 <3.0.0'
+  sdk: '>=2.12.0-0 <3.0.0'
 
 dependencies:
   flutter:
@@ -14,4 +14,4 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  pedantic: '>=1.9.0 <3.0.0'
+  pedantic: '>=1.10.0-nullsafety.3 <3.0.0'
