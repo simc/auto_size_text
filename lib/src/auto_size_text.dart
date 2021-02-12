@@ -32,6 +32,7 @@ class AutoSizeText extends StatefulWidget {
     this.textScaleFactor,
     this.maxLines,
     this.semanticsLabel,
+    this.textBuilder,
   })  : textSpan = null,
         super(key: key);
 
@@ -57,6 +58,7 @@ class AutoSizeText extends StatefulWidget {
     this.textScaleFactor,
     this.maxLines,
     this.semanticsLabel,
+    this.textBuilder,
   })  : data = null,
         super(key: key);
 
@@ -214,6 +216,9 @@ class AutoSizeText extends StatefulWidget {
   /// AutoSizeText(r'$$', semanticsLabel: 'Double dollars')
   /// ```
   final String? semanticsLabel;
+
+  final Widget Function(double fontSize, TextStyle style, int? maxLines)?
+      textBuilder;
 
   @override
   _AutoSizeTextState createState() => _AutoSizeTextState();
@@ -411,6 +416,9 @@ class _AutoSizeTextState extends State<AutoSizeText> {
   }
 
   Widget _buildText(double fontSize, TextStyle style, int? maxLines) {
+    if (widget.textBuilder != null) {
+      return widget.textBuilder!(fontSize, style, maxLines);
+    }
     if (widget.data != null) {
       return Text(
         widget.data!,
