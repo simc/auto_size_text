@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-typedef InputBuilder = Function(String input);
+typedef InputBuilder = Widget Function(String input);
 
 class AnimatedInput extends StatefulWidget {
   final String text;
   final InputBuilder builder;
 
-  AnimatedInput({this.text, this.builder});
+  AnimatedInput({required this.text, required this.builder});
 
   @override
   _AnimatedInputState createState() => _AnimatedInputState();
@@ -16,7 +16,7 @@ class _AnimatedInputState extends State<AnimatedInput>
     with SingleTickerProviderStateMixin {
   String _input = '';
 
-  AnimationController _controller;
+  late AnimationController _controller;
 
   @override
   void initState() {
@@ -27,7 +27,7 @@ class _AnimatedInputState extends State<AnimatedInput>
       vsync: this,
     );
 
-    Animation<int> number = IntTween(
+    final number = IntTween(
       begin: 0,
       end: widget.text.length,
     ).animate(_controller);
@@ -41,7 +41,7 @@ class _AnimatedInputState extends State<AnimatedInput>
     number.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         Future.delayed(Duration(seconds: 3), () {
-          if (mounted) _controller.forward(from: 0.0);
+          if (mounted) _controller.forward(from: 0);
         });
       }
     });

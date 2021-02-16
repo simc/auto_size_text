@@ -4,7 +4,7 @@ class TextCard extends StatelessWidget {
   final String title;
   final Widget child;
 
-  TextCard({this.title, this.child});
+  TextCard({required this.title, required this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -15,16 +15,16 @@ class TextCard extends StatelessWidget {
         Expanded(
           child: Card(
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8),
               child: child,
             ),
-            elevation: 0.0,
+            elevation: 0,
             clipBehavior: Clip.antiAlias,
             color: Colors.transparent,
             shape: RoundedRectangleBorder(
               side: BorderSide(color: Colors.grey, width: 1.5),
               borderRadius: BorderRadius.all(
-                Radius.circular(10.0),
+                Radius.circular(10),
               ),
             ),
           ),

@@ -13,8 +13,10 @@ class OverflowReplacementDemo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedInput(
-      text:
-          "This String's size will not be smaller than 20. It will be automatically resized to fit on 4 lines. Otherwise, it will be replaced by a replacement String! Here is some random stuff, just to make sure it is long enough.",
+      text: 'This String\'s size will not be smaller than 20. It will be '
+          'automatically resized to fit on 4 lines. Otherwise, it will be '
+          'replaced by a replacement String! Here is some random stuff, just '
+          'to make sure it is long enough.',
       builder: (input) {
         return Row(
           children: <Widget>[

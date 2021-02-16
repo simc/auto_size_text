@@ -9,6 +9,7 @@ class SyncDemo extends StatefulWidget {
 
   SyncDemo(this.richText);
 
+  @override
   _SyncDemoState createState() => _SyncDemoState();
 }
 
@@ -16,7 +17,7 @@ class _SyncDemoState extends State<SyncDemo>
     with SingleTickerProviderStateMixin {
   double _scale = 0;
   var group = AutoSizeGroup();
-  AnimationController _controller;
+  late AnimationController _controller;
 
   @override
   void initState() {
@@ -51,9 +52,10 @@ class _SyncDemoState extends State<SyncDemo>
 
   @override
   Widget build(BuildContext context) {
-    var group = AutoSizeGroup();
-    var text =
-        'These AutoSizeTexts fit the available space and synchronize their text sizes.';
+    final group = AutoSizeGroup();
+    const text =
+        'These AutoSizeTexts fit the available space and synchronize their '
+        'text sizes.';
     return Column(
       children: <Widget>[
         Expanded(
@@ -64,14 +66,14 @@ class _SyncDemoState extends State<SyncDemo>
               child: AutoSizeText(
                 text,
                 group: group,
-                style: TextStyle(fontSize: 40.0),
+                style: TextStyle(fontSize: 40),
                 stepGranularity: 0.1,
                 maxLines: 3,
               ),
               replacement: AutoSizeText.rich(
                 spanFromString(text),
                 group: group,
-                style: TextStyle(fontSize: 40.0),
+                style: TextStyle(fontSize: 40),
                 stepGranularity: 0.1,
                 maxLines: 4,
               ),
@@ -95,14 +97,14 @@ class _SyncDemoState extends State<SyncDemo>
                     child: AutoSizeText(
                       text,
                       group: group,
-                      style: TextStyle(fontSize: 40.0),
+                      style: TextStyle(fontSize: 40),
                       stepGranularity: 0.1,
                       maxLines: 3,
                     ),
                     replacement: AutoSizeText.rich(
                       spanFromString(text),
                       group: group,
-                      style: TextStyle(fontSize: 40.0),
+                      style: TextStyle(fontSize: 40),
                       stepGranularity: 0.1,
                       maxLines: 4,
                     ),
