@@ -91,7 +91,7 @@ You can synchronize the font size of multiple `AutoSizeText`. They will fit thei
 
 An instance of `AutoSizeGroup` represents one group. Pass this instance to all `AutoSizeText` you want to add to that group. You don't have to care about disposing the group if it is no longer needed.
 
-**Important:** Please don't pass a new instance of `AutoSizeGroup` every build. In other words, save the `AutoSizeGroup` instance in a `StatefulWidget`.
+**Important:** Please don't pass a new instance of `AutoSizeGroup` every build. In other words, save the `AutoSizeGroup` instance in a `StatefulWidget`, or use `AutoSizeGroupBuilder`.
 
 ```dart
 var myGroup = AutoSizeGroup();
