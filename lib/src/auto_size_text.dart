@@ -32,6 +32,7 @@ class AutoSizeText extends StatefulWidget {
     this.textScaleFactor,
     this.maxLines,
     this.semanticsLabel,
+    this.wrapTextWidget,
   })  : textSpan = null,
         super(key: key);
 
@@ -57,6 +58,7 @@ class AutoSizeText extends StatefulWidget {
     this.textScaleFactor,
     this.maxLines,
     this.semanticsLabel,
+    this.wrapTextWidget,
   })  : data = null,
         super(key: key);
 
@@ -215,6 +217,12 @@ class AutoSizeText extends StatefulWidget {
   /// ```
   final String? semanticsLabel;
 
+  /// Specify an optional widget that will wrap this text widget.
+  ///
+  /// For example, this is useful to add custom padding or decoration around the
+  /// text widget, but not on the overflow replacement widget.
+  final Widget Function(BuildContext context, Widget text)? wrapTextWidget;
+
   @override
   _AutoSizeTextState createState() => _AutoSizeTextState();
 }
@@ -270,7 +278,9 @@ class _AutoSizeTextState extends State<AutoSizeText> {
       if (widget.overflowReplacement != null && !textFits) {
         return widget.overflowReplacement!;
       } else {
-        return text;
+        return widget.wrapTextWidget == null
+            ? text
+            : widget.wrapTextWidget!(context, text);
       }
     });
   }

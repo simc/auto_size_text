@@ -112,7 +112,7 @@ AutoSizeText(
 
 ### stepGranularity
 
-The `AutoSizeText` will try each font size, starting with `TextStyle.fontSize` until the text fits within its bounds.  
+The `AutoSizeText` will try each font size, starting with `TextStyle.fontSize` until the text fits within its bounds.
 `stepGranularity` specifies how much the font size is decreased each step. Usually, this value should not be below `1` for best performance.
 
 ```dart
@@ -166,7 +166,7 @@ You can also use Rich Text (like different text styles or links) with `AutoSizeT
 (which works exactly like the `Text.rich()` constructor).
 
 The only thing you have to be aware of is how the font size calculation works: The `fontSize` in the `style`
-parameter of `AutoSizeText` (or the inherited `fontSize` if none is set) is used as reference.  
+parameter of `AutoSizeText` (or the inherited `fontSize` if none is set) is used as reference.
 
 For example:
 ```dart
@@ -176,7 +176,7 @@ AutoSizeText.rich(
   minFontSize: 5,
 )
 ```
-The text will be at least 1/4 of its original size (5 / 20 = 1/4).  
+The text will be at least 1/4 of its original size (5 / 20 = 1/4).
 But it does not mean that all `TextSpan`s have at least font size `5`.
 
 ![](https://raw.githubusercontent.com/leisim/auto_size_text/master/.github/art/maxlines_rich.gif)
@@ -191,6 +191,7 @@ But it does not mean that all `TextSpan`s have at least font size `5`.
 | `style`* | If non-null, the style to use for this text |
 | `minFontSize` | The **minimum** text size constraint to be used when auto-sizing text. <br>*Is being ignored if `presetFontSizes` is set.*  |
 | `maxFontSize` | The **maximum** text size constraint to be used when auto-sizing text. <br>*Is being ignored if `presetFontSizes` is set.* |
+| `wrapTextWidget` | Wrap the text by a Widget of your choice. For example wrap the text by a `Container` with some custom padding. |
 | `stepGranularity` | The step size in which the font size is being adapted to constraints. |
 | `presetFontSizes` | Predefines all the possible font sizes.<br> **Important:** `presetFontSizes` have to be in descending order.  |
 | `group` | Synchronizes the size of multiple `AutoSizeText`s |
@@ -233,7 +234,7 @@ Row(
   ],
 )
 ```
-Because `Row` and other widgets like `Container`, `Column` or `ListView` do not constrain their children, the text will overflow.  
+Because `Row` and other widgets like `Container`, `Column` or `ListView` do not constrain their children, the text will overflow.
 You can fix this by constraining the `AutoSizeText`. Wrap it with `Expanded` in case of `Row` and `Column` or use a `SizedBox` or another widget with fixed width (and height).
 
 **Correct** code:
