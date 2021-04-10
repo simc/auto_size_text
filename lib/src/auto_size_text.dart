@@ -220,7 +220,7 @@ class AutoSizeText extends StatefulWidget {
   /// Allows usage of a custom Text widget
   ///
   /// The builder is passed the font size, text style and maxLines and can return any Widget
-  final Widget Function(double fontSize, TextStyle style, int? maxLines)?
+  final Widget Function(String data, TextStyle style, int? maxLines)?
       textBuilder;
 
   @override
@@ -420,7 +420,8 @@ class _AutoSizeTextState extends State<AutoSizeText> {
 
   Widget _buildText(double fontSize, TextStyle style, int? maxLines) {
     if (widget.textBuilder != null) {
-      return widget.textBuilder!(fontSize, style, maxLines);
+      return widget.textBuilder!(
+          widget.data!, style.copyWith(fontSize: fontSize), maxLines);
     }
     if (widget.data != null) {
       return Text(
