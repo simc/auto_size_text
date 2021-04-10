@@ -217,6 +217,9 @@ class AutoSizeText extends StatefulWidget {
   /// ```
   final String? semanticsLabel;
 
+  /// Allows usage of a custom Text widget
+  ///
+  /// The builder is passed the font size, text style and maxLines and can return any Widget
   final Widget Function(double fontSize, TextStyle style, int? maxLines)?
       textBuilder;
 
