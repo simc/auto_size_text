@@ -26,6 +26,7 @@ Also check out the blazing fast key-value store [hive](https://github.com/leisim
   - [stepGranularity](#stepgranularity)
   - [presetFontSizes](#presetfontsizes)
   - [overflowReplacement](#overflowreplacement)
+  - [textBuilder](#textbuilder)
 - [Rich Text](#rich-text)
 - [Parameters](#parameters)
 - [Performance](#performance)
@@ -159,6 +160,18 @@ AutoSizeText(
 
 ![](https://raw.githubusercontent.com/leisim/auto_size_text/master/.github/art/overflowreplacement.gif)
 
+### textBuilder
+
+If you would like to render your own custom Text widget, you can use the textBuilder which is passed the font size, text style and maxLines
+
+```dart
+AutoSizeText(
+  textValue,
+  textBuilder: (double fontSize, TextStyle style, int? maxLines){
+      return MyTextField(textValue, fontSize: fontSize, textStyle: style, maxLines: maxLines)
+  },
+)
+```
 
 ## Rich Text
 
