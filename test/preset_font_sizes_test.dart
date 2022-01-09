@@ -9,7 +9,7 @@ void main() {
     await pumpAndExpectFontSize(
       tester: tester,
       expectedFontSize: 100,
-      widget: SizedBox(
+      widget: const SizedBox(
         width: 500,
         height: 100,
         child: AutoSizeText(
@@ -22,7 +22,7 @@ void main() {
     await pumpAndExpectFontSize(
       tester: tester,
       expectedFontSize: 50,
-      widget: SizedBox(
+      widget: const SizedBox(
         width: 300,
         height: 100,
         child: AutoSizeText(
@@ -35,7 +35,7 @@ void main() {
     await pumpAndExpectFontSize(
       tester: tester,
       expectedFontSize: 5,
-      widget: SizedBox(
+      widget: const SizedBox(
         width: 20,
         height: 100,
         child: AutoSizeText(

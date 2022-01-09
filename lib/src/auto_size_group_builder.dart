@@ -1,4 +1,4 @@
-part of auto_size_text;
+/*import 'package:flutter/material.dart';
 
 /// A Flutter widget that provides an [AutoSizeGroup] to its builder function.
 class AutoSizeGroupBuilder extends StatefulWidget {
@@ -19,5 +19,4 @@ class _AutoSizeGroupBuilderState extends State<AutoSizeGroupBuilder> {
   Widget build(BuildContext context) {
     return widget.builder(context, _group);
   }
-}
-
+}*/

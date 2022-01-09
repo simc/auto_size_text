@@ -8,14 +8,14 @@ void main() {
   testWidgets('Only Text', (tester) async {
     await pump(
       tester: tester,
-      widget: AutoSizeText('Some Text'),
+      widget: const AutoSizeText('Some Text'),
     );
   });
 
   testWidgets('Only text (rich)', (tester) async {
     await pump(
       tester: tester,
-      widget: AutoSizeText.rich(TextSpan(text: 'Some Text')),
+      widget: const AutoSizeText.rich(TextSpan(text: 'Some Text')),
     );
   });
 
@@ -23,7 +23,7 @@ void main() {
     await pumpAndExpectFontSize(
       tester: tester,
       expectedFontSize: 34,
-      widget: AutoSizeText(
+      widget: const AutoSizeText(
         'Some Text',
         style: TextStyle(fontSize: 34),
       ),
@@ -34,7 +34,7 @@ void main() {
     await pumpAndExpectFontSize(
       tester: tester,
       expectedFontSize: 35,
-      widget: AutoSizeText.rich(
+      widget: const AutoSizeText.rich(
         TextSpan(text: 'Some Text'),
         style: TextStyle(fontSize: 35),
       ),
@@ -42,13 +42,13 @@ void main() {
   });
 
   testWidgets('Respects inherit style', (tester) async {
-    final defaultStyle = TextStyle(
+    const defaultStyle = TextStyle(
       fontSize: 20,
       color: Colors.yellow,
     );
-    final text = await pumpAndGetText(
+    final text = await pumpAndGet<RichText>(
       tester: tester,
-      widget: DefaultTextStyle(
+      widget: const DefaultTextStyle(
         style: defaultStyle,
         textAlign: TextAlign.right,
         softWrap: false,
@@ -60,12 +60,10 @@ void main() {
       ),
     );
     expect(text.style, defaultStyle);
-
-    final richText = getRichText(tester);
-    expect(richText.textAlign, TextAlign.right);
-    expect(richText.softWrap, false);
-    expect(richText.overflow, TextOverflow.ellipsis);
-    expect(richText.maxLines, 17);
+    expect(text.textAlign, TextAlign.right);
+    expect(text.softWrap, false);
+    expect(text.overflow, TextOverflow.ellipsis);
+    expect(text.maxLines, 17);
   });
 
   testWidgets('Applies scale even if initial fontSize fits (#25)',
@@ -73,7 +71,7 @@ void main() {
     await pumpAndExpectFontSize(
       tester: tester,
       expectedFontSize: 60,
-      widget: AutoSizeText(
+      widget: const AutoSizeText(
         'Some Text',
         style: TextStyle(fontSize: 15),
         textScaleFactor: 4,
@@ -83,7 +81,7 @@ void main() {
 
   testWidgets('Uses textKey', (tester) async {
     final textKey = GlobalKey();
-    final text = await pumpAndGetText(
+    final text = await pumpAndGet<Text>(
       tester: tester,
       widget: AutoSizeText(
         'A text with key',

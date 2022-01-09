@@ -4,6 +4,17 @@ import 'package:flutter/material.dart';
 import 'text_card.dart';
 import 'utils.dart';
 
+class SyncDemo extends StatelessWidget {
+  final bool richText;
+
+  SyncDemo(this.richText);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+/*
 class SyncDemo extends StatefulWidget {
   final bool richText;
 
@@ -122,3 +133,4 @@ class _SyncDemoState extends State<SyncDemo>
     );
   }
 }
+*/

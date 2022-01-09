@@ -22,7 +22,7 @@ class App extends StatelessWidget {
       DeviceOrientation.landscapeRight,
     ]);
 
-    SystemChrome.setEnabledSystemUIOverlays([]);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
 
     return MaterialApp(
       theme: ThemeData.light(),

@@ -6,9 +6,9 @@ import 'utils.dart';
 
 void main() {
   testWidgets('Overflow replacement visible on overflow', (tester) async {
-    final text = await pumpAndGetText(
+    final text = await pumpAndGet<RichText>(
       tester: tester,
-      widget: SizedBox(
+      widget: const SizedBox(
         width: 100,
         height: 20,
         child: AutoSizeText(
@@ -18,14 +18,14 @@ void main() {
         ),
       ),
     );
-    expect(text.data, 'OVERFLOW!');
+    expect(text.text.toPlainText(), 'OVERFLOW!');
   });
 
   testWidgets('Overflow replacement not visible without overflow',
       (tester) async {
-    final text = await pumpAndGetText(
+    final text = await pumpAndGet<RichText>(
       tester: tester,
-      widget: SizedBox(
+      widget: const SizedBox(
         width: 100,
         height: 20,
         child: AutoSizeText(
@@ -35,6 +35,6 @@ void main() {
         ),
       ),
     );
-    expect(text.data, 'XXXXX');
+    expect(text.text.toPlainText(), 'XXXXX');
   });
 }

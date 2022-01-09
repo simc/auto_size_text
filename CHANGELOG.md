@@ -1,3 +1,11 @@
+## 4.0.0
+- Added `AutoSizeBuilder`, `SelectableAutoSize`, `AutoSizeTextField` and `AutoSizeGroupBuilder`
+- Added `textWidthBasis` and `textHeightBehavior`
+- Changed default `wordWrap` to `false`
+- Improved performance
+- Fixed intrinsics handling
+- Fixed `wordWrap` calculation for rich text
+
 ## 3.0.0
 - Upgraded to null safety
 

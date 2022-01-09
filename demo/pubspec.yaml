@@ -13,8 +13,8 @@ dependencies:
   auto_size_text:
     path: ../
 
-  bottom_navy_bar: ^4.2.0
-  material_design_icons_flutter: ^4.0.5755
+  bottom_navy_bar: 6.0.0
+  material_design_icons_flutter: ^5.0.6295
 
 dev_dependencies:
   flutter_test: 
