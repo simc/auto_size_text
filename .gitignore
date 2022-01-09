@@ -7,9 +7,10 @@
 .packages
 .pub/
 
-build/
-ios/
-android/
+**/build/
+**/ios/
+**/android/
+**/web
 
 pubspec.lock
 doc/api/

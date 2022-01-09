@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-double effectiveFontSize(Text text) =>
-    (text.textScaleFactor ?? 1) * text.style!.fontSize!;
+double effectiveFontSize(RichText text) =>
+    text.textScaleFactor * (text.text.style?.fontSize ?? 14);
 
 bool doesTextFit(
   Text text, [
@@ -45,7 +45,7 @@ Future prepareTests(WidgetTester tester) async {
     return;
   }
 
-  tester.binding.addTime(Duration(seconds: 10));
+  tester.binding.addTime(const Duration(seconds: 10));
   prepared = true;
   final fontData = File('test/assets/Roboto-Regular.ttf')
       .readAsBytes()
@@ -69,12 +69,12 @@ Future pump({
   );
 }
 
-Future<Text> pumpAndGetText({
+Future<T> pumpAndGet<T extends Widget>({
   required WidgetTester tester,
   required Widget widget,
 }) async {
   await pump(tester: tester, widget: widget);
-  return tester.widget<Text>(find.byType(Text));
+  return tester.widget<T>(find.byType(T));
 }
 
 Future pumpAndExpectFontSize({
@@ -82,21 +82,23 @@ Future pumpAndExpectFontSize({
   required double expectedFontSize,
   required Widget widget,
 }) async {
-  final text = await pumpAndGetText(tester: tester, widget: widget);
+  final text = await pumpAndGet<RichText>(tester: tester, widget: widget);
   expect(effectiveFontSize(text), expectedFontSize);
 }
-
-RichText getRichText(WidgetTester tester) =>
-    tester.widget(find.byType(RichText));
 
 class OverflowNotifier extends StatelessWidget {
   final VoidCallback overflowCallback;
 
-  OverflowNotifier(this.overflowCallback);
+  const OverflowNotifier({Key? key, required this.overflowCallback})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     overflowCallback();
     return Container();
   }
+}
+
+extension RichTextX on RichText {
+  TextStyle? get style => text.style;
 }

@@ -9,7 +9,7 @@ void main() {
     await pumpAndExpectFontSize(
       tester: tester,
       expectedFontSize: 20,
-      widget: SizedBox(
+      widget: const SizedBox(
         width: 100,
         child: AutoSizeText(
           'XXXXX',
@@ -22,7 +22,7 @@ void main() {
     await pumpAndExpectFontSize(
       tester: tester,
       expectedFontSize: 17,
-      widget: SizedBox(
+      widget: const SizedBox(
         width: 85,
         child: AutoSizeText(
           'XXXXX',
@@ -35,7 +35,7 @@ void main() {
     await pumpAndExpectFontSize(
       tester: tester,
       expectedFontSize: 1,
-      widget: SizedBox(
+      widget: const SizedBox(
         width: 6,
         child: AutoSizeText(
           'XXXXX',
@@ -49,7 +49,7 @@ void main() {
     await pumpAndExpectFontSize(
       tester: tester,
       expectedFontSize: 20,
-      widget: SizedBox(
+      widget: const SizedBox(
         width: 100,
         child: AutoSizeText(
           'XXXXX XXXXX XXXXX',
@@ -64,7 +64,7 @@ void main() {
     await pumpAndExpectFontSize(
       tester: tester,
       expectedFontSize: 30,
-      widget: SizedBox(
+      widget: const SizedBox(
         height: 30,
         child: AutoSizeText(
           'XXXXX',
@@ -77,13 +77,14 @@ void main() {
     await pumpAndExpectFontSize(
       tester: tester,
       expectedFontSize: 30,
-      widget: SizedBox(
+      widget: const SizedBox(
         width: 120,
         height: 60,
         child: AutoSizeText(
           'XXXXXX',
           style: TextStyle(fontSize: 200),
           maxLines: 2,
+          wrapWords: true,
         ),
       ),
     );
@@ -91,7 +92,7 @@ void main() {
     await pumpAndExpectFontSize(
       tester: tester,
       expectedFontSize: 47,
-      widget: SizedBox(
+      widget: const SizedBox(
         width: 120,
         height: 141,
         child: AutoSizeText(
@@ -107,7 +108,7 @@ void main() {
     await pumpAndExpectFontSize(
       tester: tester,
       expectedFontSize: 33.5,
-      widget: SizedBox(
+      widget: const SizedBox(
         width: 201,
         height: 40,
         child: AutoSizeText(
@@ -122,7 +123,7 @@ void main() {
     await pumpAndExpectFontSize(
       tester: tester,
       expectedFontSize: 33,
-      widget: SizedBox(
+      widget: const SizedBox(
         width: 200.9,
         height: 40,
         child: AutoSizeText(

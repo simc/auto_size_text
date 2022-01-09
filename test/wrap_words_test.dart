@@ -9,12 +9,11 @@ void main() {
     await pumpAndExpectFontSize(
       tester: tester,
       expectedFontSize: 20,
-      widget: SizedBox(
+      widget: const SizedBox(
         width: 100,
         child: AutoSizeText(
           'XXXXX XXXXX',
           style: TextStyle(fontSize: 25),
-          wrapWords: false,
         ),
       ),
     );
@@ -24,14 +23,13 @@ void main() {
     await pumpAndExpectFontSize(
       tester: tester,
       expectedFontSize: 10,
-      widget: SizedBox(
+      widget: const SizedBox(
         width: 40,
         child: AutoSizeText(
           'XXXXX',
           style: TextStyle(fontSize: 25),
           minFontSize: 10,
           maxLines: 10,
-          wrapWords: false,
         ),
       ),
     );
@@ -43,12 +41,13 @@ void main() {
     await pumpAndExpectFontSize(
       tester: tester,
       expectedFontSize: 30,
-      widget: SizedBox(
+      widget: const SizedBox(
         width: 90,
         child: AutoSizeText(
           'XXXXXX',
           style: TextStyle(fontSize: 40),
           maxLines: 2,
+          wrapWords: true,
         ),
       ),
     );

@@ -1,4 +1,4 @@
-part of auto_size_text;
+/*part of auto_size_text;
 
 /// Controller to synchronize the fontSize of multiple AutoSizeTexts.
 class AutoSizeGroup {
@@ -49,4 +49,4 @@ class AutoSizeGroup {
     _updateFontSize(text, double.infinity);
     _listeners.remove(text);
   }
-}
+}*/

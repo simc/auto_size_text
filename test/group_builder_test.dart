@@ -4,7 +4,9 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'utils.dart';
 
-Widget testWidget({required double width1, required double width2}) {
+void main() {}
+
+/*Widget testWidget({required double width1, required double width2}) {
   return MaterialApp(
     home: AutoSizeGroupBuilder(
       builder: (_, group) => Column(
@@ -86,3 +88,4 @@ void main() {
   });
 }
 
+*/
