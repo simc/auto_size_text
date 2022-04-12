@@ -4,7 +4,8 @@ library auto_size_text;
 
 import 'dart:async';
 
-import 'package:flutter/widgets.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 part 'src/auto_size_text.dart';
 part 'src/auto_size_group.dart';

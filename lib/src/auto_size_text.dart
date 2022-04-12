@@ -412,35 +412,63 @@ class _AutoSizeTextState extends State<AutoSizeText> {
 
   Widget _buildText(double fontSize, TextStyle style, int? maxLines) {
     if (widget.data != null) {
-      return Text(
-        widget.data!,
-        key: widget.textKey,
-        style: style.copyWith(fontSize: fontSize),
-        strutStyle: widget.strutStyle,
-        textAlign: widget.textAlign,
-        textDirection: widget.textDirection,
-        locale: widget.locale,
-        softWrap: widget.softWrap,
-        overflow: widget.overflow,
-        textScaleFactor: 1,
-        maxLines: maxLines,
-        semanticsLabel: widget.semanticsLabel,
-      );
+      if (kIsWeb) {
+        return SelectableText(
+          widget.data!,
+          key: widget.textKey,
+          style: style.copyWith(fontSize: fontSize),
+          strutStyle: widget.strutStyle,
+          textAlign: widget.textAlign,
+          textDirection: widget.textDirection,
+          textScaleFactor: 1,
+          maxLines: maxLines,
+          semanticsLabel: widget.semanticsLabel,
+        );
+      } else {
+        return Text(
+          widget.data!,
+          key: widget.textKey,
+          style: style.copyWith(fontSize: fontSize),
+          strutStyle: widget.strutStyle,
+          textAlign: widget.textAlign,
+          textDirection: widget.textDirection,
+          locale: widget.locale,
+          softWrap: widget.softWrap,
+          overflow: widget.overflow,
+          textScaleFactor: 1,
+          maxLines: maxLines,
+          semanticsLabel: widget.semanticsLabel,
+        );
+      }
     } else {
-      return Text.rich(
-        widget.textSpan!,
-        key: widget.textKey,
-        style: style,
-        strutStyle: widget.strutStyle,
-        textAlign: widget.textAlign,
-        textDirection: widget.textDirection,
-        locale: widget.locale,
-        softWrap: widget.softWrap,
-        overflow: widget.overflow,
-        textScaleFactor: fontSize / style.fontSize!,
-        maxLines: maxLines,
-        semanticsLabel: widget.semanticsLabel,
-      );
+      if (kIsWeb) {
+        return SelectableText.rich(
+          widget.textSpan!,
+          key: widget.textKey,
+          style: style,
+          strutStyle: widget.strutStyle,
+          textAlign: widget.textAlign,
+          textDirection: widget.textDirection,
+          textScaleFactor: fontSize / style.fontSize!,
+          maxLines: maxLines,
+          semanticsLabel: widget.semanticsLabel,
+        );
+      } else {
+        return Text.rich(
+          widget.textSpan!,
+          key: widget.textKey,
+          style: style,
+          strutStyle: widget.strutStyle,
+          textAlign: widget.textAlign,
+          textDirection: widget.textDirection,
+          locale: widget.locale,
+          softWrap: widget.softWrap,
+          overflow: widget.overflow,
+          textScaleFactor: fontSize / style.fontSize!,
+          maxLines: maxLines,
+          semanticsLabel: widget.semanticsLabel,
+        );
+      }
     }
   }
 
