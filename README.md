@@ -1,6 +1,6 @@
-# ![](https://raw.githubusercontent.com/leisim/auto_size_text/master/.github/art/logo.svg?sanitize=true)
+# AutoSizeText
 
-![GitHub Actions](https://action-badges.now.sh/leisim/auto_size_text) [![codecov](https://codecov.io/gh/leisim/auto_size_text/branch/master/graph/badge.svg)](https://codecov.io/gh/leisim/auto_size_text) [![Version](https://img.shields.io/pub/v/auto_size_text.svg)](https://pub.dev/packages/auto_size_text) ![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/leisim/auto_size_text/CI) [![codecov](https://codecov.io/gh/leisim/auto_size_text/branch/master/graph/badge.svg)](https://codecov.io/gh/leisim/auto_size_text) [![Version](https://img.shields.io/pub/v/auto_size_text.svg)](https://pub.dev/packages/auto_size_text) ![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
 
 Flutter widget that automatically resizes text to fit perfectly within its bounds.
 
@@ -91,7 +91,7 @@ You can synchronize the font size of multiple `AutoSizeText`. They will fit thei
 
 An instance of `AutoSizeGroup` represents one group. Pass this instance to all `AutoSizeText` you want to add to that group. You don't have to care about disposing the group if it is no longer needed.
 
-**Important:** Please don't pass a new instance of `AutoSizeGroup` every build. In other words, save the `AutoSizeGroup` instance in a `StatefulWidget`.
+**Important:** Please don't pass a new instance of `AutoSizeGroup` every build. In other words, save the `AutoSizeGroup` instance in a `StatefulWidget`, or use `AutoSizeGroupBuilder`.
 
 ```dart
 var myGroup = AutoSizeGroup();

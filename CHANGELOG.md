@@ -1,3 +1,6 @@
+## 3.0.0
+- Upgraded to null safety
+
 ## 2.1.0
 - Added `textKey` parameter
 
