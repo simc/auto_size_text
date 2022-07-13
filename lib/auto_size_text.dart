@@ -3,6 +3,7 @@
 library auto_size_text;
 
 import 'dart:async';
+import 'dart:ui' as ui show BoxHeightStyle, BoxWidthStyle;
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart' show SelectableText;

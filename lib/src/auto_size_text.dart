@@ -48,6 +48,8 @@ class AutoSizeText extends StatefulWidget {
         scrollPhysics = null,
         onSelectionChanged = null,
         minLines = null,
+        selectionHeightStyle = ui.BoxHeightStyle.tight,
+        selectionWidthStyle = ui.BoxWidthStyle.tight,
         _isSelectableText = false,
         super(key: key);
 
@@ -89,6 +91,8 @@ class AutoSizeText extends StatefulWidget {
         scrollPhysics = null,
         onSelectionChanged = null,
         minLines = null,
+        selectionHeightStyle = ui.BoxHeightStyle.tight,
+        selectionWidthStyle = ui.BoxWidthStyle.tight,
         _isSelectableText = false,
         super(key: key);
 
@@ -120,6 +124,8 @@ class AutoSizeText extends StatefulWidget {
     this.enableInteractiveSelection = true,
     this.selectionControls,
     this.dragStartBehavior = DragStartBehavior.start,
+    this.selectionHeightStyle = ui.BoxHeightStyle.tight,
+    this.selectionWidthStyle = ui.BoxWidthStyle.tight,
     this.toolbarOptions,
     this.onTap,
     this.scrollPhysics,
@@ -165,6 +171,8 @@ class AutoSizeText extends StatefulWidget {
     this.enableInteractiveSelection = true,
     this.selectionControls,
     this.dragStartBehavior = DragStartBehavior.start,
+    this.selectionHeightStyle = ui.BoxHeightStyle.tight,
+    this.selectionWidthStyle = ui.BoxWidthStyle.tight,
     this.toolbarOptions,
     this.onTap,
     this.scrollPhysics,
@@ -431,6 +439,16 @@ class AutoSizeText extends StatefulWidget {
   /// If not set, select all and copy will be enabled by default.
   final ToolbarOptions? toolbarOptions;
 
+  /// Controls how tall the selection highlight boxes are computed to be.
+  ///
+  /// See [ui.BoxHeightStyle] for details on available styles.
+  final ui.BoxHeightStyle selectionHeightStyle;
+
+  /// Controls how wide the selection highlight boxes are computed to be.
+  ///
+  /// See [ui.BoxWidthStyle] for details on available styles.
+  final ui.BoxWidthStyle selectionWidthStyle;
+
   @override
   _AutoSizeTextState createState() => _AutoSizeTextState();
 }
@@ -645,6 +663,8 @@ class _AutoSizeTextState extends State<AutoSizeText> {
           showCursor: widget.showCursor,
           toolbarOptions: widget.toolbarOptions,
           semanticsLabel: widget.semanticsLabel,
+          selectionHeightStyle: widget.selectionHeightStyle,
+          selectionWidthStyle: widget.selectionWidthStyle,
         );
       } else {
         return SelectableText.rich(
@@ -672,6 +692,8 @@ class _AutoSizeTextState extends State<AutoSizeText> {
           showCursor: widget.showCursor,
           toolbarOptions: widget.toolbarOptions,
           semanticsLabel: widget.semanticsLabel,
+          selectionHeightStyle: widget.selectionHeightStyle,
+          selectionWidthStyle: widget.selectionWidthStyle,
         );
       }
     }
