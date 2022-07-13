@@ -7,6 +7,7 @@ import 'max_lines_demo.dart';
 import 'min_font_size_demo.dart';
 import 'overflow_replacement_demo.dart';
 import 'preset_font_sizes_demo.dart';
+import 'selectable_text_demo.dart';
 import 'step_granularity.dart';
 import 'sync_demo.dart';
 
@@ -43,6 +44,7 @@ List<MaterialColor> colors = [
   Colors.lightBlue,
   Colors.green,
   Colors.blueGrey,
+  Colors.teal,
 ];
 
 List<String> demoNames = [
@@ -52,6 +54,7 @@ List<String> demoNames = [
   'StepGranularity',
   'PresetFontSizes',
   'OverflowReplacement',
+  'Text Selection',
 ];
 
 class _DemoAppState extends State<DemoApp> {
@@ -138,6 +141,11 @@ class _DemoAppState extends State<DemoApp> {
             title: Text('replacement'),
             activeColor: colors[5],
           ),
+          BottomNavyBarItem(
+            icon: Icon(MdiIcons.selection),
+            title: Text('selection'),
+            activeColor: colors[6],
+          ),
         ],
       ),
     );
@@ -155,6 +163,10 @@ class _DemoAppState extends State<DemoApp> {
         return StepGranularityDemo(_richText);
       case 4:
         return PresetFontSizesDemo(_richText);
+      case 5:
+        return OverflowReplacementDemo(_richText);
+      case 6:
+        return SelectableTextDemo(_richText);
       default:
         return OverflowReplacementDemo(_richText);
     }
