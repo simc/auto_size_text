@@ -47,6 +47,7 @@ class AutoSizeText extends StatefulWidget {
         onTap = null,
         scrollPhysics = null,
         onSelectionChanged = null,
+        minLines = null,
         _isSelectableText = false,
         super(key: key);
 
@@ -87,6 +88,7 @@ class AutoSizeText extends StatefulWidget {
         onTap = null,
         scrollPhysics = null,
         onSelectionChanged = null,
+        minLines = null,
         _isSelectableText = false,
         super(key: key);
 
@@ -106,6 +108,7 @@ class AutoSizeText extends StatefulWidget {
     this.textDirection,
     this.wrapWords = true,
     this.textScaleFactor,
+    this.minLines,
     this.maxLines,
     this.autofocus = false,
     this.showCursor = false,
@@ -121,8 +124,7 @@ class AutoSizeText extends StatefulWidget {
     this.onTap,
     this.scrollPhysics,
     this.onSelectionChanged,
-  })  : assert(textSpan != null,
-            'A non-null TextSpan must be provided to a AutoSizeText.rich widget.'),
+  })  : assert(textSpan != null, 'A non-null TextSpan must be provided to a AutoSizeText.rich widget.'),
         data = null,
         locale = null,
         softWrap = null,
@@ -151,6 +153,7 @@ class AutoSizeText extends StatefulWidget {
     this.textDirection,
     this.wrapWords = true,
     this.textScaleFactor,
+    this.minLines,
     this.maxLines,
     this.autofocus = false,
     this.showCursor = false,
@@ -166,8 +169,7 @@ class AutoSizeText extends StatefulWidget {
     this.onTap,
     this.scrollPhysics,
     this.onSelectionChanged,
-  })  : assert(data != null,
-            'A non-null String must be provided to a AutoSizeText widget.'),
+  })  : assert(data != null, 'A non-null String must be provided to a AutoSizeText widget.'),
         textSpan = null,
         locale = null,
         softWrap = null,
@@ -318,6 +320,9 @@ class AutoSizeText extends StatefulWidget {
   /// widget directly to entirely override the [DefaultTextStyle].
   final int? maxLines;
 
+  /// {@macro flutter.widgets.editableText.minLines}
+  final int? minLines;
+
   /// An alternative semantics label for this text.
   ///
   /// If present, the semantics of this widget will contain this value instead
@@ -332,6 +337,7 @@ class AutoSizeText extends StatefulWidget {
   /// ```
   final String? semanticsLabel;
 
+  /// Enable/disable selectable text.
   final bool _isSelectableText;
 
   /// {@macro flutter.widgets.editableText.autofocus}
@@ -487,38 +493,29 @@ class _AutoSizeTextState extends State<AutoSizeText> {
 
   void _validateProperties(TextStyle style, int? maxLines) {
     if (!widget._isSelectableText) {
-      assert(widget.overflow == null || widget.overflowReplacement == null,
-          'Either overflow or overflowReplacement must be null.');
+      assert(widget.overflow == null || widget.overflowReplacement == null, 'Either overflow or overflowReplacement must be null.');
     }
-    assert(maxLines == null || maxLines > 0,
-        'MaxLines must be greater than or equal to 1.');
-    assert(widget.key == null || widget.key != widget.textKey,
-        'Key and textKey must not be equal.');
+    assert(maxLines == null || maxLines > 0, 'MaxLines must be greater than or equal to 1.');
+    assert(widget.key == null || widget.key != widget.textKey, 'Key and textKey must not be equal.');
 
     if (widget.presetFontSizes == null) {
       assert(
           widget.stepGranularity >= 0.1,
           'StepGranularity must be greater than or equal to 0.1. It is not a '
           'good idea to resize the font with a higher accuracy.');
-      assert(widget.minFontSize >= 0,
-          'MinFontSize must be greater than or equal to 0.');
+      assert(widget.minFontSize >= 0, 'MinFontSize must be greater than or equal to 0.');
       assert(widget.maxFontSize > 0, 'MaxFontSize has to be greater than 0.');
-      assert(widget.minFontSize <= widget.maxFontSize,
-          'MinFontSize must be smaller or equal than maxFontSize.');
-      assert(widget.minFontSize / widget.stepGranularity % 1 == 0,
-          'MinFontSize must be a multiple of stepGranularity.');
+      assert(widget.minFontSize <= widget.maxFontSize, 'MinFontSize must be smaller or equal than maxFontSize.');
+      assert(widget.minFontSize / widget.stepGranularity % 1 == 0, 'MinFontSize must be a multiple of stepGranularity.');
       if (widget.maxFontSize != double.infinity) {
-        assert(widget.maxFontSize / widget.stepGranularity % 1 == 0,
-            'MaxFontSize must be a multiple of stepGranularity.');
+        assert(widget.maxFontSize / widget.stepGranularity % 1 == 0, 'MaxFontSize must be a multiple of stepGranularity.');
       }
     } else {
-      assert(widget.presetFontSizes!.isNotEmpty,
-          'PresetFontSizes must not be empty.');
+      assert(widget.presetFontSizes!.isNotEmpty, 'PresetFontSizes must not be empty.');
     }
   }
 
-  List _calculateFontSize(
-      BoxConstraints size, TextStyle? style, int? maxLines) {
+  List _calculateFontSize(BoxConstraints size, TextStyle? style, int? maxLines) {
     final span = TextSpan(
       style: widget.textSpan?.style ?? style,
       text: widget.textSpan?.text ?? widget.data,
@@ -526,16 +523,14 @@ class _AutoSizeTextState extends State<AutoSizeText> {
       recognizer: widget.textSpan?.recognizer,
     );
 
-    final userScale =
-        widget.textScaleFactor ?? MediaQuery.textScaleFactorOf(context);
+    final userScale = widget.textScaleFactor ?? MediaQuery.textScaleFactorOf(context);
 
     int left;
     int right;
 
     final presetFontSizes = widget.presetFontSizes?.reversed.toList();
     if (presetFontSizes == null) {
-      final num defaultFontSize =
-          style!.fontSize!.clamp(widget.minFontSize, widget.maxFontSize);
+      final num defaultFontSize = style!.fontSize!.clamp(widget.minFontSize, widget.maxFontSize);
       final defaultScale = defaultFontSize * userScale / style.fontSize!;
       if (_checkTextFits(span, defaultScale, maxLines, size)) {
         return <Object>[defaultFontSize * userScale, true];
@@ -579,8 +574,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
     return <Object>[fontSize, lastValueFits];
   }
 
-  bool _checkTextFits(
-      TextSpan text, double scale, int? maxLines, BoxConstraints constraints) {
+  bool _checkTextFits(TextSpan text, double scale, int? maxLines, BoxConstraints constraints) {
     if (!widget.wrapWords) {
       final words = text.toPlainText().split(RegExp('\\s+'));
 
@@ -599,8 +593,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
 
       wordWrapTextPainter.layout(maxWidth: constraints.maxWidth);
 
-      if (wordWrapTextPainter.didExceedMaxLines ||
-          wordWrapTextPainter.width > constraints.maxWidth) {
+      if (wordWrapTextPainter.didExceedMaxLines || wordWrapTextPainter.width > constraints.maxWidth) {
         return false;
       }
     }
@@ -621,9 +614,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
       textPainter.layout(maxWidth: constraints.maxWidth);
     }
 
-    return !(textPainter.didExceedMaxLines ||
-        textPainter.height > constraints.maxHeight ||
-        textPainter.width > constraints.maxWidth);
+    return !(textPainter.didExceedMaxLines || textPainter.height > constraints.maxHeight || textPainter.width > constraints.maxWidth);
   }
 
   Widget _buildText(double fontSize, TextStyle style, int? maxLines) {
@@ -637,6 +628,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
           textAlign: widget.textAlign,
           textDirection: widget.textDirection,
           textScaleFactor: 1,
+          minLines: widget.minLines,
           maxLines: maxLines,
           autofocus: widget.autofocus,
           cursorColor: widget.cursorColor,
@@ -652,6 +644,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
           selectionControls: widget.selectionControls,
           showCursor: widget.showCursor,
           toolbarOptions: widget.toolbarOptions,
+          semanticsLabel: widget.semanticsLabel,
         );
       } else {
         return SelectableText.rich(
@@ -662,6 +655,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
           textAlign: widget.textAlign,
           textDirection: widget.textDirection,
           textScaleFactor: fontSize / style.fontSize!,
+          minLines: widget.minLines,
           maxLines: maxLines,
           autofocus: widget.autofocus,
           cursorColor: widget.cursorColor,
@@ -677,6 +671,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
           selectionControls: widget.selectionControls,
           showCursor: widget.showCursor,
           toolbarOptions: widget.toolbarOptions,
+          semanticsLabel: widget.semanticsLabel,
         );
       }
     }
