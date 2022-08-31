@@ -32,6 +32,7 @@ class AutoSizeText extends StatefulWidget {
     this.textScaleFactor,
     this.maxLines,
     this.semanticsLabel,
+    this.textHeightBehavior,
   })  : textSpan = null,
         super(key: key);
 
@@ -57,6 +58,7 @@ class AutoSizeText extends StatefulWidget {
     this.textScaleFactor,
     this.maxLines,
     this.semanticsLabel,
+    this.textHeightBehavior,
   })  : data = null,
         super(key: key);
 
@@ -214,6 +216,19 @@ class AutoSizeText extends StatefulWidget {
   /// AutoSizeText(r'$$', semanticsLabel: 'Double dollars')
   /// ```
   final String? semanticsLabel;
+
+  /// Defines how to apply [TextStyle.height] over and under text.
+  ///
+  /// [TextHeightBehavior.applyHeightToFirstAscent] and
+  /// [TextHeightBehavior.applyHeightToLastDescent] represent whether the
+  /// [TextStyle.height] modifier will be applied to the corresponding metric. By
+  /// default both properties are true, and [TextStyle.height] is applied as
+  /// normal. When set to false, the font's default ascent will be used.
+  ///
+  /// [TextHeightBehavior.leadingDistribution] determines how the
+  /// leading is distributed over and under text. This
+  /// property applies before [TextHeightBehavior.applyHeightToFirstAscent] and
+  final TextHeightBehavior? textHeightBehavior;
 
   @override
   _AutoSizeTextState createState() => _AutoSizeTextState();
@@ -425,6 +440,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
         textScaleFactor: 1,
         maxLines: maxLines,
         semanticsLabel: widget.semanticsLabel,
+        textHeightBehavior: widget.textHeightBehavior,
       );
     } else {
       return Text.rich(
@@ -440,6 +456,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
         textScaleFactor: fontSize / style.fontSize!,
         maxLines: maxLines,
         semanticsLabel: widget.semanticsLabel,
+        textHeightBehavior: widget.textHeightBehavior,
       );
     }
   }
