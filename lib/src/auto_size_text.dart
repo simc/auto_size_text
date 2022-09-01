@@ -228,6 +228,7 @@ class AutoSizeText extends StatefulWidget {
   /// [TextHeightBehavior.leadingDistribution] determines how the
   /// leading is distributed over and under text. This
   /// property applies before [TextHeightBehavior.applyHeightToFirstAscent] and
+  /// [TextHeightBehavior.applyHeightToLastDescent].
   final TextHeightBehavior? textHeightBehavior;
 
   @override
