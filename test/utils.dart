@@ -8,6 +8,8 @@ import 'package:flutter_test/flutter_test.dart';
 double effectiveFontSize(Text text) =>
     (text.textScaleFactor ?? 1) * text.style!.fontSize!;
 
+double? effectiveLetterSpacing(Text text) => text.style!.letterSpacing;
+
 bool doesTextFit(
   Text text, [
   double maxWidth = double.infinity,
@@ -83,6 +85,15 @@ Future pumpAndExpectFontSize({
 }) async {
   final text = await pumpAndGetText(tester: tester, widget: widget);
   expect(effectiveFontSize(text), expectedFontSize);
+}
+
+Future pumpAndExpectLetterSpacing({
+  required WidgetTester tester,
+  required double? expectedLetterSpacing,
+  required Widget widget,
+}) async {
+  final text = await pumpAndGetText(tester: tester, widget: widget);
+  expect(effectiveLetterSpacing(text), expectedLetterSpacing);
 }
 
 RichText getRichText(WidgetTester tester) =>

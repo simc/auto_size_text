@@ -3,6 +3,7 @@
 library auto_size_text;
 
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/widgets.dart';
 
