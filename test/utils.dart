@@ -45,7 +45,6 @@ Future prepareTests(WidgetTester tester) async {
     return;
   }
 
-  tester.binding.addTime(Duration(seconds: 10));
   prepared = true;
   final fontData = File('test/assets/Roboto-Regular.ttf')
       .readAsBytes()
