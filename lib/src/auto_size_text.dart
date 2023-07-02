@@ -33,6 +33,24 @@ class AutoSizeText extends StatefulWidget {
     this.maxLines,
     this.semanticsLabel,
   })  : textSpan = null,
+        autofocus = false,
+        showCursor = false,
+        cursorWidth = 2.0,
+        cursorHeight = null,
+        cursorRadius = null,
+        focusNode = null,
+        cursorColor = null,
+        enableInteractiveSelection = false,
+        selectionControls = null,
+        dragStartBehavior = DragStartBehavior.start,
+        toolbarOptions = null,
+        onTap = null,
+        scrollPhysics = null,
+        onSelectionChanged = null,
+        minLines = null,
+        selectionHeightStyle = ui.BoxHeightStyle.tight,
+        selectionWidthStyle = ui.BoxWidthStyle.tight,
+        _isSelectableText = false,
         super(key: key);
 
   /// Creates a [AutoSizeText] widget with a [TextSpan].
@@ -58,6 +76,115 @@ class AutoSizeText extends StatefulWidget {
     this.maxLines,
     this.semanticsLabel,
   })  : data = null,
+        autofocus = false,
+        showCursor = false,
+        cursorWidth = 2.0,
+        cursorHeight = null,
+        cursorRadius = null,
+        focusNode = null,
+        cursorColor = null,
+        enableInteractiveSelection = false,
+        selectionControls = null,
+        dragStartBehavior = DragStartBehavior.start,
+        toolbarOptions = null,
+        onTap = null,
+        scrollPhysics = null,
+        onSelectionChanged = null,
+        minLines = null,
+        selectionHeightStyle = ui.BoxHeightStyle.tight,
+        selectionWidthStyle = ui.BoxWidthStyle.tight,
+        _isSelectableText = false,
+        super(key: key);
+
+  /// Creates a selectable [AutoSizeText] widget with a [TextSpan].
+  const AutoSizeText.richSelectable(
+    this.textSpan, {
+    Key? key,
+    this.textKey,
+    this.style,
+    this.strutStyle,
+    this.minFontSize = 12,
+    this.maxFontSize = double.infinity,
+    this.stepGranularity = 1,
+    this.presetFontSizes,
+    this.group,
+    this.textAlign,
+    this.textDirection,
+    this.wrapWords = true,
+    this.textScaleFactor,
+    this.minLines,
+    this.maxLines,
+    this.autofocus = false,
+    this.showCursor = false,
+    this.cursorWidth = 2.0,
+    this.cursorHeight,
+    this.cursorRadius,
+    this.focusNode,
+    this.cursorColor,
+    this.enableInteractiveSelection = true,
+    this.selectionControls,
+    this.dragStartBehavior = DragStartBehavior.start,
+    this.selectionHeightStyle = ui.BoxHeightStyle.tight,
+    this.selectionWidthStyle = ui.BoxWidthStyle.tight,
+    this.toolbarOptions,
+    this.onTap,
+    this.scrollPhysics,
+    this.onSelectionChanged,
+  })  : assert(textSpan != null, 'A non-null TextSpan must be provided to a AutoSizeText.rich widget.'),
+        data = null,
+        locale = null,
+        softWrap = null,
+        overflow = null,
+        overflowReplacement = null,
+        semanticsLabel = null,
+        _isSelectableText = true,
+        super(key: key);
+
+  /// Creates a selectable [AutoSizeText] widget.
+  ///
+  /// If the [style] argument is null, the text will use the style from the
+  /// closest enclosing [DefaultTextStyle].
+  const AutoSizeText.selectable(
+    this.data, {
+    Key? key,
+    this.textKey,
+    this.style,
+    this.strutStyle,
+    this.minFontSize = 12,
+    this.maxFontSize = double.infinity,
+    this.stepGranularity = 1,
+    this.presetFontSizes,
+    this.group,
+    this.textAlign,
+    this.textDirection,
+    this.wrapWords = true,
+    this.textScaleFactor,
+    this.minLines,
+    this.maxLines,
+    this.autofocus = false,
+    this.showCursor = false,
+    this.cursorWidth = 2.0,
+    this.cursorHeight,
+    this.cursorRadius,
+    this.focusNode,
+    this.cursorColor,
+    this.enableInteractiveSelection = true,
+    this.selectionControls,
+    this.dragStartBehavior = DragStartBehavior.start,
+    this.selectionHeightStyle = ui.BoxHeightStyle.tight,
+    this.selectionWidthStyle = ui.BoxWidthStyle.tight,
+    this.toolbarOptions,
+    this.onTap,
+    this.scrollPhysics,
+    this.onSelectionChanged,
+  })  : assert(data != null, 'A non-null String must be provided to a AutoSizeText widget.'),
+        textSpan = null,
+        locale = null,
+        softWrap = null,
+        overflow = null,
+        overflowReplacement = null,
+        semanticsLabel = null,
+        _isSelectableText = true,
         super(key: key);
 
   /// Sets the key for the resulting [Text] widget.
@@ -201,6 +328,9 @@ class AutoSizeText extends StatefulWidget {
   /// widget directly to entirely override the [DefaultTextStyle].
   final int? maxLines;
 
+  /// {@macro flutter.widgets.editableText.minLines}
+  final int? minLines;
+
   /// An alternative semantics label for this text.
   ///
   /// If present, the semantics of this widget will contain this value instead
@@ -214,6 +344,110 @@ class AutoSizeText extends StatefulWidget {
   /// AutoSizeText(r'$$', semanticsLabel: 'Double dollars')
   /// ```
   final String? semanticsLabel;
+
+  /// Enable/disable selectable text.
+  final bool _isSelectableText;
+
+  /// {@macro flutter.widgets.editableText.autofocus}
+  final bool autofocus;
+
+  /// The color to use when painting the cursor.
+  ///
+  /// Defaults to the theme's `cursorColor` when null.
+  final Color? cursorColor;
+
+  /// {@macro flutter.widgets.editableText.cursorHeight}
+  final double? cursorHeight;
+
+  /// {@macro flutter.widgets.editableText.cursorRadius}
+  final Radius? cursorRadius;
+
+  /// {@macro flutter.widgets.editableText.cursorWidth}
+  final double cursorWidth;
+
+  /// {@macro flutter.widgets.scrollable.dragStartBehavior}
+  final DragStartBehavior dragStartBehavior;
+
+  /// Whether to enable user interface affordances for changing the text selection.
+  ///
+  /// For example, setting this to true will enable features such as long-pressing the TextField to select text and show the cut/copy/paste menu, and tapping to move the text caret.
+  ///
+  /// When this is false, the text selection cannot be adjusted by the user, text cannot be copied, and the user cannot paste into the text field from the clipboard.
+  final bool enableInteractiveSelection;
+
+  /// Defines the focus for this widget.
+  ///
+  /// Text is only selectable when widget is focused.
+  ///
+  /// The [focusNode] is a long-lived object that's typically managed by a
+  /// [StatefulWidget] parent. See [FocusNode] for more information.
+  ///
+  /// To give the focus to this widget, provide a [focusNode] and then
+  /// use the current [FocusScope] to request the focus:
+  ///
+  /// ```dart
+  /// FocusScope.of(context).requestFocus(myFocusNode);
+  /// ```
+  ///
+  /// This happens automatically when the widget is tapped.
+  ///
+  /// To be notified when the widget gains or loses the focus, add a listener
+  /// to the [focusNode]:
+  ///
+  /// ```dart
+  /// focusNode.addListener(() { print(myFocusNode.hasFocus); });
+  /// ```
+  ///
+  /// If null, this widget will create its own [FocusNode].
+  final FocusNode? focusNode;
+
+  /// {@macro flutter.widgets.editableText.onSelectionChanged}
+  final SelectionChangedCallback? onSelectionChanged;
+
+  /// Called when the user taps on this selectable text.
+  ///
+  /// The selectable text builds a [GestureDetector] to handle input events like tap,
+  /// to trigger focus requests, to move the caret, adjust the selection, etc.
+  /// Handling some of those events by wrapping the selectable text with a competing
+  /// GestureDetector is problematic.
+  ///
+  /// To unconditionally handle taps, without interfering with the selectable text's
+  /// internal gesture detector, provide this callback.
+  ///
+  /// To be notified when the text field gains or loses the focus, provide a
+  /// [focusNode] and add a listener to that.
+  ///
+  /// To listen to arbitrary pointer events without competing with the
+  /// selectable text's internal gesture detector, use a [Listener].
+  final GestureTapCallback? onTap;
+
+  /// The ScrollPhysics to use when vertically scrolling the input.
+  ///
+  /// If not specified, it will behave according to the current platform.
+  final ScrollPhysics? scrollPhysics;
+
+  /// {@macro flutter.widgets.editableText.selectionControls}
+  final TextSelectionControls? selectionControls;
+
+  /// {@macro flutter.widgets.editableText.showCursor}
+  final bool showCursor;
+
+  /// Configuration of toolbar options.
+  ///
+  /// Paste and cut will be disabled regardless.
+  ///
+  /// If not set, select all and copy will be enabled by default.
+  final ToolbarOptions? toolbarOptions;
+
+  /// Controls how tall the selection highlight boxes are computed to be.
+  ///
+  /// See [ui.BoxHeightStyle] for details on available styles.
+  final ui.BoxHeightStyle selectionHeightStyle;
+
+  /// Controls how wide the selection highlight boxes are computed to be.
+  ///
+  /// See [ui.BoxWidthStyle] for details on available styles.
+  final ui.BoxWidthStyle selectionWidthStyle;
 
   @override
   _AutoSizeTextState createState() => _AutoSizeTextState();
@@ -276,37 +510,30 @@ class _AutoSizeTextState extends State<AutoSizeText> {
   }
 
   void _validateProperties(TextStyle style, int? maxLines) {
-    assert(widget.overflow == null || widget.overflowReplacement == null,
-        'Either overflow or overflowReplacement must be null.');
-    assert(maxLines == null || maxLines > 0,
-        'MaxLines must be greater than or equal to 1.');
-    assert(widget.key == null || widget.key != widget.textKey,
-        'Key and textKey must not be equal.');
+    if (!widget._isSelectableText) {
+      assert(widget.overflow == null || widget.overflowReplacement == null, 'Either overflow or overflowReplacement must be null.');
+    }
+    assert(maxLines == null || maxLines > 0, 'MaxLines must be greater than or equal to 1.');
+    assert(widget.key == null || widget.key != widget.textKey, 'Key and textKey must not be equal.');
 
     if (widget.presetFontSizes == null) {
       assert(
           widget.stepGranularity >= 0.1,
           'StepGranularity must be greater than or equal to 0.1. It is not a '
           'good idea to resize the font with a higher accuracy.');
-      assert(widget.minFontSize >= 0,
-          'MinFontSize must be greater than or equal to 0.');
+      assert(widget.minFontSize >= 0, 'MinFontSize must be greater than or equal to 0.');
       assert(widget.maxFontSize > 0, 'MaxFontSize has to be greater than 0.');
-      assert(widget.minFontSize <= widget.maxFontSize,
-          'MinFontSize must be smaller or equal than maxFontSize.');
-      assert(widget.minFontSize / widget.stepGranularity % 1 == 0,
-          'MinFontSize must be a multiple of stepGranularity.');
+      assert(widget.minFontSize <= widget.maxFontSize, 'MinFontSize must be smaller or equal than maxFontSize.');
+      assert(widget.minFontSize / widget.stepGranularity % 1 == 0, 'MinFontSize must be a multiple of stepGranularity.');
       if (widget.maxFontSize != double.infinity) {
-        assert(widget.maxFontSize / widget.stepGranularity % 1 == 0,
-            'MaxFontSize must be a multiple of stepGranularity.');
+        assert(widget.maxFontSize / widget.stepGranularity % 1 == 0, 'MaxFontSize must be a multiple of stepGranularity.');
       }
     } else {
-      assert(widget.presetFontSizes!.isNotEmpty,
-          'PresetFontSizes must not be empty.');
+      assert(widget.presetFontSizes!.isNotEmpty, 'PresetFontSizes must not be empty.');
     }
   }
 
-  List _calculateFontSize(
-      BoxConstraints size, TextStyle? style, int? maxLines) {
+  List _calculateFontSize(BoxConstraints size, TextStyle? style, int? maxLines) {
     final span = TextSpan(
       style: widget.textSpan?.style ?? style,
       text: widget.textSpan?.text ?? widget.data,
@@ -314,16 +541,14 @@ class _AutoSizeTextState extends State<AutoSizeText> {
       recognizer: widget.textSpan?.recognizer,
     );
 
-    final userScale =
-        widget.textScaleFactor ?? MediaQuery.textScaleFactorOf(context);
+    final userScale = widget.textScaleFactor ?? MediaQuery.textScaleFactorOf(context);
 
     int left;
     int right;
 
     final presetFontSizes = widget.presetFontSizes?.reversed.toList();
     if (presetFontSizes == null) {
-      final num defaultFontSize =
-          style!.fontSize!.clamp(widget.minFontSize, widget.maxFontSize);
+      final num defaultFontSize = style!.fontSize!.clamp(widget.minFontSize, widget.maxFontSize);
       final defaultScale = defaultFontSize * userScale / style.fontSize!;
       if (_checkTextFits(span, defaultScale, maxLines, size)) {
         return <Object>[defaultFontSize * userScale, true];
@@ -367,8 +592,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
     return <Object>[fontSize, lastValueFits];
   }
 
-  bool _checkTextFits(
-      TextSpan text, double scale, int? maxLines, BoxConstraints constraints) {
+  bool _checkTextFits(TextSpan text, double scale, int? maxLines, BoxConstraints constraints) {
     if (!widget.wrapWords) {
       final words = text.toPlainText().split(RegExp('\\s+'));
 
@@ -387,8 +611,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
 
       wordWrapTextPainter.layout(maxWidth: constraints.maxWidth);
 
-      if (wordWrapTextPainter.didExceedMaxLines ||
-          wordWrapTextPainter.width > constraints.maxWidth) {
+      if (wordWrapTextPainter.didExceedMaxLines || wordWrapTextPainter.width > constraints.maxWidth) {
         return false;
       }
     }
@@ -403,14 +626,78 @@ class _AutoSizeTextState extends State<AutoSizeText> {
       strutStyle: widget.strutStyle,
     );
 
-    textPainter.layout(maxWidth: constraints.maxWidth);
+    if (widget._isSelectableText) {
+      textPainter.layout(maxWidth: constraints.maxWidth - widget.cursorWidth - 1.0);
+    } else {
+      textPainter.layout(maxWidth: constraints.maxWidth);
+    }
 
-    return !(textPainter.didExceedMaxLines ||
-        textPainter.height > constraints.maxHeight ||
-        textPainter.width > constraints.maxWidth);
+    return !(textPainter.didExceedMaxLines || textPainter.height > constraints.maxHeight || textPainter.width > constraints.maxWidth);
   }
 
   Widget _buildText(double fontSize, TextStyle style, int? maxLines) {
+    if (widget._isSelectableText) {
+      if (widget.data != null) {
+        return SelectableText(
+          widget.data!,
+          key: widget.textKey,
+          style: style.copyWith(fontSize: fontSize),
+          strutStyle: widget.strutStyle,
+          textAlign: widget.textAlign,
+          textDirection: widget.textDirection,
+          textScaleFactor: 1,
+          minLines: widget.minLines,
+          maxLines: maxLines,
+          autofocus: widget.autofocus,
+          cursorColor: widget.cursorColor,
+          cursorHeight: widget.cursorHeight,
+          cursorRadius: widget.cursorRadius,
+          cursorWidth: widget.cursorWidth,
+          dragStartBehavior: widget.dragStartBehavior,
+          enableInteractiveSelection: widget.enableInteractiveSelection,
+          focusNode: widget.focusNode,
+          onSelectionChanged: widget.onSelectionChanged,
+          onTap: widget.onTap,
+          scrollPhysics: widget.scrollPhysics,
+          selectionControls: widget.selectionControls,
+          showCursor: widget.showCursor,
+          toolbarOptions: widget.toolbarOptions,
+          semanticsLabel: widget.semanticsLabel,
+          selectionHeightStyle: widget.selectionHeightStyle,
+          selectionWidthStyle: widget.selectionWidthStyle,
+        );
+      } else {
+        return SelectableText.rich(
+          widget.textSpan!,
+          key: widget.textKey,
+          style: style,
+          strutStyle: widget.strutStyle,
+          textAlign: widget.textAlign,
+          textDirection: widget.textDirection,
+          textScaleFactor: fontSize / style.fontSize!,
+          minLines: widget.minLines,
+          maxLines: maxLines,
+          autofocus: widget.autofocus,
+          cursorColor: widget.cursorColor,
+          cursorHeight: widget.cursorHeight,
+          cursorRadius: widget.cursorRadius,
+          cursorWidth: widget.cursorWidth,
+          dragStartBehavior: widget.dragStartBehavior,
+          enableInteractiveSelection: widget.enableInteractiveSelection,
+          focusNode: widget.focusNode,
+          onSelectionChanged: widget.onSelectionChanged,
+          onTap: widget.onTap,
+          scrollPhysics: widget.scrollPhysics,
+          selectionControls: widget.selectionControls,
+          showCursor: widget.showCursor,
+          toolbarOptions: widget.toolbarOptions,
+          semanticsLabel: widget.semanticsLabel,
+          selectionHeightStyle: widget.selectionHeightStyle,
+          selectionWidthStyle: widget.selectionWidthStyle,
+        );
+      }
+    }
+
     if (widget.data != null) {
       return Text(
         widget.data!,
