@@ -32,6 +32,7 @@ class AutoSizeText extends StatefulWidget {
     this.textScaleFactor,
     this.maxLines,
     this.semanticsLabel,
+    this.placeholderDimensions = const [],
   })  : textSpan = null,
         super(key: key);
 
@@ -57,6 +58,7 @@ class AutoSizeText extends StatefulWidget {
     this.textScaleFactor,
     this.maxLines,
     this.semanticsLabel,
+    this.placeholderDimensions = const [],
   })  : data = null,
         super(key: key);
 
@@ -214,6 +216,8 @@ class AutoSizeText extends StatefulWidget {
   /// AutoSizeText(r'$$', semanticsLabel: 'Double dollars')
   /// ```
   final String? semanticsLabel;
+
+  final List<PlaceholderDimensions> placeholderDimensions;
 
   @override
   _AutoSizeTextState createState() => _AutoSizeTextState();
@@ -401,7 +405,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
       maxLines: maxLines,
       locale: widget.locale,
       strutStyle: widget.strutStyle,
-    );
+    )..setPlaceholderDimensions(widget.placeholderDimensions);
 
     textPainter.layout(maxWidth: constraints.maxWidth);
 
