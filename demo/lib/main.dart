@@ -22,7 +22,7 @@ class App extends StatelessWidget {
       DeviceOrientation.landscapeRight,
     ]);
 
-    SystemChrome.setEnabledSystemUIOverlays([]);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
 
     return MaterialApp(
       theme: ThemeData.light(),
@@ -132,11 +132,6 @@ class _DemoAppState extends State<DemoApp> {
             icon: Icon(Icons.settings),
             title: Text('preset'),
             activeColor: colors[4],
-          ),
-          BottomNavyBarItem(
-            icon: Icon(MdiIcons.stackOverflow),
-            title: Text('replacement'),
-            activeColor: colors[5],
           ),
         ],
       ),

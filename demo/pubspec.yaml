@@ -1,10 +1,10 @@
 name: demo
 description: AutoSizeText Demo App
 
-version: 1.0.0+2
+version: 1.0.0+3
 
 environment:
-  sdk: '>=2.12.0-0 <3.0.0'
+  sdk: ">=3.2.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -13,11 +13,11 @@ dependencies:
   auto_size_text:
     path: ../
 
-  bottom_navy_bar: ^4.2.0
-  material_design_icons_flutter: ^4.0.5755
+  bottom_navy_bar: ^6.1.0
+  material_design_icons_flutter: ^7.0.7296
 
 dev_dependencies:
-  flutter_test: 
+  flutter_test:
     sdk: flutter
 
 flutter:
