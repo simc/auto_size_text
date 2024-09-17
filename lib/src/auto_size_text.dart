@@ -11,7 +11,7 @@ class AutoSizeText extends StatefulWidget {
   ///
   /// If the [style] argument is null, the text will use the style from the
   /// closest enclosing [DefaultTextStyle].
-  AutoSizeText(
+  const AutoSizeText(
     String this.data, {
     Key? key,
     this.textKey,
@@ -36,7 +36,7 @@ class AutoSizeText extends StatefulWidget {
         super(key: key);
 
   /// Creates a [AutoSizeText] widget with a [TextSpan].
-  AutoSizeText.rich(
+  const AutoSizeText.rich(
     TextSpan this.textSpan, {
     Key? key,
     this.textKey,
