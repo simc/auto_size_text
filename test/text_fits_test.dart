@@ -1,10 +1,14 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:leak_tracker_flutter_testing/leak_tracker_flutter_testing.dart';
 
 import 'utils.dart';
 
 void main() {
+  LeakTesting.settings = LeakTesting.settings.withIgnored(createdByTestHelpers: true);
+  LeakTesting.enable();
+
   testWidgets('Text fits width', (tester) async {
     await pumpAndExpectFontSize(
       tester: tester,
