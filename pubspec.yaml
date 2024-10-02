@@ -14,3 +14,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   pedantic: '>=1.11.1 <3.0.0'
+
+  # Setting to any will let the SDK version define
+  # the most compatible version.
+  leak_tracker_flutter_testing: any

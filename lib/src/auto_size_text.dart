@@ -387,8 +387,12 @@ class _AutoSizeTextState extends State<AutoSizeText> {
 
       wordWrapTextPainter.layout(maxWidth: constraints.maxWidth);
 
-      if (wordWrapTextPainter.didExceedMaxLines ||
-          wordWrapTextPainter.width > constraints.maxWidth) {
+      final exceeds = wordWrapTextPainter.didExceedMaxLines ||
+          wordWrapTextPainter.width > constraints.maxWidth;
+
+      wordWrapTextPainter.dispose();
+
+      if (exceeds) {
         return false;
       }
     }
@@ -405,9 +409,13 @@ class _AutoSizeTextState extends State<AutoSizeText> {
 
     textPainter.layout(maxWidth: constraints.maxWidth);
 
-    return !(textPainter.didExceedMaxLines ||
+    final fits = !(textPainter.didExceedMaxLines ||
         textPainter.height > constraints.maxHeight ||
         textPainter.width > constraints.maxWidth);
+
+    textPainter.dispose();
+
+    return fits;
   }
 
   Widget _buildText(double fontSize, TextStyle style, int? maxLines) {
