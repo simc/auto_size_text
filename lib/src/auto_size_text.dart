@@ -32,6 +32,7 @@ class AutoSizeText extends StatefulWidget {
     this.textScaleFactor,
     this.maxLines,
     this.semanticsLabel,
+    this.textHeightBehavior,
   })  : textSpan = null,
         super(key: key);
 
@@ -57,6 +58,7 @@ class AutoSizeText extends StatefulWidget {
     this.textScaleFactor,
     this.maxLines,
     this.semanticsLabel,
+    this.textHeightBehavior,
   })  : data = null,
         super(key: key);
 
@@ -215,6 +217,24 @@ class AutoSizeText extends StatefulWidget {
   /// ```
   final String? semanticsLabel;
 
+  /// Defines how to apply [TextStyle.height] over and under text.
+  ///
+  /// [TextHeightBehavior.applyHeightToFirstAscent] and
+  /// [TextHeightBehavior.applyHeightToLastDescent] represent whether the
+  /// [TextStyle.height] modifier will be applied to the corresponding metric. By
+  /// default both properties are true, and [TextStyle.height] is applied as
+  /// normal. When set to false, the font's default ascent will be used.
+  ///
+  /// [TextHeightBehavior.leadingDistribution] determines how the
+  /// leading is distributed over and under text. This
+  /// property applies before [TextHeightBehavior.applyHeightToFirstAscent] and
+  /// [TextHeightBehavior.applyHeightToLastDescent].
+  ///
+  /// If null, the value of the closest enclosing [DefaultTextStyle] or
+  /// [DefaultTextHeightBehavior] is used, like in [Text]. It is also taken
+  /// into account when calculating the font size.
+  final TextHeightBehavior? textHeightBehavior;
+
   @override
   _AutoSizeTextState createState() => _AutoSizeTextState();
 }
@@ -252,9 +272,18 @@ class _AutoSizeTextState extends State<AutoSizeText> {
 
       final maxLines = widget.maxLines ?? defaultTextStyle.maxLines;
 
+      // Resolved the same way as in Text, so that the measured and the
+      // rendered text use the same line metrics.
+      final textHeightBehavior = widget.textHeightBehavior ??
+          defaultTextStyle.textHeightBehavior ??
+          context
+              .dependOnInheritedWidgetOfExactType<DefaultTextHeightBehavior>()
+              ?.textHeightBehavior;
+
       _validateProperties(style, maxLines);
 
-      final result = _calculateFontSize(size, style, maxLines);
+      final result =
+          _calculateFontSize(size, style, maxLines, textHeightBehavior);
       final fontSize = result[0] as double;
       final textFits = result[1] as bool;
 
@@ -262,9 +291,10 @@ class _AutoSizeTextState extends State<AutoSizeText> {
 
       if (widget.group != null) {
         widget.group!._updateFontSize(this, fontSize);
-        text = _buildText(widget.group!._fontSize, style, maxLines);
+        text = _buildText(
+            widget.group!._fontSize, style, maxLines, textHeightBehavior);
       } else {
-        text = _buildText(fontSize, style, maxLines);
+        text = _buildText(fontSize, style, maxLines, textHeightBehavior);
       }
 
       if (widget.overflowReplacement != null && !textFits) {
@@ -305,8 +335,8 @@ class _AutoSizeTextState extends State<AutoSizeText> {
     }
   }
 
-  List _calculateFontSize(
-      BoxConstraints size, TextStyle? style, int? maxLines) {
+  List _calculateFontSize(BoxConstraints size, TextStyle? style, int? maxLines,
+      TextHeightBehavior? textHeightBehavior) {
     final span = TextSpan(
       style: widget.textSpan?.style ?? style,
       text: widget.textSpan?.text ?? widget.data,
@@ -325,7 +355,8 @@ class _AutoSizeTextState extends State<AutoSizeText> {
       final num defaultFontSize =
           style!.fontSize!.clamp(widget.minFontSize, widget.maxFontSize);
       final defaultScale = defaultFontSize * userScale / style.fontSize!;
-      if (_checkTextFits(span, defaultScale, maxLines, size)) {
+      if (_checkTextFits(
+          span, defaultScale, maxLines, size, textHeightBehavior)) {
         return <Object>[defaultFontSize * userScale, true];
       }
 
@@ -345,7 +376,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
       } else {
         scale = presetFontSizes[mid] * userScale / style!.fontSize!;
       }
-      if (_checkTextFits(span, scale, maxLines, size)) {
+      if (_checkTextFits(span, scale, maxLines, size, textHeightBehavior)) {
         left = mid + 1;
         lastValueFits = true;
       } else {
@@ -367,8 +398,8 @@ class _AutoSizeTextState extends State<AutoSizeText> {
     return <Object>[fontSize, lastValueFits];
   }
 
-  bool _checkTextFits(
-      TextSpan text, double scale, int? maxLines, BoxConstraints constraints) {
+  bool _checkTextFits(TextSpan text, double scale, int? maxLines,
+      BoxConstraints constraints, TextHeightBehavior? textHeightBehavior) {
     if (!widget.wrapWords) {
       final words = text.toPlainText().split(RegExp('\\s+'));
 
@@ -383,6 +414,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
         maxLines: words.length,
         locale: widget.locale,
         strutStyle: widget.strutStyle,
+        textHeightBehavior: textHeightBehavior,
       );
 
       wordWrapTextPainter.layout(maxWidth: constraints.maxWidth);
@@ -401,6 +433,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
       maxLines: maxLines,
       locale: widget.locale,
       strutStyle: widget.strutStyle,
+      textHeightBehavior: textHeightBehavior,
     );
 
     textPainter.layout(maxWidth: constraints.maxWidth);
@@ -410,7 +443,8 @@ class _AutoSizeTextState extends State<AutoSizeText> {
         textPainter.width > constraints.maxWidth);
   }
 
-  Widget _buildText(double fontSize, TextStyle style, int? maxLines) {
+  Widget _buildText(double fontSize, TextStyle style, int? maxLines,
+      TextHeightBehavior? textHeightBehavior) {
     if (widget.data != null) {
       return Text(
         widget.data!,
@@ -425,6 +459,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
         textScaleFactor: 1,
         maxLines: maxLines,
         semanticsLabel: widget.semanticsLabel,
+        textHeightBehavior: textHeightBehavior,
       );
     } else {
       return Text.rich(
@@ -440,6 +475,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
         textScaleFactor: fontSize / style.fontSize!,
         maxLines: maxLines,
         semanticsLabel: widget.semanticsLabel,
+        textHeightBehavior: textHeightBehavior,
       );
     }
   }
