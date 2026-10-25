@@ -32,6 +32,7 @@ class AutoSizeText extends StatefulWidget {
     this.textScaleFactor,
     this.maxLines,
     this.semanticsLabel,
+    this.textWidthBasis,
   })  : textSpan = null,
         super(key: key);
 
@@ -57,6 +58,7 @@ class AutoSizeText extends StatefulWidget {
     this.textScaleFactor,
     this.maxLines,
     this.semanticsLabel,
+    this.textWidthBasis,
   })  : data = null,
         super(key: key);
 
@@ -215,6 +217,11 @@ class AutoSizeText extends StatefulWidget {
   /// ```
   final String? semanticsLabel;
 
+  /// Defines how to measure the width of the rendered text.
+  ///
+  /// If null, the ambient [DefaultTextStyle.textWidthBasis] is used.
+  final TextWidthBasis? textWidthBasis;
+
   @override
   _AutoSizeTextState createState() => _AutoSizeTextState();
 }
@@ -251,10 +258,12 @@ class _AutoSizeTextState extends State<AutoSizeText> {
       }
 
       final maxLines = widget.maxLines ?? defaultTextStyle.maxLines;
+      final textWidthBasis =
+          widget.textWidthBasis ?? defaultTextStyle.textWidthBasis;
 
       _validateProperties(style, maxLines);
 
-      final result = _calculateFontSize(size, style, maxLines);
+      final result = _calculateFontSize(size, style, maxLines, textWidthBasis);
       final fontSize = result[0] as double;
       final textFits = result[1] as bool;
 
@@ -305,8 +314,8 @@ class _AutoSizeTextState extends State<AutoSizeText> {
     }
   }
 
-  List _calculateFontSize(
-      BoxConstraints size, TextStyle? style, int? maxLines) {
+  List _calculateFontSize(BoxConstraints size, TextStyle? style, int? maxLines,
+      TextWidthBasis textWidthBasis) {
     final span = TextSpan(
       style: widget.textSpan?.style ?? style,
       text: widget.textSpan?.text ?? widget.data,
@@ -325,7 +334,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
       final num defaultFontSize =
           style!.fontSize!.clamp(widget.minFontSize, widget.maxFontSize);
       final defaultScale = defaultFontSize * userScale / style.fontSize!;
-      if (_checkTextFits(span, defaultScale, maxLines, size)) {
+      if (_checkTextFits(span, defaultScale, maxLines, size, textWidthBasis)) {
         return <Object>[defaultFontSize * userScale, true];
       }
 
@@ -345,7 +354,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
       } else {
         scale = presetFontSizes[mid] * userScale / style!.fontSize!;
       }
-      if (_checkTextFits(span, scale, maxLines, size)) {
+      if (_checkTextFits(span, scale, maxLines, size, textWidthBasis)) {
         left = mid + 1;
         lastValueFits = true;
       } else {
@@ -367,8 +376,8 @@ class _AutoSizeTextState extends State<AutoSizeText> {
     return <Object>[fontSize, lastValueFits];
   }
 
-  bool _checkTextFits(
-      TextSpan text, double scale, int? maxLines, BoxConstraints constraints) {
+  bool _checkTextFits(TextSpan text, double scale, int? maxLines,
+      BoxConstraints constraints, TextWidthBasis textWidthBasis) {
     if (!widget.wrapWords) {
       final words = text.toPlainText().split(RegExp('\\s+'));
 
@@ -401,6 +410,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
       maxLines: maxLines,
       locale: widget.locale,
       strutStyle: widget.strutStyle,
+      textWidthBasis: textWidthBasis,
     );
 
     textPainter.layout(maxWidth: constraints.maxWidth);
@@ -425,6 +435,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
         textScaleFactor: 1,
         maxLines: maxLines,
         semanticsLabel: widget.semanticsLabel,
+        textWidthBasis: widget.textWidthBasis,
       );
     } else {
       return Text.rich(
@@ -440,6 +451,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
         textScaleFactor: fontSize / style.fontSize!,
         maxLines: maxLines,
         semanticsLabel: widget.semanticsLabel,
+        textWidthBasis: widget.textWidthBasis,
       );
     }
   }
