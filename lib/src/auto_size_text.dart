@@ -220,6 +220,10 @@ class AutoSizeText extends StatefulWidget {
 }
 
 class _AutoSizeTextState extends State<AutoSizeText> {
+  // Whitespace where a line can break. `\s` alone would also match
+  // non-breaking spaces, which must keep the words around them together.
+  static final _wordSeparator = RegExp(r'[^\S\u00A0\u2007\u202F\uFEFF]+');
+
   @override
   void initState() {
     super.initState();
@@ -370,7 +374,7 @@ class _AutoSizeTextState extends State<AutoSizeText> {
   bool _checkTextFits(
       TextSpan text, double scale, int? maxLines, BoxConstraints constraints) {
     if (!widget.wrapWords) {
-      final words = text.toPlainText().split(RegExp('\\s+'));
+      final words = text.toPlainText().split(_wordSeparator);
 
       final wordWrapTextPainter = TextPainter(
         text: TextSpan(

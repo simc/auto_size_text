@@ -39,6 +39,46 @@ void main() {
     expect(height, 20);
   });
 
+  testWidgets('Do not split words at non-breaking spaces', (tester) async {
+    for (final space in ['\u00A0', '\u2007', '\u202F']) {
+      await pumpAndExpectFontSize(
+        tester: tester,
+        expectedFontSize: 9,
+        widget: SizedBox(
+          width: 100,
+          child: AutoSizeText(
+            'XXXXX${space}XXXXX',
+            style: TextStyle(fontSize: 25),
+            minFontSize: 5,
+            wrapWords: false,
+          ),
+        ),
+      );
+      final height = tester.getSize(find.byType(RichText)).height;
+      expect(height, 9);
+    }
+  });
+
+  testWidgets('Split words at breaking whitespace', (tester) async {
+    for (final space in [' ', '\t', '\n', '\r\n']) {
+      await pumpAndExpectFontSize(
+        tester: tester,
+        expectedFontSize: 20,
+        widget: SizedBox(
+          width: 100,
+          child: AutoSizeText(
+            'XXXXX${space}XXXXX',
+            style: TextStyle(fontSize: 25),
+            minFontSize: 5,
+            wrapWords: false,
+          ),
+        ),
+      );
+      final height = tester.getSize(find.byType(RichText)).height;
+      expect(height, 40);
+    }
+  });
+
   testWidgets('Wrap words', (tester) async {
     await pumpAndExpectFontSize(
       tester: tester,
