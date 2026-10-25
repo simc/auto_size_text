@@ -239,40 +239,56 @@ class _AutoSizeTextState extends State<AutoSizeText> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, size) {
-      final defaultTextStyle = DefaultTextStyle.of(context);
+    final defaultTextStyle = DefaultTextStyle.of(context);
 
-      var style = widget.style;
-      if (widget.style == null || widget.style!.inherit) {
-        style = defaultTextStyle.style.merge(widget.style);
-      }
-      if (style!.fontSize == null) {
-        style = style.copyWith(fontSize: AutoSizeText._defaultFontSize);
-      }
+    var style = widget.style;
+    if (widget.style == null || widget.style!.inherit) {
+      style = defaultTextStyle.style.merge(widget.style);
+    }
+    if (style!.fontSize == null) {
+      style = style.copyWith(fontSize: AutoSizeText._defaultFontSize);
+    }
+    final effectiveStyle = style;
 
-      final maxLines = widget.maxLines ?? defaultTextStyle.maxLines;
+    final maxLines = widget.maxLines ?? defaultTextStyle.maxLines;
 
-      _validateProperties(style, maxLines);
+    _validateProperties(effectiveStyle, maxLines);
 
-      final result = _calculateFontSize(size, style, maxLines);
-      final fontSize = result[0] as double;
-      final textFits = result[1] as bool;
+    final userScale =
+        widget.textScaleFactor ?? MediaQuery.textScaleFactorOf(context);
 
-      Widget text;
+    // LayoutBuilder cannot answer intrinsic size queries, so they are handled
+    // by measuring the text directly instead (see #77).
+    return _IntrinsicTextSize(
+      measure: _TextMeasure(
+        state: this,
+        style: effectiveStyle,
+        maxLines: maxLines,
+        userScale: userScale,
+        defaultTextStyle: defaultTextStyle,
+      ),
+      child: LayoutBuilder(builder: (context, size) {
+        final result =
+            _calculateFontSize(size, effectiveStyle, maxLines, userScale);
+        final fontSize = result[0] as double;
+        final textFits = result[1] as bool;
 
-      if (widget.group != null) {
-        widget.group!._updateFontSize(this, fontSize);
-        text = _buildText(widget.group!._fontSize, style, maxLines);
-      } else {
-        text = _buildText(fontSize, style, maxLines);
-      }
+        Widget text;
 
-      if (widget.overflowReplacement != null && !textFits) {
-        return widget.overflowReplacement!;
-      } else {
-        return text;
-      }
-    });
+        if (widget.group != null) {
+          widget.group!._updateFontSize(this, fontSize);
+          text = _buildText(widget.group!._fontSize, effectiveStyle, maxLines);
+        } else {
+          text = _buildText(fontSize, effectiveStyle, maxLines);
+        }
+
+        if (widget.overflowReplacement != null && !textFits) {
+          return widget.overflowReplacement!;
+        } else {
+          return text;
+        }
+      }),
+    );
   }
 
   void _validateProperties(TextStyle style, int? maxLines) {
@@ -306,16 +322,13 @@ class _AutoSizeTextState extends State<AutoSizeText> {
   }
 
   List _calculateFontSize(
-      BoxConstraints size, TextStyle? style, int? maxLines) {
+      BoxConstraints size, TextStyle? style, int? maxLines, double userScale) {
     final span = TextSpan(
       style: widget.textSpan?.style ?? style,
       text: widget.textSpan?.text ?? widget.data,
       children: widget.textSpan?.children,
       recognizer: widget.textSpan?.recognizer,
     );
-
-    final userScale =
-        widget.textScaleFactor ?? MediaQuery.textScaleFactorOf(context);
 
     int left;
     int right;
@@ -455,4 +468,158 @@ class _AutoSizeTextState extends State<AutoSizeText> {
     }
     super.dispose();
   }
+}
+
+/// Measures the text of an [AutoSizeText] with the values resolved in build.
+///
+/// This lets intrinsic sizes and dry layouts be computed without running the
+/// [LayoutBuilder] callback, which would mutate the widget tree.
+class _TextMeasure {
+  _TextMeasure({
+    required this.state,
+    required this.style,
+    required this.maxLines,
+    required this.userScale,
+    required this.defaultTextStyle,
+  });
+
+  final _AutoSizeTextState state;
+  final TextStyle style;
+  final int? maxLines;
+  final double userScale;
+  final DefaultTextStyle defaultTextStyle;
+
+  AutoSizeText get widget => state.widget;
+
+  /// The narrowest the text can get at the smallest allowed font size, like
+  /// [RenderParagraph] does for a plain [Text].
+  double minIntrinsicWidth() {
+    final smallest = widget.presetFontSizes?.last ?? widget.minFontSize;
+    return _layout(smallest * userScale, double.infinity).minIntrinsicWidth;
+  }
+
+  double maxIntrinsicWidth(double height) =>
+      _fit(BoxConstraints(maxHeight: height)).maxIntrinsicWidth;
+
+  double intrinsicHeight(double width) =>
+      _fit(BoxConstraints(maxWidth: width)).height;
+
+  Size dryLayout(BoxConstraints constraints) =>
+      constraints.constrain(_fit(constraints).size);
+
+  double? dryBaseline(BoxConstraints constraints, TextBaseline baseline) =>
+      _fit(constraints).computeDistanceToActualBaseline(baseline);
+
+  TextPainter _fit(BoxConstraints constraints) {
+    final result =
+        state._calculateFontSize(constraints, style, maxLines, userScale);
+    var fontSize = result[0] as double;
+
+    // Only read the group here; updating it is left to the real layout.
+    final group = widget.group;
+    if (group != null && group._fontSize < fontSize) {
+      fontSize = group._fontSize;
+    }
+
+    return _layout(fontSize, constraints.maxWidth);
+  }
+
+  /// Lays out the text like the [Text] built by [_AutoSizeTextState._buildText].
+  TextPainter _layout(double fontSize, double maxWidth) {
+    final overflow = widget.overflow ?? defaultTextStyle.overflow;
+    final softWrap = widget.softWrap ?? defaultTextStyle.softWrap;
+
+    TextSpan text;
+    double scale;
+    if (widget.data != null) {
+      text = TextSpan(
+        text: widget.data,
+        style: style.copyWith(fontSize: fontSize),
+      );
+      scale = 1;
+    } else {
+      text = TextSpan(style: style, children: [widget.textSpan!]);
+      scale = fontSize / style.fontSize!;
+    }
+
+    final textPainter = TextPainter(
+      text: text,
+      textAlign:
+          widget.textAlign ?? defaultTextStyle.textAlign ?? TextAlign.start,
+      textDirection: widget.textDirection ?? TextDirection.ltr,
+      textScaleFactor: scale,
+      maxLines: maxLines,
+      ellipsis: overflow == TextOverflow.ellipsis ? '…' : null,
+      locale: widget.locale,
+      strutStyle: widget.strutStyle,
+      textWidthBasis: defaultTextStyle.textWidthBasis,
+      textHeightBehavior: defaultTextStyle.textHeightBehavior,
+    );
+
+    // Same rule as RenderParagraph: without wrapping or ellipsis the text is
+    // laid out as if it had unlimited width.
+    final widthMatters = softWrap || overflow == TextOverflow.ellipsis;
+    textPainter.layout(maxWidth: widthMatters ? maxWidth : double.infinity);
+
+    return textPainter;
+  }
+}
+
+class _IntrinsicTextSize extends SingleChildRenderObjectWidget {
+  const _IntrinsicTextSize({
+    required this.measure,
+    required Widget child,
+  }) : super(child: child);
+
+  final _TextMeasure measure;
+
+  @override
+  _RenderIntrinsicTextSize createRenderObject(BuildContext context) =>
+      _RenderIntrinsicTextSize(measure);
+
+  @override
+  void updateRenderObject(
+      BuildContext context, _RenderIntrinsicTextSize renderObject) {
+    renderObject.measure = measure;
+  }
+}
+
+/// Lays out its child normally, but answers intrinsic size and dry layout
+/// queries from [_TextMeasure] instead of asking the [LayoutBuilder] child.
+class _RenderIntrinsicTextSize extends RenderProxyBox {
+  _RenderIntrinsicTextSize(this._measure);
+
+  _TextMeasure _measure;
+
+  set measure(_TextMeasure value) {
+    if (identical(value, _measure)) return;
+    _measure = value;
+    // Also drops the cached intrinsic sizes and tells parents that used them.
+    markNeedsLayout();
+  }
+
+  @override
+  double computeMinIntrinsicWidth(double height) =>
+      _measure.minIntrinsicWidth();
+
+  @override
+  double computeMaxIntrinsicWidth(double height) =>
+      _measure.maxIntrinsicWidth(height);
+
+  @override
+  double computeMinIntrinsicHeight(double width) =>
+      _measure.intrinsicHeight(width);
+
+  @override
+  double computeMaxIntrinsicHeight(double width) =>
+      _measure.intrinsicHeight(width);
+
+  @override
+  Size computeDryLayout(BoxConstraints constraints) =>
+      _measure.dryLayout(constraints);
+
+  @override
+  double? computeDryBaseline(
+          BoxConstraints constraints, TextBaseline baseline) =>
+      _measure.dryBaseline(constraints, baseline);
 }
